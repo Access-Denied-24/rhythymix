@@ -6,7 +6,7 @@ export default function LeftSidebar(){
   return (
     <>
   {/* <div className="relative flex flex-col bg-clip-border rounded-xl bg-neutral-800 text-white h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5"> */}
-  <div className="absolute left-0 top-[90px] bottom-0 flex flex-col bg-clip-border rounded-xl bg-neutral-800 text-white w-60 p-4 shadow-xl shadow-blue-gray-900/5">
+  <div className="absolute left-0 top-[120px] bottom-0 flex flex-col bg-clip-border rounded-xl bg-neutral-800 text-white w-60 p-4 shadow-xl shadow-blue-gray-900/5">
     <div className="mb-2 p-4">
       <h5 className="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-white">
         Your Playlists
@@ -17,7 +17,7 @@ export default function LeftSidebar(){
       <div
         role="button"
         tabIndex={0}
-        className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none"
+        className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-neutral-700 hover:bg-opacity-80 focus:bg-neutral-700 focus:bg-opacity-80 active:bg-neutral-800 active:bg-opacity-80"
       >
         <div className="grid place-items-center mr-4">
           {/* <AccountCircleIcon /> */}
@@ -27,7 +27,7 @@ export default function LeftSidebar(){
       <div
         role="button"
         tabIndex={0}
-        className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none"
+        className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-neutral-700 hover:bg-opacity-80 focus:bg-neutral-700 focus:bg-opacity-80 active:bg-neutral-800 active:bg-opacity-80"
       >
         <div className="grid place-items-center mr-4">
           {/* <SettingsIcon /> */}
@@ -38,7 +38,7 @@ export default function LeftSidebar(){
       <div // logout
         role="button"
         tabIndex={0}
-        className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none"
+        className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-neutral-700 hover:bg-opacity-80 focus:bg-neutral-700 focus:bg-opacity-80 active:bg-neutral-800 active:bg-opacity-80"
       >
         <div className="grid place-items-center mr-4">
           {/* <PowerSettingsNewIcon /> */}

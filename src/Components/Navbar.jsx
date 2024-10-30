@@ -5,17 +5,39 @@ import { HomeIcon } from '@heroicons/react/24/outline';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import TracksPage from './TracksPage';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
+
 export default function Navbar() {
   const [isClicked, setIsClicked ] = useState(false);
+  
+  const [ InputValue, setInputValue ] = useState('');
 
+  const inputVal = (event) => {
+    setInputValue(event.target.value);
+  }
   const handleClick = () => {
     setIsClicked(!isClicked);
   }
+
+  const [ tracks, setTracks ] = useState([]);
+
+    const getTracks = async() => {
+      let data = await fetch("https://v1.nocodeapi.com/vortex351/spotify/TmzsrAjboSoMqDmn/search?q=starboy&type=track");
+      let convertedData = await data.json();
+
+      console.log(convertedData.tracks.items);
+
+      setTracks(convertedData.tracks.items);
+    }
+
+    // getTracks();
+
+    let [ isFocused, setIsFocused ] = useState(false); 
 
   return (
     <Disclosure as="nav" className="bg-black my-2">
@@ -35,15 +57,32 @@ export default function Navbar() {
           </div>
           <div className="middleSection flex w-[50%] h-[100%] justify-between">
           
-          <HomeIcon className={`w-[50px] h-[40px] mx-4 cursor-pointer rounded-3xl p-1
-          ${isClicked ? 'fill-white text-white' : 'text-gray-500'}
-          hover:bg-neutral-800 active:outline-white focus: text-white
-          `} 
-          onClick={handleClick}
-          />
+          <Link to="/">
+            <HomeIcon className={`w-[50px] h-[40px] mx-4 cursor-pointer rounded-3xl p-1
+            ${isClicked ? 'fill-white text-white' : 'text-gray-500'}
+            hover:bg-neutral-800 active:outline-white focus: text-white
+            `} 
+            onClick={handleClick}
+            />
+          </Link>
 
           <div className="searchbar flex w-[80%] items-center">
-            <input type="text" placeholder="What do you want to play?" className="w-[100%] h-[100%] rounded-l-[25px] bg-neutral-800 pl-3 text-start text-white border-none" />
+            <input type="text" onChange={inputVal} placeholder="What do you want to play?" className="w-[100%] h-[100%] rounded-l-[25px] bg-neutral-800 pl-3 text-start text-white border-none focus: outline-none" 
+            onFocus={() => setIsFocused(true)} 
+            onBlur={() => setIsFocused(false)}
+            />
+
+          {isFocused ? 
+            <div className='suggestions absolute bottom-[-30px] flex w-[32.2%]  text-white rounded-b-md  ml-2 px-2 py-1' style={{backgroundColor:"rgba(255,255,255,0.1)"}}>
+                {/* <p>
+                  {inputVal}
+                </p> */}
+                Results appear here
+            </div>
+          : <div className='absolute bottom-[-15px] flex w-[30%]  text-white rounded-b-md bg-neutral-800 ml-2 px-2 py-1 hidden'>
+            not focused
+          </div> }
+
             <button type='button' className="w-[20%] h-[100%]">
               <Search className="text-white bg-neutral-800 rounded-r-[25px] p-2 cursor-pointer" style={{width: "100%", height: "100%", borderLeftColor:"white", borderLeft:"", borderColor:"#ffffff"}}/>
             </button>
