@@ -12,7 +12,7 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  color: white;
+  color: black;
 
   display: flex;
   flex-direction: column;
@@ -85,4 +85,5 @@ span:hover{
 .container > input {
   padding: 10px;
   border-radius: 10px;
+  
 }
