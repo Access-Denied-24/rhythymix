@@ -4,7 +4,7 @@ import { Search } from "@mui/icons-material";
 import { HomeIcon } from '@heroicons/react/24/outline';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import TracksPage from './TracksPage';
 
 function classNames(...classes) {
@@ -38,6 +38,15 @@ export default function Navbar() {
     // getTracks();
 
     let [ isFocused, setIsFocused ] = useState(false); 
+    const navigate = useNavigate();
+      const handleLogout = () => {
+      
+        localStorage.removeItem('token');
+        alert('You have logged out successfully');
+        navigate('/login'); // Redirect to login page
+      };
+    
+     
 
   return (
     <Disclosure as="nav" className="bg-black my-2">
@@ -127,8 +136,8 @@ export default function Navbar() {
                   </a>
                 </MenuItem>
                 <MenuItem>
-                  <a href="#" className="block px-4 py-2 text-sm text-neutral-500 data-[focus]:bg-neutral-700">
-                    Sign out
+                  <a href="#" onClick={handleLogout} className="block px-4 py-2 text-sm text-neutral-500 data-[focus]:bg-neutral-700">
+                    Logout
                   </a>
                 </MenuItem>
               </MenuItems>
