@@ -5,7 +5,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 export default function RightSidebar(){
   return (
     <>
-  <div className="absolute right-0 bottom-0 top-[120px] flex flex-col bg-clip-border rounded-xl bg-neutral-800 text-white w-60 p-4 shadow-xl shadow-blue-gray-900/5">
+  <div className="absolute right-0 bottom-0 top-[89px] flex flex-col bg-clip-border rounded-xl text-white w-60 p-4 shadow-xl shadow-blue-gray-900/5" style={{backgroundColor:"#1B0025"}}>
     <div className="mb-2 p-4">
       <h5 className="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-white">
         Active Songs
@@ -16,7 +16,7 @@ export default function RightSidebar(){
       <div
         role="button"
         tabIndex={0}
-        className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-neutral-700 hover:bg-opacity-80 focus:bg-neutral-700 focus:bg-opacity-80 active:bg-neutral-800 active:bg-opacity-80 "
+        className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-purple-900 hover:bg-opacity-80 focus:bg-purple-900 focus:bg-opacity-80 active:bg-purple-900 active:bg-opacity-80 "
       >
         <div className="grid place-items-center mr-4">
           {/* <AccountCircleIcon /> */}
@@ -26,7 +26,7 @@ export default function RightSidebar(){
       <div
         role="button"
         tabIndex={0}
-        className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-neutral-700 hover:bg-opacity-80 focus:bg-neutral-700 focus:bg-opacity-80 active:bg-neutral-800 active:bg-opacity-80"
+        className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-purple-900 hover:bg-opacity-80 focus:bg-purple-900 focus:bg-opacity-80 active:bg-purple-900 active:bg-opacity-80"
       >
         <div className="grid place-items-center mr-4">
           {/* <SettingsIcon /> */}
@@ -37,7 +37,7 @@ export default function RightSidebar(){
       <div
         role="button"
         tabIndex={0}
-        className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-neutral-700 hover:bg-opacity-80 focus:bg-neutral-700 focus:bg-opacity-80 active:bg-neutral-800 active:bg-opacity-80"
+        className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-purple-900 hover:bg-opacity-80 focus:bg-purple-900 focus:bg-opacity-80 active:bg-purple-900 active:bg-opacity-80"
       >
         <div className="grid place-items-center mr-4">
           {/* <SettingsIcon /> */}
@@ -48,7 +48,7 @@ export default function RightSidebar(){
       <div // logout
         role="button"
         tabIndex={0}
-        className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-neutral-700 hover:bg-opacity-80 focus:bg-neutral-700 focus:bg-opacity-80 active:bg-neutral-800 active:bg-opacity-80"
+        className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-purple-900 hover:bg-opacity-80 focus:bg-purple-900 focus:bg-opacity-80 active:bg-purple-900 active:bg-opacity-80"
       >
         <div className="grid place-items-center mr-4">
           {/* <PowerSettingsNewIcon /> */}

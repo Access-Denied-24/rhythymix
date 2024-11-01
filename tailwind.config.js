@@ -3,7 +3,11 @@
 export default {
   content: ["*"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'custom-purple' : '#C5A4D2'
+      }
+    },
   },
   plugins: [
   ],

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *{
   /* box-sizing: border-box; */
   font-size: 20px;
@@ -86,4 +87,95 @@ span:hover{
   padding: 10px;
   border-radius: 10px;
   
+=======
+*{
+  /* box-sizing: border-box; */
+  font-size: 20px;
+  font-family: Arial;
+}
+
+.loginPage{
+  background-image: url('../public/loginbg3.avif');
+
+
+  min-height: 100vh;
+  /* max-width: 100vw; */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: black;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  
+  padding: 20px;
+  width: 400px;
+  /* min-width: 50vw;
+
+  max-width: 420px; */
+
+  border: 2px solid rgba(255,255,255, 0.2);
+  border-radius: 10px;
+  text-align: center;
+
+  background: rgba(176, 172, 172, 0.2);
+  /* background: rgba(112, 108, 108, 0.2); */
+  box-shadow: 0 0 6px 2px rgba(255,255,255, 0.2);
+}
+
+span{
+  font-size: 14px;
+  cursor: pointer;  
+}
+
+span:hover{
+  text-decoration: underline;
+}
+
+.container > button{
+  cursor: pointer;
+  border-radius: 20px;
+  padding: 10px;
+  border: none;
+  /* background-color: rgb(24, 120, 149) */
+  background-color: rgb(53, 174, 53);
+  font-weight: bold;
+
+}
+
+.rememFor{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;  
+}
+
+.rememberme{
+  display: flex;
+  /* border: 1px solid #fff; */
+  
+}
+.rememberme > input{
+  margin: 0;
+  margin-right: 4px;
+  padding: 0;
+}
+.rememberme:hover{
+  text-decoration: none;
+  cursor: default;
+}
+
+.container > input {
+  padding: 10px;
+  border-radius: 10px;
+>>>>>>> 75b544db (ui fixes)
 }

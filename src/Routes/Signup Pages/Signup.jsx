@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import { Link, useNavigate} from 'react-router-dom';
+=======
+<<<<<<< HEAD
+import { Link } from 'react-router-dom';
+>>>>>>> c3a82769 (ui fixes)
 import styles from '../../Components/login.module.css';
 import { useState } from 'react';
 import axios from 'axios';
@@ -110,3 +115,41 @@ export default function Signup(){
 //     </div>
 //   );
 // }
+=======
+import { Link } from 'react-router-dom';
+import styles from '../../Components/login.module.css';
+import { useState } from 'react';
+// import axios from 'axios';
+
+export default function Signup(){
+  const [ username, setUsername ] = useState();
+  const [ email, setEmail ] = useState();
+  const [ password, setPassword ] = useState();
+
+  const handleSubmit = (e) => {
+    // e.preventDefault();
+  }
+  return (
+    <div className={styles.loginPage}>
+      <h1>SIGNUP PAGE</h1>
+
+      <div className={styles.container} onSubmit={handleSubmit}>
+        <input type="text" placeholder='Username' onChange={(e) => {setUsername(e.target.value)}} />
+
+        <input type="text" placeholder='Email' onChange={(e) => {setEmail(e.target.value)}} />
+
+        <input type="password" placeholder='Password' />
+        <input type="password" placeholder='Confirm Password' onChange={(e) => {setPassword(e.target.value)}} />
+        
+        <button type='submit'>Sign Up</button>
+
+        <Link to="/login" style={{color: 'white', textDecoration: 'none'}} >
+            <span>Already have an account? Login</span>
+          </Link>
+
+
+      </div>
+    </div>
+  );
+}
+>>>>>>> 75b544db (ui fixes)

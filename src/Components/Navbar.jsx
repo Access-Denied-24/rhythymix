@@ -77,8 +77,8 @@ export default function Navbar() {
 
           <div className="searchbar flex w-[80%] items-center">
             <input type="text" onChange={inputVal} placeholder="What do you want to play?" className="w-[100%] h-[100%] rounded-l-[25px] bg-neutral-800 pl-3 text-start text-white border-none focus: outline-none" 
-            onFocus={() => setIsFocused(true)} 
-            onBlur={() => setIsFocused(false)}
+            // onFocus={() => setIsFocused(true)} 
+            // onBlur={() => setIsFocused(false)}
             />
 
           {isFocused ? 
@@ -100,7 +100,7 @@ export default function Navbar() {
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button
               type="button"
-              className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+              className="relative rounded-full bg-neutral-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
             >
               <span className="absolute -inset-1.5" />
               <span className="sr-only">View notifications</span>
@@ -110,7 +110,7 @@ export default function Navbar() {
             {/* Profile dropdown */}
             <Menu as="div" className="relative ml-3">
               <div>
-                <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                <MenuButton className="relative flex rounded-full bg-neutral-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">Open user menu</span>
                   {/* <img
@@ -118,7 +118,7 @@ export default function Navbar() {
                     src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                      className="h-8 w-8 rounded-full"
                    /> */}
-                    <AccountCircleOutlinedIcon className="h-10 w-8 rounded-full" style={{width: "30px", height: "32px"}} />
+                    <AccountCircleOutlinedIcon className="h-10 w-8 rounded-full" style={{width: "35px", height: "35px"}} />
                 </MenuButton>
               </div>
               <MenuItems
