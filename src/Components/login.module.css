@@ -1,19 +1,17 @@
-<<<<<<< HEAD
 *{
   /* box-sizing: border-box; */
   font-size: 20px;
   font-family: Arial;
+  color: white;
 }
 .loginPage{
   background-image: url('../public/loginbg3.avif');
-
 
   min-height: 100vh;
   /* max-width: 100vw; */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  color: black;
 
   display: flex;
   flex-direction: column;
@@ -86,8 +84,9 @@ span:hover{
 .container > input {
   padding: 10px;
   border-radius: 10px;
-  
-=======
+  color: black;
+}
+
 *{
   /* box-sizing: border-box; */
   font-size: 20px;
@@ -177,5 +176,4 @@ span:hover{
 .container > input {
   padding: 10px;
   border-radius: 10px;
->>>>>>> 75b544db (ui fixes)
 }

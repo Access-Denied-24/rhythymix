@@ -42,7 +42,7 @@ export default function Login(){
   };
   return (
     <div className={styles.loginPage}>
-      <h1>LOGIN PAGE</h1>
+      <h1 className='font-bold'>LOGIN</h1>
 
       <form onSubmit={handleSubmit} className={styles.container}>
         <input onChange={handleChange} name="email" type="text" placeholder='Email' />

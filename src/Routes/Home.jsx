@@ -19,13 +19,13 @@ export default function Home() {
 
   return (
     <>
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-[90vh]">
       <Navbar />
       <div className="flex flex-grow">
         <LeftSidebar />
         <div className="flex justify-center items-start flex-grow w-[100%] h-[100%]">
-          <div className="w-[57%] h-[100%] flex justify-center rounded-xl bg-neutral-800 text-white p-4 shadow-xl shadow-blue-gray-900/5">
-            Home Page
+          <div className="middleCont w-[57%] h-[100%] flex justify-center rounded-xl bg-neutral-800 text-white p-4 shadow-xl shadow-blue-gray-900/5" style={{backgroundColor:"#1B0025"}}>
+            <b>Home Page</b>
           </div>
         </div>
         <RightSidebar />

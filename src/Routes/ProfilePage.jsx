@@ -6,6 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Link } from "react-router-dom";
+import Controls from "../Components/Controls";
 
 export default function ProfilePage(){
   return (
@@ -56,6 +57,8 @@ export default function ProfilePage(){
         <RightSidebar />
       </div>
     </div>
+
+    <Controls />
 
     </>
   );
