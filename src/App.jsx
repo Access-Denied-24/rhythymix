@@ -7,6 +7,7 @@ import Signup from './Routes/Signup Pages/Signup';
 import { useState, useEffect } from 'react';
 import ProfilePage from './Routes/ProfilePage';
 import Preloader from './Components/Preloader';
+import TracksPage from './Components/TracksPage';
 // import ResetPass from './Components/ResetPass';
 // import respas from './Components/respas';
 
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: <ProfilePage />
+  },
+  {
+    path: "/tracks",
+    element: <TracksPage />
   },
   // {
   //   path: "/resetpass",

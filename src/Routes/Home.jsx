@@ -4,7 +4,11 @@ import RightSidebar from "../Components/RightSidebar";
 import Preloader from "../Components/Preloader";
 import { useState, useEffect } from "react";
 import Controls from "../Components/Controls";
+import ToastNotif from "../Components/SuccessMsg";
+import TracksPage from "../Components/TracksPage";
+
 export default function Home() {
+  const [ tracks, setTracks ] = useState([]);
   const [ isLoading, setIsLoading ] = useState(true);
 
   useEffect(() => {
@@ -20,19 +24,24 @@ export default function Home() {
   return (
     <>
     <div className="flex flex-col h-[90vh]">
-      <Navbar />
+      <Navbar setTracks={setTracks} />
       <div className="flex flex-grow">
         <LeftSidebar />
         <div className="flex justify-center items-start flex-grow w-[100%] h-[100%]">
           <div className="middleCont w-[57%] h-[100%] flex justify-center rounded-xl bg-neutral-800 text-white p-4 shadow-xl shadow-blue-gray-900/5" style={{backgroundColor:"#1B0025"}}>
-            <b>Home Page</b>
-          </div>
+            {/* <b>Home Page</b> */}
+            <TracksPage tracks={tracks} />
+           </div>
         </div>
         <RightSidebar />
       </div>
     </div>
 
+    <ToastNotif />
     <Controls />
+
+
+    
 
     </>
   );

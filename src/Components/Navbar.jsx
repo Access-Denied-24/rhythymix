@@ -12,7 +12,7 @@ function classNames(...classes) {
 }
 
 
-export default function Navbar() {
+export default function Navbar({ setTracks }) {
   const [isClicked, setIsClicked ] = useState(false);
   
   const [ InputValue, setInputValue ] = useState('');
@@ -24,18 +24,16 @@ export default function Navbar() {
     setIsClicked(!isClicked);
   }
 
-  const [ tracks, setTracks ] = useState([]);
-
     const getTracks = async() => {
-      let data = await fetch("https://v1.nocodeapi.com/vortex351/spotify/TmzsrAjboSoMqDmn/search?q=starboy&type=track");
+      let data = await fetch(`https://v1.nocodeapi.com/bot1234/spotify/woAekyFttqVGFynL/search?q=${InputValue}&type=track`);
+      
+      // https://v1.nocodeapi.com/bot1234/spotify/woAekyFttqVGFynL/search?q=starboy&type=track
       let convertedData = await data.json();
 
       console.log(convertedData.tracks.items);
 
       setTracks(convertedData.tracks.items);
-    }
-
-    // getTracks();
+    }    
 
     const isAuthenticated = localStorage.getItem('token');
 
@@ -94,7 +92,7 @@ export default function Navbar() {
             not focused
           </div> }
 
-            <button type='button' className="w-[20%] h-[100%]">
+            <button type='button' className="w-[20%] h-[100%] rounded-r-3xl" onClick={getTracks}>
               <Search className="text-white bg-neutral-800 rounded-r-[25px] p-2 cursor-pointer" style={{width: "100%", height: "100%", borderLeftColor:"white", borderLeft:"", borderColor:"#ffffff"}}/>
             </button>
           </div>
