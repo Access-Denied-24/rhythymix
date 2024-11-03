@@ -1,4 +1,3 @@
-// controllers/userController.js
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -125,7 +124,6 @@ export const getUserProfile = async (req, res) => {
     }
 };
 
-<<<<<<< HEAD
 // forgotPassword
 
 export const forgotPassword = async (req, res) => {
@@ -176,107 +174,3 @@ export const resetPassword = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
-
-
-=======
-// Request Password Reset
-// export const requestPasswordReset = async (req, res) => {
-//     const { email } = req.body;
-  
-//     try {
-//       const user = await User.findOne({ email });
-//       if (!user) return res.status(404).json({ msg: "User not found" });
-  
-//     //   const token = crypto.randomBytes(32).toString('hex');
-//     //   user.resetToken = token;
-//     //   user.resetTokenExpiration = Date.now() + 3600000; // 1 hour
-//     //   await user.save();
-  
-//     //   await sendResetEmail(user.email, token);
-//         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        
-//         console.log(token);
-  
-//       res.status(200).send('Reset link sent to your email.');
-//     } catch (err) {
-//       console.error(err.message);
-//       res.status(500).send("Server error");
-//     }
-//   };
-  
-  // Reset Password
-//   export const resetPassword = async (req, res) => {
-//     const { token, newPassword } = req.body;
-  
-//     try {
-//       const user = await User.findOne({
-//         resetToken: token,
-//         resetTokenExpiration: { $gt: Date.now() },
-//       });
-  
-//       if (!user) {
-//         return res.status(400).send('Invalid or expired token');
-//       }
-  
-//       user.password = await bcrypt.hash(newPassword, 10);
-//       user.resetToken = undefined; // Clear reset token
-//       user.resetTokenExpiration = undefined; // Clear expiration
-//       await user.save();
-  
-//       res.status(200).send('Password has been reset successfully.');
-//     } catch (err) {
-//       console.error(err.message);
-//       res.status(500).send("Server error");
-//     }
-//   };
-
-// export const requestPasswordReset = async (req, res) => {
-//     const { email } = req.body;
-//     try {
-//         const user = await User.findOne({ email });
-//         if (!user) return res.status(400).json({ msg: "User not found" });
-
-//         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        
-//         // Set up your transporter for nodemailer here
-//         const transporter = nodemailer.createTransport({
-//             service: 'Gmail',
-//             auth: {
-//                 user: process.env.EMAIL_USER,
-//                 pass: process.env.EMAIL_PASS
-//             }
-//         });
-
-//         // Email options
-//         const mailOptions = {
-//             from: process.env.EMAIL_USER,
-//             to: email,
-//             subject: 'Password Reset Request',
-//             text: `Click this link to reset your password: http://localhost:3000/resetpass?token=${token}`
-//         };
-
-//         // Send email
-//         await transporter.sendMail(mailOptions);
-//         res.json({ msg: "Reset link sent" });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send("Server error");
-//     }
-// };
-
-// export const resetPassword = async (req, res) => {
-//     const { token, newPassword } = req.body;
-//     try {
-//         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-//         const user = await User.findById(decoded.id);
-//         if (!user) return res.status(404).json({ msg: "User not found" });
-
-//         user.password = await bcrypt.hash(newPassword, 10);
-//         await user.save();
-//         res.json({ msg: "Password reset successfully" });
-//     } catch (error) {
-//         console.error('Error during token verification:', error);
-//         res.status(500).json({ msg: "Invalid token or server error" });
-//     }
-// };
->>>>>>> 75b544db (ui fixes)

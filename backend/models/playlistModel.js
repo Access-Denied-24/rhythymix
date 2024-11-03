@@ -1,18 +1,31 @@
 import mongoose from "mongoose";
 
 const playlistSchema = new mongoose.Schema({
+    user: { 
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User', 
+        required: true 
+    },
     name: { 
         type: String, 
         required: true 
     },
-    user: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "User" 
+    description: { 
+        type: String 
     },
-    songs: [{ 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "Song" 
-    }],
+    songs: [  // Store song IDs from Spotify
+        { 
+            type: String 
+        }
+    ], 
+    isPublic: { 
+        type: Boolean, 
+        default: false 
+    },
+    createdAt: { 
+        type: Date, 
+        default: Date.now 
+    },
 });
 
-export default mongoose.model("Playlist", playlistSchema);
+export default mongoose.model('Playlist', playlistSchema);

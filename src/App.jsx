@@ -31,10 +31,10 @@ const router = createBrowserRouter([
     path: "/profile",
     element: <ProfilePage />
   },
-  // {
-  //   path: "/resetpass",
-  //   element: <respas />
-  // },
+  {
+    path: "/resetpass/:token",
+    element: <respas />
+  },
   {
 
   }
