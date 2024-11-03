@@ -173,6 +173,10 @@ export const resetPassword = async (req, res) => {
     console.error(err.message);
     res.status(500).send("Server error");
   }
+<<<<<<< HEAD
+};
+=======
 };
 
 
+>>>>>>> 6cb34e50171e8ed6d4ea4ba0177770b6fb0219bf
