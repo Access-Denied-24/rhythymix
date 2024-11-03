@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import crypto from "crypto";
 
 const userSchema = new mongoose.Schema({
+    googleId: { type: String, unique: true, sparse: true },
+
     username: { 
         type: String, 
         required: true, 
@@ -15,7 +17,10 @@ const userSchema = new mongoose.Schema({
     },
     password: { 
         type: String, 
-        required: true 
+        required: function () {
+            return !this.googleId; // require password if googleId is not set
+    },
+    profilePicture: { type: String },
     },
     interests: { 
         type: [String], 

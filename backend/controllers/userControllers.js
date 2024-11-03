@@ -108,7 +108,6 @@ export const getUserProfile = async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('-password'); // Exclude password
         if (!user) return res.status(404).json({ msg: "User not found" });
-
         // Send user details, including liked songs and song history
         res.json({
             id: user.id,
