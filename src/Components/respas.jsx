@@ -7,7 +7,6 @@
 //     const [message, setMessage] = useState('');
 //     const [searchParams] = useSearchParams();
 //     const token = searchParams.get('token');
-
 //     const handleSubmit = async (e) => {
 //         e.preventDefault();
 //         try {

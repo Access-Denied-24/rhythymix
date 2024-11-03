@@ -33,13 +33,9 @@ const router = createBrowserRouter([
     element: <ProfilePage />
   },
   {
-    path: "/tracks",
-    element: <TracksPage />
+    path: "/resetpass/:token",
+    element: <respas />
   },
-  // {
-  //   path: "/resetpass",
-  //   element: <respas />
-  // },
   {
 
   }

@@ -1,3 +1,4 @@
+import { duration } from "@mui/material";
 import mongoose from "mongoose";
 
 const songSchema = new mongoose.Schema({
@@ -20,9 +21,12 @@ const songSchema = new mongoose.Schema({
     genre: { 
         type: String 
     },
-    albumArt: { 
+    albumArtUrl: { 
         type: String 
     },
+    duration: {
+        type: Number
+    }
 });
 
 export default mongoose.model("Song", songSchema);

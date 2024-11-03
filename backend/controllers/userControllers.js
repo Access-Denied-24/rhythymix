@@ -1,4 +1,3 @@
-// controllers/userController.js
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -174,5 +173,3 @@ export const resetPassword = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
-
-
