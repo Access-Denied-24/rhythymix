@@ -17,5 +17,11 @@ app.use(cors());
 app.use("/api/v1/users", userRoutes);
 app.use('/api/v1/playlists', playlistRoutes);
 
+app.use((req, res, next) => {
+    res.setHeader("Permissions-Policy", "geolocation=(self), microphone=()"); // Adjust as necessary
+    next();
+});
+
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+

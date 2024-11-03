@@ -7,8 +7,31 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Link } from "react-router-dom";
 import Controls from "../Components/Controls";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 export default function ProfilePage(){
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const { data } = await axios.get('http://localhost:8000/api/v1/users/profile', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setUser(data);
+      } catch (err) {
+        console.error("Error fetching profile data:", err);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  if (!user) return <p>Loading profile...</p>;
+
   return (
     <>
     <div className="flex flex-col h-screen">
@@ -26,8 +49,8 @@ export default function ProfilePage(){
                 <PersonOutlineOutlinedIcon className="my-8 justify-center" style={{width:"60%", height:"60%",fill:"grey"}} />
               </div>
               <div className="rightSide flex w-[75%] h-[65%] self-end gap-3 p-4 flex-col">
-                <span className="no-underline cursor-default" style={{textDecoration:"none"}}>Profile</span>
-                <span className="text-5xl font-bold" style={{textDecoration:"none"}}>VorteX</span>
+                <span className="no-underline cursor-default" style={{textDecoration:"none"}}>{user.email}</span>
+                <span className="text-5xl font-bold" style={{textDecoration:"none"}}>{user.username}</span>
                 <div className="playlists_flw">
                   <span className="cursor-text" style={{textDecoration:"none"}}>2 Playlists • </span>
                   <span>3 Followers</span>

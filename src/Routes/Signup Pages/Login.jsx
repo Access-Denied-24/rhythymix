@@ -3,6 +3,7 @@ import styles from '../../Components/login.module.css';
 import { useState } from 'react';
 import axios from 'axios';
 import SuccessMsg from '../../Components/SuccessMsg';
+import GoogleLogin from '../../Components/googleLogin';
 
 export default function Login(){
   const [formData, setFormData] = useState({
@@ -68,8 +69,9 @@ export default function Login(){
 
         <Link to="/signup" style={{color: 'white', textDecoration: 'none'}} >
             <span>Don't have an account? Register</span>
+           
           </Link>
-
+          <GoogleLogin/>
 
       </form>
     </div>
