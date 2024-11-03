@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 *{
   /* box-sizing: border-box; */
   font-size: 20px;
@@ -89,9 +87,8 @@ span:hover{
   color: black;
 }
 
->>>>>>> 6cb34e50171e8ed6d4ea4ba0177770b6fb0219bf
-*{
-  /* box-sizing: border-box; */
+/* *{
+  //box-sizing: border-box; 
   font-size: 20px;
   font-family: Arial;
 }
@@ -100,7 +97,7 @@ span:hover{
 
 
   min-height: 100vh;
-  /* max-width: 100vw; */
+  // max-width: 100vw;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -120,16 +117,16 @@ span:hover{
   
   padding: 20px;
   width: 400px;
-  /* min-width: 50vw;
+  //min-width: 50vw;
 
-  max-width: 420px; */
+  //max-width: 420px; 
 
   border: 2px solid rgba(255,255,255, 0.2);
   border-radius: 10px;
   text-align: center;
 
   background: rgba(176, 172, 172, 0.2);
-  /* background: rgba(112, 108, 108, 0.2); */
+  // bckground: rgba(112, 108, 108, 0.2); 
   box-shadow: 0 0 6px 2px rgba(255,255,255, 0.2);
 }
 
@@ -147,7 +144,7 @@ span:hover{
   border-radius: 20px;
   padding: 10px;
   border: none;
-  /* background-color: rgb(24, 120, 149) */
+  //background-color: rgb(24, 120, 149)
   background-color: rgb(53, 174, 53);
   font-weight: bold;
 
@@ -161,7 +158,7 @@ span:hover{
 
 .rememberme{
   display: flex;
-  /* border: 1px solid #fff; */
+  //border: 1px solid #fff;
   
 }
 .rememberme > input{
@@ -177,8 +174,5 @@ span:hover{
 .container > input {
   padding: 10px;
   border-radius: 10px;
-<<<<<<< HEAD
-  
-=======
->>>>>>> 6cb34e50171e8ed6d4ea4ba0177770b6fb0219bf
 }
+ */
