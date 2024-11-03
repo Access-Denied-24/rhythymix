@@ -2,6 +2,7 @@ import { Link,useNavigate} from 'react-router-dom';
 import styles from '../../Components/login.module.css';
 import { useState } from 'react';
 import axios from 'axios';
+import SuccessMsg from '../../Components/SuccessMsg';
 
 export default function Login(){
   const [formData, setFormData] = useState({
@@ -20,7 +21,12 @@ export default function Login(){
     try {
       const response = await axios.post('http://localhost:8000/api/v1/users/login', formData);
       localStorage.setItem('token', response.data.token);
-      alert('Login successful');
+      // alert('Login successful');
+
+      const isAuthenticated = localStorage.getItem('token');
+      if(isAuthenticated){
+        <SuccessMsg />
+      } 
       navigate('/');
     } catch (error) {
       if (error.response) {
@@ -37,12 +43,13 @@ export default function Login(){
         // Something happened in setting up the request
         console.log('Error:', error.message);
         alert('Login error: ' + error.message);
+        
       }
     }
   };
   return (
     <div className={styles.loginPage}>
-      <h1>LOGIN PAGE</h1>
+      <h1 className='font-bold'>LOGIN</h1>
 
       <form onSubmit={handleSubmit} className={styles.container}>
         <input onChange={handleChange} name="email" type="text" placeholder='Email' />

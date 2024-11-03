@@ -12,7 +12,7 @@ function classNames(...classes) {
 }
 
 
-export default function Navbar() {
+export default function Navbar({ setTracks }) {
   const [isClicked, setIsClicked ] = useState(false);
   
   const [ InputValue, setInputValue ] = useState('');
@@ -24,18 +24,18 @@ export default function Navbar() {
     setIsClicked(!isClicked);
   }
 
-  const [ tracks, setTracks ] = useState([]);
-
     const getTracks = async() => {
-      let data = await fetch("https://v1.nocodeapi.com/vortex351/spotify/TmzsrAjboSoMqDmn/search?q=starboy&type=track");
+      let data = await fetch(`https://v1.nocodeapi.com/bot1234/spotify/woAekyFttqVGFynL/search?q=${InputValue}&type=track`);
+      
+      // https://v1.nocodeapi.com/bot1234/spotify/woAekyFttqVGFynL/search?q=starboy&type=track
       let convertedData = await data.json();
 
       console.log(convertedData.tracks.items);
 
       setTracks(convertedData.tracks.items);
-    }
+    }    
 
-    // getTracks();
+    const isAuthenticated = localStorage.getItem('token');
 
     let [ isFocused, setIsFocused ] = useState(false); 
     const navigate = useNavigate();
@@ -43,13 +43,13 @@ export default function Navbar() {
       
         localStorage.removeItem('token');
         alert('You have logged out successfully');
-        navigate('/login'); // Redirect to login page
+        navigate('/'); // Redirect to login page
       };
     
      
 
   return (
-    <Disclosure as="nav" className="bg-black my-2">
+    <Disclosure as="nav" className="my-2" style={{backgroundColor:"#1B0025"}}>
       <div className="px-4">
         <div className="relative flex p-2 h-14 items-center justify-between">
 
@@ -58,8 +58,8 @@ export default function Navbar() {
               <Link to="/">
                 <img
                   alt=""
-                  src="../public/musicLogo2.jpg"
-                  className="h-8 w-auto bg-transparent cursor-pointer"
+                  src="../public/websiteLogo1.jpg"
+                  className="h-10 w-auto bg-transparent cursor-pointer"
                 />
               </Link>
             </div>
@@ -92,12 +92,12 @@ export default function Navbar() {
             not focused
           </div> }
 
-            <button type='button' className="w-[20%] h-[100%]">
+            <button type='button' className="w-[20%] h-[100%] rounded-r-3xl" onClick={getTracks}>
               <Search className="text-white bg-neutral-800 rounded-r-[25px] p-2 cursor-pointer" style={{width: "100%", height: "100%", borderLeftColor:"white", borderLeft:"", borderColor:"#ffffff"}}/>
             </button>
           </div>
         </div>
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+          <div className="w-[10%] absolute inset-y-0 right-0 flex justify-between items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button
               type="button"
               className="relative rounded-full bg-neutral-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -108,17 +108,23 @@ export default function Navbar() {
             </button>
 
             {/* Profile dropdown */}
+            {isAuthenticated ? (
+              <div className=''>
+                {/* <AccountCircleOutlinedIcon className="h-10 w-8 rounded-full" style={{width: "35px", height: "35px"}} />  */}
+
             <Menu as="div" className="relative ml-3">
               <div>
-                <MenuButton className="relative flex rounded-full bg-neutral-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                  <span className="absolute -inset-1.5" />
+                <MenuButton className="relative rounded-md flex bg-transparent text-sm focus:outline-none ">
+                  <span className="w-[35px] h-[35px]">
+                    <AccountCircleOutlinedIcon className="h-10 w-8 rounded-full" style={{width: "35px", height: "35px"}} /> 
+                  </span>
                   <span className="sr-only">Open user menu</span>
                   {/* <img
                     alt=""
                     src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                      className="h-8 w-8 rounded-full"
                    /> */}
-                    <AccountCircleOutlinedIcon className="h-10 w-8 rounded-full" style={{width: "35px", height: "35px"}} />
+                   
                 </MenuButton>
               </div>
               <MenuItems
@@ -126,7 +132,7 @@ export default function Navbar() {
                 className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-neutral-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
               >
                 <MenuItem>
-                   <Link to="/login" className="block px-4 py-2 text-sm text-neutral-500 data-[focus]:bg-neutral-700">
+                   <Link to="/profile" className="block px-4 py-2 text-sm text-neutral-500 data-[focus]:bg-neutral-700">
                     Your Profile
                    </Link>
                 </MenuItem>
@@ -142,6 +148,12 @@ export default function Navbar() {
                 </MenuItem>
               </MenuItems>
             </Menu>
+
+            </div>) : (
+              <div className=' font-medium rounded-md flex justify-center  w-[70px] h-[40px] hover:bg-purple-900 transition-all'>
+                <Link to="/login" className='w-full h-full text-center self-center content-center' >Login</Link> 
+              </div> )}
+
           </div>
         </div>
       </div>

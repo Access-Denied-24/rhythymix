@@ -16,4 +16,11 @@ router.post("/forgotPassword", forgotPassword);
 // reset password routes
 router.post("/resetPassword/:token", resetPassword);
 
+<<<<<<< HEAD
+=======
+// reset password
+// router.post("/request-reset", requestPasswordReset);
+// router.post("/reset-password", resetPassword);
+
+>>>>>>> 6cb34e50171e8ed6d4ea4ba0177770b6fb0219bf
 export default router;

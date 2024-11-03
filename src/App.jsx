@@ -7,6 +7,7 @@ import Signup from './Routes/Signup Pages/Signup';
 import { useState, useEffect } from 'react';
 import ProfilePage from './Routes/ProfilePage';
 import Preloader from './Components/Preloader';
+import TracksPage from './Components/TracksPage';
 // import ResetPass from './Components/ResetPass';
 // import respas from './Components/respas';
 
@@ -32,9 +33,19 @@ const router = createBrowserRouter([
     element: <ProfilePage />
   },
   {
+<<<<<<< HEAD
     path: "/resetpass/:token",
     element: <respas />
   },
+=======
+    path: "/tracks",
+    element: <TracksPage />
+  },
+  // {
+  //   path: "/resetpass",
+  //   element: <respas />
+  // },
+>>>>>>> 6cb34e50171e8ed6d4ea4ba0177770b6fb0219bf
   {
 
   }
