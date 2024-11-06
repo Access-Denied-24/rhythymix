@@ -25,7 +25,9 @@ export default function Navbar({ setTracks }) {
   }
 
     const getTracks = async() => {
-      let data = await fetch(`https://v1.nocodeapi.com/bot1234/spotify/woAekyFttqVGFynL/search?q=${InputValue}&type=track`);
+      // let data = await fetch(`https://v1.nocodeapi.com/bot1234/spotify/woAekyFttqVGFynL/search?q=${InputValue}&type=track`);
+
+      let data = await fetch(`https://v1.nocodeapi.com/bot123/spotify/UlzMyEBprtImaFNJ/search?q=${InputValue}&type=track`);
       
       // https://v1.nocodeapi.com/bot1234/spotify/woAekyFttqVGFynL/search?q=starboy&type=track
       let convertedData = await data.json();
@@ -137,7 +139,7 @@ export default function Navbar({ setTracks }) {
                    </Link>
                 </MenuItem>
                 <MenuItem>
-                  <a href="#" className="block px-4 py-2 text-sm text-neutral-500 data-[focus]:bg-neutral-700">
+                  <a href="/settings" className="block px-4 py-2 text-sm text-neutral-500 data-[focus]:bg-neutral-700">
                     Settings
                   </a>
                 </MenuItem>

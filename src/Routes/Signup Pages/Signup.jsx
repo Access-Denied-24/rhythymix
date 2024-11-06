@@ -1,4 +1,4 @@
-import { Link, useNavigate} from 'react-router-dom';
+import { Link, Outlet, useNavigate} from 'react-router-dom';
 // import { Link } from 'react-router-dom';
 import styles from '../../Components/login.module.css';
 import { useState } from 'react';
@@ -26,7 +26,8 @@ export default function Signup(){
       
       await axios.post('http://localhost:8000/api/v1/users/register', formData);
       alert('Registration successful');
-      navigate('/login');
+      // navigate('/login');
+      navigate('/signup/interests')
 
 
     } catch (error) {
@@ -53,12 +54,14 @@ export default function Signup(){
       <h1 className='font-bold'>CREATE ACCOUNT</h1>
 
       <form onSubmit={handleSubmit} className={styles.container}>
-        <input onChange={handleChange} name="username" type="text" placeholder='Username' />
-        <input onChange={handleChange} name="email" type="text" placeholder='Email' />
-        <input onChange={handleChange} name="password" type="password" placeholder='Password' />
-        <input onChange={handleChange} placeholder='Confirm Password' />
-        
-        <button>Sign Up</button>
+        <input onChange={handleChange} name="username" type="text" placeholder='Username' required />
+        <input onChange={handleChange} name="email" type="text" placeholder='Email' required />
+        <input onChange={handleChange} name="password" type="password" placeholder='Password' required />
+        <input onChange={handleChange} type='password' placeholder='Confirm Password' required />
+
+        <button>
+          <Link to="interests">Sign Up</Link>
+        </button>
 
         <Link to="/login" style={{color: 'white', textDecoration: 'none'}} >
             <span>Already have an account? Login</span>
@@ -66,6 +69,7 @@ export default function Signup(){
 
 
       </form>
+      <Outlet />
     </div>
   );
 }

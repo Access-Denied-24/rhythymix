@@ -8,6 +8,9 @@ import { useState, useEffect } from 'react';
 import ProfilePage from './Routes/ProfilePage';
 import Preloader from './Components/Preloader';
 import TracksPage from './Components/TracksPage';
+import Modal from './Components/Modal';
+import Interests from './Routes/Interests';
+import Settings from './Routes/Settings';
 // import ResetPass from './Components/ResetPass';
 // import respas from './Components/respas';
 
@@ -26,7 +29,13 @@ const router = createBrowserRouter([
   },
   {
     path: "/signup",
-    element: <Signup />
+    element: <Signup />,
+    children : [
+      {
+        path: "interests",
+        element: <Interests />
+      }
+    ],
   },
   {
     path: "/profile",
@@ -37,7 +46,16 @@ const router = createBrowserRouter([
     element: <respas />
   },
   {
-
+    path: "/modal",
+    element: <Modal />
+  },
+  {
+    path: "/interests",
+    element: <Interests />
+  },
+  {
+    path: "/settings",
+    element: <Settings />
   }
 ]);
 
