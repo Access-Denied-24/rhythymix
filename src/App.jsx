@@ -11,6 +11,7 @@ import TracksPage from './Components/TracksPage';
 import Modal from './Components/Modal';
 import Interests from './Routes/Interests';
 import Settings from './Routes/Settings';
+import Navbar from './Components/Navbar';
 // import ResetPass from './Components/ResetPass';
 // import respas from './Components/respas';
 
@@ -30,12 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <Signup />,
-    children : [
-      {
-        path: "interests",
-        element: <Interests />
-      }
-    ],
+  },
+  {
+    path: "/signup/interests",
+    element: <Interests />
   },
   {
     path: "/profile",
@@ -59,42 +58,13 @@ const router = createBrowserRouter([
   }
 ]);
 
-
-//   function App() {
-//     const CLIENT_ID = "02f6fc454aa14fd798a7fefece58e496";
-//     const REDIRECT_URI = "localhost:5173";
-//     const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
-//     const RESPONSE_TYPE = "token";
-
-    
-
-//   return (
-//     <div className='App'>
-//       {/* <Preloader /> */}
-      //  <RouterProvider router = {router} />
-//       /*<a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`} style={{color:"white"}}>login</a> */
-//     </div>
-//   )
-// }
-
 function App() {
-//   const [ isLoading, setIsLoading ] = useState(true);
 
-// useEffect(() => {
-//   const timer = setTimeout(() => {
-//     setIsLoading(false);
-//   }, 2000);
-
-//   return () => clearTimeout(timer);
-// }, []);
-
-return (
-  <div className='App'>
-  {/* {isLoading ? <Preloader /> :  
-  } */}
-  <RouterProvider router = {router} />
-  </div>
-);
+  return (
+    <div className='App'>
+      <RouterProvider router = {router} />
+    </div>
+  );
 }
 
 export default App

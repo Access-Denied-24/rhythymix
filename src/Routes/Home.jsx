@@ -28,8 +28,25 @@ export default function Home() {
       <div className="flex flex-grow">
         <LeftSidebar />
         <div className="flex justify-center items-start flex-grow w-[100%] h-[100%]">
-          <div className="middleCont w-[57%] h-[100%] flex justify-center rounded-xl bg-neutral-800 text-white p-4 shadow-xl shadow-blue-gray-900/5" style={{backgroundColor:"#1B0025"}}>
+          <div className="middleCont w-[57%] h-[100%] flex flex-col justify-center rounded-xl bg-neutral-800 text-white p-4 shadow-xl shadow-blue-gray-900/5 border-2" style={{backgroundColor:"#1B0025"}}>
             {/* <b>Home Page</b> */}
+  
+            <div className="homeContent border w-full h-full text-center">
+              Home Content
+
+              <div className="recommended border">
+                5 Recommended Albums
+              </div>
+
+              <div className="recentlyPlayed">
+                Recently Played Albums
+              </div>
+
+              <div className="bestOfArtists">
+                Best of Artists
+              </div>
+            </div>
+
             <TracksPage tracks={tracks} />
            </div>
         </div>

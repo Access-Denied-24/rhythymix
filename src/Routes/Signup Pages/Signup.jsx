@@ -1,4 +1,4 @@
-import { Link, Outlet, useNavigate} from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 // import { Link } from 'react-router-dom';
 import styles from '../../Components/login.module.css';
 import { useState } from 'react';
@@ -67,9 +67,7 @@ export default function Signup(){
             <span>Already have an account? Login</span>
           </Link>
 
-
       </form>
-      <Outlet />
     </div>
   );
 }
