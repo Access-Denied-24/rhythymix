@@ -56,11 +56,11 @@ export default function ProfilePage({newName}){
       <div className="flex flex-grow">
         <LeftSidebar />
         <div className="middlePart flex justify-center items-start w-[100%] h-[100%]">
-          <div className=" w-[57%] h-[100%] min-w-[57%] mim-h-[100%] flex flex-col  bg-neutral-800 text-white shadow-xl shadow-blue-gray-900/5
+          <div className=" w-[57%] h-[100%] min-w-[57%] mim-h-[100%] flex flex-col text-white shadow-xl shadow-blue-gray-900/5
           bg-clip-border rounded-xl
-          ">
+          " style={{backgroundColor:"#1B0025"}}>
             {/* Profile Page */}
-            <div className="banner flex h-[50%] w-full bg-neutral-700 p-2 bg-clip-border rounded-t-xl">
+            <div className="banner flex h-[50%] w-full p-2 bg-clip-border rounded-t-xl" style={{backgroundColor:"#3e0652"}}>
               
               <div className="PicleftSide border w-[15vw] h-[30vh] flex justify-center  self-end bg-neutral-800" style={{borderRadius:"60%", minWidth:"25%"}}>
                 <PersonOutlineOutlinedIcon className="my-8 justify-center" style={{width:"60%", height:"60%",fill:"grey"}} />

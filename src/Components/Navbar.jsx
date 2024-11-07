@@ -35,6 +35,7 @@ export default function Navbar({ setTracks }) {
       let convertedData = await data.json();
 
       console.log(convertedData.tracks.items);
+      console.log(convertedData.tracks);
 
       setTracks(convertedData.tracks.items);
     }    

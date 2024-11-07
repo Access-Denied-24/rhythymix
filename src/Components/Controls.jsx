@@ -6,7 +6,7 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 
 export default function Controls() {
   return (
-    <div className="controlsCont bg-neutral-900 h-[10vh] flex z-1 fixed left-0 right-0 bottom-0 py-1">
+    <div className="controlsCont bg-neutral-900 h-[70px] flex z-1 fixed left-0 right-0 bottom-0 py-1">
       <div className='SongDetails p-2 w-[22%] flex'>
         <img src="/playlistPhoto1.webp" alt="" className='w-[15%] mr-4' />
         <div className='flex flex-col'>
