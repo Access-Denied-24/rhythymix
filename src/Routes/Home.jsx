@@ -10,14 +10,34 @@ import TracksPage from "../Components/TracksPage";
 export default function Home() {
   const [ tracks, setTracks ] = useState([]);
   const [ isLoading, setIsLoading ] = useState(true);
+  const [ albums, setAlbums ] = useState([]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+    const fetchNewReleases= async() => {
+      try{
+        let data = await fetch(`https://v1.nocodeapi.com/bot1234/spotify/woAekyFttqVGFynL/browse/new?country=India&perPage=5`);
+        
+        let convertedData = await data.json();
+        console.log(convertedData);
+        setAlbums(convertedData.albums.items);
+        setIsLoading(false);
+      } 
+      catch(error){
+        console.log('Error fetching new releases: ', error);
+        setIsLoading(false);
+      }
+    };
 
-    return () => clearTimeout(timer);
+    fetchNewReleases();
   }, []);
+
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 1000);
+
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   if(isLoading) return <Preloader />
 
@@ -28,8 +48,48 @@ export default function Home() {
       <div className="flex flex-grow">
         <LeftSidebar />
         <div className="flex justify-center items-start flex-grow w-[100%] h-[100%]">
-          <div className="middleCont w-[57%] h-[100%] flex justify-center rounded-xl bg-neutral-800 text-white p-4 shadow-xl shadow-blue-gray-900/5" style={{backgroundColor:"#1B0025"}}>
+          <div className="middleCont w-[57%] h-[100%] flex flex-col justify-center rounded-xl bg-neutral-800 text-white p-4 shadow-xl shadow-blue-gray-900/5 border-2" style={{backgroundColor:"#1B0025"}}>
             {/* <b>Home Page</b> */}
+  
+            <div className="homeContent border w-full h-full text-center">
+
+              <div className="recommended border">
+                <h2>Top 5 Recommended Albums</h2>
+                {/* <div className="card border-2 flex flex-col w-[25%]">
+                  <div className="ImgCont">
+                    <img src="/playlistPhoto1.webp" alt="" />
+                  </div>
+                  <div className="infoCont border-2">
+                    <p>Playlist Name</p>
+                    <p>Artists</p>
+                    <p>Genre</p>
+                  </div>
+                </div> */}
+                <div className="albumsGrid flex flex-wrap gap-4 justify-center">
+                    {albums.map((album) => (
+                      <div key={album.id} className="card border-2 flex flex-col w-[25%]">
+                        <div className="ImgCont">
+                          <img src={album.images[0].url} alt={album.name} />
+                        </div>
+                        <div className="infoCont border-2 p-2">
+                          <p><strong>{album.name}</strong></p>
+                          <p>{album.artists.map(artist => artist.name).join(', ')}</p>
+                          <p>Total Tracks : {album.total_tracks}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+              </div>
+
+              {/* <div className="recentlyPlayed">
+                Recently Played Albums
+              </div>
+
+              <div className="bestOfArtists">
+                Best of Artists
+              </div> */}
+            </div>
+
             <TracksPage tracks={tracks} />
            </div>
         </div>

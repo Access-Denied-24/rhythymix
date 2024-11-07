@@ -16,12 +16,14 @@ export default function Navbar({ setTracks }) {
   const [isClicked, setIsClicked ] = useState(false);
   
   const [ InputValue, setInputValue ] = useState('');
+  const [ isSearched, setIsSearched ] = useState(false);
 
   const inputVal = (event) => {
     setInputValue(event.target.value);
   }
   const handleClick = () => {
     setIsClicked(!isClicked);
+    setIsSearched(true);
   }
 
     const getTracks = async() => {
@@ -33,6 +35,7 @@ export default function Navbar({ setTracks }) {
       let convertedData = await data.json();
 
       console.log(convertedData.tracks.items);
+      console.log(convertedData.tracks);
 
       setTracks(convertedData.tracks.items);
     }    

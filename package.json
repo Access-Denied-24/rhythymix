@@ -17,9 +17,11 @@
     "@mui/icons-material": "^6.1.5",
     "@mui/material": "^6.1.5",
     "axios": "^1.7.7",
+    "dist": "^0.1.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.27.0"
+    "react-router-dom": "^6.27.0",
+    "react-spring": "^9.7.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
@@ -34,6 +36,6 @@
     "globals": "^15.11.0",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.14",
-    "vite": "^5.4.9"
+    "vite": "^5.4.10"
   }
 }
