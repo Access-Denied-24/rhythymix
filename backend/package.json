@@ -24,6 +24,7 @@
     "google-auth-library": "^9.14.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.3",
+    "node-fetch": "^3.3.2",
     "nodemailer": "^6.9.16"
   },
   "devDependencies": {

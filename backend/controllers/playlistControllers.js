@@ -1,6 +1,4 @@
 import Playlist from '../models/playlistModel.js';
-import User from '../models/userModel.js';
-import Song from '../models/songModel.js';
 import mongoose from 'mongoose';
 
 // Create a new playlist
@@ -11,7 +9,6 @@ export const createPlaylist = async (req, res) => {
       return res.status(400).json({ error: 'Playlist name is required' });
     }
 
-    // Limit initial songs if provided
     if (songs && songs.length > 50) {
       return res.status(400).json({ error: 'Too many songs in playlist' });
     }
@@ -34,78 +31,64 @@ export const createPlaylist = async (req, res) => {
 
 // Add song to playlist
 export const addSongToPlaylist = async (req, res) => {
-    try {
-      console.log("Requesting User:", req.user); // Debugging user
-  
-      if (!req.user) {
-        return res.status(401).json({ error: 'User not authenticated' });
-      }
-  
-      const { playlistId } = req.params;
-      const { songId } = req.body;
-  
-      // Validate playlistId as a MongoDB ObjectId
-      if (!mongoose.isValidObjectId(playlistId)) {
-        return res.status(400).json({ error: 'Invalid playlist ID' });
-      }
-  
-      const playlist = await Playlist.findById(playlistId);
-      if (!playlist) {
-        return res.status(404).json({ error: 'Playlist not found' });
-      }
-  
-      console.log("playlistId:", playlistId, "songId:", songId);
-  
-      // Check user ownership or public access
-      if (playlist.user.toString() !== req.user.id && !playlist.isPublic) {
-        return res.status(403).json({ error: 'Unauthorized to modify this playlist' });
-      }
-  
-      // Find the song by `songId` (stored as a string in the Song schema)
-      const song = await Song.findOne({ songId: songId }); // Finds song based on Spotify ID
-      if (!song) {
-        return res.status(404).json({ error: 'Song not found' });
-      }
-      
-  
-      // Add song if it's not already in the playlist
-      if (!playlist.songs.includes(songId)) {
-        playlist.songs.push(songId);
-        await playlist.save();
-      }
-  
-      res.json(playlist);
-    } catch (error) {
-      console.error("Error adding song:", error); // Log full error
-      res.status(500).json({ error: 'Failed to add song to playlist', details: error.message });
-    }
-  };
-  
-  
-
-// Remove song from playlist
-export const removeSongFromPlaylist = async (req, res) => {
   try {
     const { playlistId } = req.params;
     const { songId } = req.body;
 
+    // Validate playlistId and check playlist existence
+    if (!mongoose.isValidObjectId(playlistId)) {
+      return res.status(400).json({ error: 'Invalid playlist ID' });
+    }
     const playlist = await Playlist.findById(playlistId);
     if (!playlist) {
       return res.status(404).json({ error: 'Playlist not found' });
     }
 
-    // Check user ownership or public access
+    // Verify user ownership or public access
+    if (playlist.user.toString() !== req.user.id && !playlist.isPublic) {
+      return res.status(403).json({ error: 'Unauthorized to modify this playlist' });
+    }
+
+    // Add song if it’s not already in the playlist
+    if (!playlist.songs.includes(songId)) {
+      playlist.songs.push(songId);
+      await playlist.save();
+    }
+
+    res.json(playlist);
+  } catch (error) {
+    console.error("Error adding song to playlist:", error.message);
+    res.status(500).json({ error: 'Failed to add song to playlist' });
+  }
+};
+
+// Remove a song from a playlist
+export const removeSongFromPlaylist = async (req, res) => {
+  try {
+    const { playlistId } = req.params;
+    const { songId } = req.body;
+
+    // Validate playlistId and check playlist existence
+    if (!mongoose.isValidObjectId(playlistId)) {
+      return res.status(400).json({ error: 'Invalid playlist ID' });
+    }
+    const playlist = await Playlist.findById(playlistId);
+    if (!playlist) {
+      return res.status(404).json({ error: 'Playlist not found' });
+    }
+
+    // Verify user ownership or public access
     if (playlist.user.toString() !== req.user._id.toString() && !playlist.isPublic) {
       return res.status(403).json({ error: 'Unauthorized to modify this playlist' });
     }
 
-    // Remove song if it exists
-    playlist.songs = playlist.songs.filter(id => id.toString() !== songId);
+    // Remove the song from the playlist
+    playlist.songs = playlist.songs.filter(id => id !== songId);
     await playlist.save();
 
     res.json(playlist);
   } catch (error) {
-    console.error("Error removing song:", error.message);
+    console.error("Error removing song from playlist:", error.message);
     res.status(500).json({ error: 'Failed to remove song from playlist' });
   }
 };
@@ -113,7 +96,7 @@ export const removeSongFromPlaylist = async (req, res) => {
 // Get user's playlists
 export const getUserPlaylists = async (req, res) => {
   try {
-    const playlists = await Playlist.find({ user: req.user._id }).limit(20); // Limiting results
+    const playlists = await Playlist.find({ user: req.user._id }).limit(20);
     res.json(playlists);
   } catch (error) {
     console.error("Error fetching playlists:", error.message);
@@ -121,21 +104,26 @@ export const getUserPlaylists = async (req, res) => {
   }
 };
 
-// Share playlist
+// Share a playlist (set to public)
 export const sharePlaylist = async (req, res) => {
   try {
     const { playlistId } = req.params;
 
+    // Validate playlistId and check playlist existence
+    if (!mongoose.isValidObjectId(playlistId)) {
+      return res.status(400).json({ error: 'Invalid playlist ID' });
+    }
     const playlist = await Playlist.findById(playlistId);
     if (!playlist) {
       return res.status(404).json({ error: 'Playlist not found' });
     }
 
-    // Ensure the user owns the playlist
+    // Ensure user ownership for sharing
     if (playlist.user.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ error: 'Unauthorized' });
+      return res.status(403).json({ error: 'Unauthorized to share this playlist' });
     }
 
+    // Set playlist to public and save
     playlist.isPublic = true;
     await playlist.save();
     res.json(playlist);
