@@ -7,41 +7,63 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Link, useNavigate } from "react-router-dom";
 import Controls from "../Components/Controls";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import ChangeName from "../Components/ChangeName";
 import Settings from "./Settings";
 import Home from "./Home";
 import { Navigate } from "react-router-dom";
+import { useUser } from "../Context/UserContext";
 
 export default function ProfilePage({newName}){
 
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
+  const {user, displayName, setDisplayName} = useUser();
+  // let [ displayName, setDisplayName ] = useState('vortex' || '');
   const [ showModal, setShowModal ] = useState(false);
-  const [ displayName, setDisplayName ] = useState('vortex' || '');
+  const [ isHovering, setIsHovering ] = useState(false);
+  const [ image, setImage ] = useState('');
+  const inputRef = useRef(null);
 
   const navigate = useNavigate();
 
   const handleModalClick = () => {
     setShowModal(true);
+    console.log(displayName);
   }
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const token = localStorage.getItem('token');
-      try {
-        const { data } = await axios.get('http://localhost:8000/api/v1/users/profile', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setUser(data);
-        setDisplayName(data.username);
-      } catch (err) {
-        console.error("Error fetching profile data:", err);
-      }
-    };
+  const handleImageClick = () => {
+    inputRef.current.click();
+  };
 
-    fetchProfile();
-  }, []);
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setImage(file);
+  };
+
+  console.log(useUser)
+
+
+
+  // useEffect(() => {
+  //   const fetchProfile = async () => {
+  //     const token = localStorage.getItem('token');
+  //     try {
+  //       const { data } = await axios.get('http://localhost:8000/api/v1/users/profile', {
+  //         headers: { Authorization: `Bearer ${token}` }
+  //       });
+  //       setUser(data);
+  //       setDisplayName(data.username);
+  //     } catch (err) {
+  //       console.error("Error fetching profile data:", err);
+  //     }
+  //   };
+
+  //   fetchProfile();
+  // }, []);
+
+  // setUserEmail = user.email;
+
 
   if (!user) return <p>Loading profile...</p>;
   
@@ -61,13 +83,40 @@ export default function ProfilePage({newName}){
           " style={{backgroundColor:"#1B0025"}}>
             {/* Profile Page */}
             <div className="banner flex h-[50%] w-full p-2 bg-clip-border rounded-t-xl" style={{backgroundColor:"#3e0652"}}>
-              
-              <div className="PicleftSide border w-[15vw] h-[30vh] flex justify-center  self-end bg-neutral-800" style={{borderRadius:"60%", minWidth:"25%"}}>
-                <PersonOutlineOutlinedIcon className="my-8 justify-center" style={{width:"60%", height:"60%",fill:"grey"}} />
+
+              {/* w-[15vw] h-[30vh] */}
+              <div className="PicleftSide relative w-[100px] h-[70%] flex flex-col justify-center self-end bg-neutral-800 transition-all" style={{borderRadius:"60%", minWidth:"25%"}}
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={() => setIsHovering(false)}
+              onClick={handleImageClick}
+              >
+                {image ? 
+                  <img src={URL.createObjectURL(image)} alt="" className="w-[100%] self-center rounded-[60%]" />
+                  :
+                  <PersonOutlineOutlinedIcon className={`my-8 justify-center self-center
+                  `} style={{width:"60%", height:"60%",fill:"grey"}} />
+                  
+                }
+                <div className="absolute flex flex-col items-center w-full h-full justify-end gap-2 p-4 border transition-all duration-300 ease-in-out opacity-100 cursor-pointer" style={{borderRadius:"60%", backgroundColor:"rgba(0,0,0,0.2)",
+                  opacity: isHovering ? 1 : 0,
+                  visibility: isHovering ? 'visible' : 'hidden',
+                  transform: isHovering ? 'scale(1)' : 'scale(0.95)'
+                  }}>
+                {isHovering &&
+                  <>
+                  <EditIcon className={`transition-all duration-300 ease-in-out ${isHovering ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`} style={{width:"50%", height:"60%", fill:"white"}}  />
+                  <span className="cursor-default" style={{textDecoration:"none"}}>Upload Photo</span>
+                  </>
+                  
+                } 
+                </div>
+                
+                <input type="file" ref={inputRef} onChange={handleImageChange} className="hidden" />
+
               </div>
               <div className="rightSide flex w-[75%] h-[65%] self-end gap-3 p-4 flex-col">
-                <span className="no-underline cursor-default" style={{textDecoration:"none"}}>{user.email}</span>
-                {/* <span className="text-5xl font-bold" style={{textDecoration:"none"}}>{user.username}</span> */}
+                {/* <span className="no-underline text-white cursor-default" style={{textDecoration:"none"}}>{user.email}</span> */}
+                <span className="text-5xl font-bold" style={{textDecoration:"none"}}>{user.username}</span>
                 <span className="text-5xl font-bold" style={{textDecoration:"none"}}>{displayName}</span>
                 <div className="playlists_flw">
                   <span className="cursor-text" style={{textDecoration:"none"}}>2 Playlists • </span>

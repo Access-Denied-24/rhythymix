@@ -14,6 +14,7 @@ import Settings from './Routes/Settings';
 import Navbar from './Components/Navbar';
 // import ResetPass from './Components/ResetPass';
 // import respas from './Components/respas';
+import { UserProvider } from './Context/UserContext';
 
 const router = createBrowserRouter([
   {
@@ -61,9 +62,11 @@ const router = createBrowserRouter([
 function App() {
 
   return (
-    <div className='App'>
-      <RouterProvider router = {router} />
-    </div>
+    <UserProvider>
+      <div className='App'>
+        <RouterProvider router = {router} />
+      </div>
+    </UserProvider>
   );
 }
 
