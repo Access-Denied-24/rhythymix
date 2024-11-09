@@ -12,6 +12,8 @@ import Modal from './Components/Modal';
 import Interests from './Routes/Interests';
 import Settings from './Routes/Settings';
 import Navbar from './Components/Navbar';
+import LikedSongs from './Routes/LikedSongs'
+import SongHistory from './Routes/SongHistory';
 // import ResetPass from './Components/ResetPass';
 // import respas from './Components/respas';
 import { UserProvider } from './Context/UserContext';
@@ -41,6 +43,14 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: <ProfilePage />
+  },
+  {
+    path: "/likedsongs",
+    element: <LikedSongs />
+  },
+  {
+    path: "/songhistory",
+    element: <SongHistory />
   },
   {
     path: "/resetpass/:token",
