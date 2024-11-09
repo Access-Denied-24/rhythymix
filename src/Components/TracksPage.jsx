@@ -1,8 +1,11 @@
-export default function TracksPage({ tracks }) {
+export default function TracksPage({ tracks, setIsSearched }) {
+  console.log('tracks data :', tracks.songs);
+  const songList = tracks.songs || [];
+
   return (
     <>
       <div className="Cont flex flex-wrap justify-center w-[100%] mx-auto">
-        {tracks.map((element, index) => (
+        {songList.map((element, index) => (
           <div key={index} className="m-4 flex justify-center">
             <div className="Card bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" style={{ width: "9rem", }}>
               <a href="#">

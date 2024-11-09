@@ -205,6 +205,8 @@ import { HomeIcon } from '@heroicons/react/24/outline';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useSearched } from '../Context/SearchedContext';
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -213,7 +215,8 @@ function classNames(...classes) {
 export default function Navbar({ setTracks }) {
   const [isClicked, setIsClicked] = useState(false);
   const [InputValue, setInputValue] = useState('');
-  const [isSearched, setIsSearched] = useState(false);
+  // const [isSearched, setIsSearched] = useState(false);
+  const { setIsSearched } = useSearched();
 
   const inputVal = (event) => {
     setInputValue(event.target.value);
@@ -221,9 +224,8 @@ export default function Navbar({ setTracks }) {
 
   const handleClick = () => {
     setIsClicked(!isClicked);
-    setIsSearched(true);
   }
-
+  
   const getTracks = async () => {
     try {
       const response = await fetch(`http://localhost:8000/api/v1/spotify/multi-search?query=${InputValue}`);
@@ -231,11 +233,15 @@ export default function Navbar({ setTracks }) {
       
       // Pass all categories (songs, albums, playlists, artists) to the setTracks function
       setTracks({
-        songs: data.songs,
-        albums: data.albums,
-        playlists: data.playlists,
-        artists: data.artists,
+        // data.songs
+        songs: data.songs || [],
+        albums: data.albums || [],
+        playlists: data.playlists || [],
+        artists: data.artists || [],
       });
+      console.log(data);
+      console.log(data.songs);
+      setIsSearched(true);
     } catch (error) {
       console.error('Error fetching multi-search data:', error);
     }

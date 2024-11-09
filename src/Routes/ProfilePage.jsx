@@ -29,7 +29,7 @@ export default function ProfilePage({newName}){
 
   const handleModalClick = () => {
     setShowModal(true);
-    console.log(displayName);
+    // console.log(displayName);
   }
 
   const handleImageClick = () => {
@@ -41,7 +41,7 @@ export default function ProfilePage({newName}){
     setImage(file);
   };
 
-  console.log(useUser)
+  // console.log(useUser)
 
 
 

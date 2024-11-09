@@ -20,7 +20,7 @@ export const UserProvider = ({ children }) => {
           headers: { Authorization: `Bearer ${token}` }
         });
         setUser(data);
-        console.log(data.email);
+        // console.log(data.email);
         setDisplayName(data.username);
         console.log(`fetched user data : ` + user);
       } catch (err) {

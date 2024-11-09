@@ -65,7 +65,12 @@ import {
   export const fetchFeaturedAlbums = async (req, res) => {
     try {
       const data = await getFeaturedAlbums();
-      res.json(data.albums.items);
+      // res.json(data.albums.items);
+      res.json({
+        albums: {
+          items: data.albums.items,
+        }
+      });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Failed to fetch featured albums' });

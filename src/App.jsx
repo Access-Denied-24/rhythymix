@@ -15,6 +15,7 @@ import Navbar from './Components/Navbar';
 // import ResetPass from './Components/ResetPass';
 // import respas from './Components/respas';
 import { UserProvider } from './Context/UserContext';
+import { SearchProvider } from './Context/SearchedContext';
 
 const router = createBrowserRouter([
   {
@@ -63,9 +64,11 @@ function App() {
 
   return (
     <UserProvider>
-      <div className='App'>
-        <RouterProvider router = {router} />
-      </div>
+      <SearchProvider>
+        <div className='App'>
+          <RouterProvider router = {router} />
+        </div>
+      </SearchProvider>
     </UserProvider>
   );
 }
