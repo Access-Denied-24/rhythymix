@@ -1,5 +1,6 @@
 import Playlist from '../models/playlistModel.js';
 import mongoose from 'mongoose';
+import { fetchSpotifySongDetails } from '../utils/spotify.js';
 
 // Create a new playlist
 export const createPlaylist = async (req, res) => {
@@ -14,7 +15,7 @@ export const createPlaylist = async (req, res) => {
     }
 
     const playlist = new Playlist({
-      user: req.user._id || req.user.id,
+      user: req.user.id,
       name,
       description,
       songs,
@@ -67,8 +68,6 @@ export const removeSongFromPlaylist = async (req, res) => {
   try {
     const { playlistId } = req.params;
     const { songId } = req.body;
-
-    // Validate playlistId and check playlist existence
     if (!mongoose.isValidObjectId(playlistId)) {
       return res.status(400).json({ error: 'Invalid playlist ID' });
     }
@@ -82,7 +81,6 @@ export const removeSongFromPlaylist = async (req, res) => {
       return res.status(403).json({ error: 'Unauthorized to modify this playlist' });
     }
 
-    // Remove the song from the playlist
     playlist.songs = playlist.songs.filter(id => id !== songId);
     await playlist.save();
 
@@ -109,7 +107,6 @@ export const sharePlaylist = async (req, res) => {
   try {
     const { playlistId } = req.params;
 
-    // Validate playlistId and check playlist existence
     if (!mongoose.isValidObjectId(playlistId)) {
       return res.status(400).json({ error: 'Invalid playlist ID' });
     }
@@ -118,17 +115,35 @@ export const sharePlaylist = async (req, res) => {
       return res.status(404).json({ error: 'Playlist not found' });
     }
 
-    // Ensure user ownership for sharing
     if (playlist.user.toString() !== req.user._id.toString()) {
       return res.status(403).json({ error: 'Unauthorized to share this playlist' });
     }
-
-    // Set playlist to public and save
+    
     playlist.isPublic = true;
     await playlist.save();
     res.json(playlist);
   } catch (error) {
     console.error("Error sharing playlist:", error.message);
     res.status(500).json({ error: 'Failed to share playlist' });
+  }
+};
+
+// In the backend
+export const getPlaylistWithDetails = async (req, res) => {
+  try {
+    const { playlistId } = req.params;
+    const playlist = await Playlist.findById(playlistId);
+
+    if (!playlist) {
+      return res.status(404).json({ error: 'Playlist not found' });
+    }
+
+    const songDetailsPromises = playlist.songs.map(songId => fetchSpotifySongDetails(songId));
+    const songDetails = await Promise.all(songDetailsPromises);
+
+    res.json({ ...playlist._doc, songDetails });
+  } catch (error) {
+    console.error("Error fetching playlist with song details:", error.message);
+    res.status(500).json({ error: 'Failed to retrieve playlist' });
   }
 };

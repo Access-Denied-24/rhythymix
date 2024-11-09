@@ -1,6 +1,6 @@
 import express from "express";
 import auth from "../middleware/authMiddleware.js";
-import { forgotPassword, getUserProfile, loginUser, registerUser, resetPassword, updateUser } from "../controllers/userControllers.js";
+import { addToHistory, forgotPassword, getHistory, getLikedSongs, getUserProfile, likeSong, loginUser, registerUser, resetPassword, unlikeSong, updateUser } from "../controllers/userControllers.js";
 import User from '../models/userModel.js';
 import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
@@ -18,11 +18,18 @@ router.get("/profile", auth, getUserProfile);
 router.post("/forgotPassword", forgotPassword);
 // reset password routes
 router.post("/resetPassword/:token", resetPassword);
-// google login
+// Like a song
+router.post('/like-song', auth, likeSong); 
+// Unlike a song         
+router.post('/unlike-song', auth, unlikeSong); 
+// Unlike a song      
+router.get('/liked-songs', auth, getLikedSongs);
+//Add history if song Play
+router.post('/addToHistory', auth, addToHistory);
+//getHistory 
+router.get('/getHistory', auth, getHistory);
 
-// reset password
-// router.post("/request-reset", requestPasswordReset);
-// router.post("/reset-password", resetPassword);
+
 // Google Login Route
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);

@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import sendEmail from "../utils/sendEmail.js";
+import { fetchSpotifySongDetails } from "../utils/spotify.js";
 
 
 // Register new user
@@ -171,5 +172,129 @@ export const resetPassword = async (req, res) => {
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
+  }
+};
+
+
+// lile, unlike nad liked Playlist feature 
+
+// Like a song
+export const likeSong = async (req, res) => {
+  try {
+    const { songId } = req.body;
+    const userId = req.user.id;
+
+    const user = await User.findById(userId);
+
+    if (!user.likedSongs.includes(songId)) {
+      user.likedSongs.push(songId);
+      await user.save();
+    }
+
+    res.status(200).json({ success: true, message: 'Song liked' });
+  } catch (error) {
+    console.error("Error liking song:", error.message);
+    res.status(500).json({ error: 'Failed to like song' });
+  }
+};
+
+// Unlike a song
+export const unlikeSong = async (req, res) => {
+  try {
+    const { songId } = req.body;
+    const userId = req.user.id;
+    
+    const user = await User.findById(userId);
+    user.likedSongs = user.likedSongs.filter(id => id !== songId);
+    await user.save();
+
+    res.status(200).json({ success: true, message: 'Song unliked' });
+  } catch (error) {
+    console.error("Error unliking song:", error.message);
+    res.status(500).json({ error: 'Failed to unlike song' });
+  }
+};
+
+// Get liked songs with full details
+export const getLikedSongs = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await User.findById(userId);
+
+    if (!user.likedSongs || !user.likedSongs.length) {
+      return res.json({ likedSongs: [] });
+    }
+
+    const likedSongsDetails = await Promise.all(
+      user.likedSongs.map(async (songId) => {
+        try {
+          const songDetails = await fetchSpotifySongDetails(songId);
+          return songDetails;
+        } catch (error) {
+          console.error(`Error fetching details for song ID ${songId}:`, error.message);
+          return null; 
+        }
+      })
+    );
+
+    // Filter out null values if any song failed to fetch details
+    const validLikedSongs = likedSongsDetails.filter(song => song !== null);
+
+    res.json({ likedSongs: validLikedSongs });
+  } catch (error) {
+    console.error("Error fetching liked songs:", error.message);
+    res.status(500).json({ error: 'Failed to retrieve liked songs' });
+  }
+};
+
+
+// User Song History
+
+export const addToHistory = async (req, res) => {
+  try {
+    const { songId } = req.body;
+    const userId = req.user.id;
+
+    const user = await User.findById(userId);
+
+    if (!user.songHistory.includes(songId)) {
+      user.songHistory.push(songId);
+      await user.save();
+    }
+
+    res.status(200).json({ success: true, message: 'Song Added to History' });
+  } catch (error) {
+    console.error("Error  in adding song to History:", error.message);
+    res.status(500).json({ error: 'Failed to add in History' });
+  }
+};
+
+export const getHistory = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await User.findById(userId);
+
+    if (!user.songHistory || !user.songHistory.length) {
+      return res.json({ songHistory: [] });
+    }
+
+    const songHistoryDetails = await Promise.all(
+      user.songHistory.map(async (songId) => {
+        try {
+          const songDetails = await fetchSpotifySongDetails(songId);
+          return songDetails;
+        } catch (error) {
+          console.error(`Error fetching details for song ID ${songId}:`, error.message);
+          return null;
+        }
+      })
+    );
+
+    const validSongHistory = songHistoryDetails.filter(song => song !== null);
+
+    res.json({ songHistory: validSongHistory });
+  } catch (error) {
+    console.error("Error fetching song history:", error.message);
+    res.status(500).json({ error: 'Failed to retrieve song history' });
   }
 };

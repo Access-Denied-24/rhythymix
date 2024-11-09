@@ -11,6 +11,7 @@ import {
   searchPlaylist,
   fetchPlaylistDetails,
   searchSong,
+  multiSearch,
 } from '../controllers/spotifyControllers.js';
 
 const router = express.Router();
@@ -41,6 +42,9 @@ router.get('/playlist/:playlistId', fetchPlaylistDetails);
 
 // Route to search for a song by name
 router.get('/search/song', searchSong);
+
+//multisearch in one search bar like song, album artist 
+router.get('/multi-search', multiSearch);
 
 router.get('/test', (req, res) => {
     res.send('Spotify route test is working');

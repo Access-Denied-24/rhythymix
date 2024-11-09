@@ -28,16 +28,16 @@ const userSchema = new mongoose.Schema({
         max: 3 
     },
     likedSongs: [{
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "Song" 
+        type: String,
+        default: []
     }],
     playlists: [{
         type: mongoose.Schema.Types.ObjectId, 
-        ref: "Playlist" 
+        ref: "playlist" 
     }],
     songHistory: [{ 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "Song" 
+        type: String ,
+        default: [] 
     }],
 
     resetPasswordToken: String,

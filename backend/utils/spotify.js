@@ -1,5 +1,3 @@
-// utils/spotifyService.js
-
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 
@@ -35,8 +33,21 @@ const spotifyFetch = async (url) => {
 
 // 1. Search for an artist by name
 export const searchArtistByName = async (artistName) => {
-  return spotifyFetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(artistName)}&type=artist&limit=10`);
-};
+    const artistData = await spotifyFetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(artistName)}&type=artist&limit=10`);
+
+    const artistsWithAlbums = await Promise.all(
+      artistData.artists.items.map(async (artist) => {
+        const albumsData = await spotifyFetch(`https://api.spotify.com/v1/artists/${artist.id}/albums?limit=5`);
+        return {
+          ...artist,
+          albums: albumsData.items
+        };
+      })
+    );
+  
+    return { artists: artistsWithAlbums };
+  };
+  
 
 // 2. Fetch albums by artist ID
 export const getAlbumsByArtistId = async (artistId) => {
@@ -82,3 +93,8 @@ export const getPlaylistDetailsById = async (playlistId) => {
 export const searchSongByName = async (songName) => {
   return spotifyFetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(songName)}&type=track&limit=10`);
 };
+
+export const fetchSpotifySongDetails = async (songId) => {
+    const url = `https://api.spotify.com/v1/tracks/${songId}`;
+    return spotifyFetch(url);
+  };

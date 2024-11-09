@@ -112,10 +112,51 @@ import {
     try {
       const { songName } = req.query;
       const data = await searchSongByName(songName);
-      res.json(data.tracks.items);
+
+    //   const songs = data.tracks.items.map(song => ({
+    //     id: song.id,
+    //     name: song.name,
+    //     artist: song.artists.map(artist => artist.name).join(', '),
+    //     album: song.album.name,
+    //     albumCover: song.album.images[0]?.url,
+    //     previewUrl: song.preview_url, 
+    //     spotifyUrl: song.external_urls.spotify,
+    //     duration: song.duration_ms,
+    //   }));
+  
+    //   res.json(songs);
+        res.json(data);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Failed to search song' });
     }
   };
+  
+  //multi search in one search bar
+  export const multiSearch = async (req, res) => {
+    try {
+        const { query } = req.query;
+
+        // Perform parallel requests to fetch data for artists, albums, songs, and playlists
+        const [artistData, albumData, songData, playlistData] = await Promise.all([
+            searchArtistByName(query),
+            searchAlbumByName(query),
+            searchSongByName(query),
+            searchPlaylistByName(query)
+        ]);
+
+        // Return the response with full details for each category
+        res.json({
+            artists: artistData?.artists?.items || [],
+            albums: albumData?.albums?.items || [],
+            songs: songData?.tracks?.items || [],
+            playlists: playlistData?.playlists?.items || [] 
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Failed to perform multi-search' });
+    }
+};
+
+  
   
