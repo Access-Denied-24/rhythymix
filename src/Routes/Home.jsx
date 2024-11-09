@@ -7,12 +7,18 @@ import Controls from "../Components/Controls";
 import ToastNotif from "../Components/SuccessMsg";
 import TracksPage from "../Components/TracksPage";
 import { useSearched } from "../Context/SearchedContext";
+import CreatePlaylistForm from "../Components/CreatePlaylistForm";
 
 export default function Home() {
   const { isSearched } = useSearched();
   const [ tracks, setTracks ] = useState([]);
   const [ isLoading, setIsLoading ] = useState(true);
   const [ albums, setAlbums ] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
+
+  const addNewPlaylist = (playlist) => {
+      setPlaylists((prevPlaylists) => [...prevPlaylists, playlist]);
+  };
 
   useEffect(() => {
     const fetchNewReleases= async() => {
@@ -53,6 +59,7 @@ export default function Home() {
       <Navbar setTracks={setTracks} />
       <div className="flex flex-grow">
         <LeftSidebar />
+        {/* <CreatePlaylistForm onPlaylistCreated={addNewPlaylist} /> */}
         <div className="flex justify-center items-start flex-grow w-[100%] h-[100%]">
           <div className="middleCont w-[57%] h-[100%] flex flex-col justify-center rounded-xl bg-neutral-800 text-white p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto" style={{backgroundColor:"#1B0025"}}>
             {/* <b>Home Page</b> */}

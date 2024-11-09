@@ -18,3 +18,4 @@ router.put('/:playlistId/share', auth, sharePlaylist);
 router.get('/:playlistId', auth, getPlaylistWithDetails);
 
 export default router;
+ 
