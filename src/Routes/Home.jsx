@@ -47,24 +47,15 @@ export default function Home() {
       <Navbar setTracks={setTracks} />
       <div className="flex flex-grow">
         <LeftSidebar />
-        <div className="flex justify-center items-start flex-grow w-[100%] h-[77vh]">
-          <div className="middleCont w-[57%] h-[100%] flex flex-col justify-center rounded-xl bg-neutral-800 text-white p-4 shadow-xl shadow-blue-gray-900/5" style={{backgroundColor:"#1B0025"}}>
+        <div className="flex justify-center items-start flex-grow w-[100%] h-[100%]">
+          <div className="middleCont w-[57%] h-[100%] flex flex-col justify-center rounded-xl bg-neutral-800 text-white p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto" style={{backgroundColor:"#1B0025"}}>
             {/* <b>Home Page</b> */}
   
             <div className="homeContent w-full h-max-[500px] text-center overflow-auto">
 
               <div className="recommended ">
                 <h2>Top 5 Recommended Albums</h2>
-                {/* <div className="card border-2 flex flex-col w-[25%]">
-                  <div className="ImgCont">
-                    <img src="/playlistPhoto1.webp" alt="" />
-                  </div>
-                  <div className="infoCont border-2">
-                    <p>Playlist Name</p>
-                    <p>Artists</p>
-                    <p>Genre</p>
-                  </div>
-                </div> */}
+  
                 <div className="albumsGrid flex flex-wrap gap-4 justify-center">
                     {albums.map((album) => (
                       <div key={album.id} className="card border rounded-md flex flex-col w-[25%]">

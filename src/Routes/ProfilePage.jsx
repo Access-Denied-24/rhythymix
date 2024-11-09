@@ -91,7 +91,7 @@ export default function ProfilePage({newName}){
               onClick={handleImageClick}
               >
                 {image ? 
-                  <img src={URL.createObjectURL(image)} alt="" className="w-[100%] self-center rounded-[60%]" />
+                  <img src={URL.createObjectURL(image)} alt="" className="w-[100%] h-[100%] self-center bg-cover rounded-[60%]" />
                   :
                   <PersonOutlineOutlinedIcon className={`my-8 justify-center self-center
                   `} style={{width:"60%", height:"60%",fill:"grey"}} />
