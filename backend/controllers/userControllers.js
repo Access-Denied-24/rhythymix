@@ -73,18 +73,15 @@ export const updateUser = async (req, res) => {
   
     try {
       let user = await User.findById(req.user.id);
-      if (!user) return res.status(404).json({ msg: "User not found" });
+      if(!user) return res.status(404).json({ msg: "User not found" });
   
-      // Update username and interests if provided
       user.username = username || user.username;
       user.interests = interests || user.interests;
-  
-      // Update password if current password and new password are provided
-      if (password && newPassword) {
+
+      if(password && newPassword){
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ msg: "Current password is incorrect" });
-        
-        // Hash new password and update
+    
         user.password = await bcrypt.hash(newPassword, 10);
       }
   
@@ -113,15 +110,21 @@ export const updateUser = async (req, res) => {
       }
   
       const cloudinaryResponse = await uploadOnCloudinary(req.file.path);
+      // console.log(cloudinaryResponse)
   
       if (!cloudinaryResponse) {
         return res.status(500).json({ message: "Error uploading to Cloudinary" });
       }
   
-      const user = await User.findById(req.user.id);
-  
+      
+       const user = await User.findById(req.user.id);
+      if (!user) {
+          return res.status(404).json({ message: "User not found" });
+      }
+
       user.profileImage = cloudinaryResponse.secure_url;
       await user.save();
+      // console.log("Updated user:", user);
   
       return res.status(200).json({
         message: "Profile image uploaded successfully",
@@ -137,7 +140,7 @@ export const getUserProfile = async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('-password'); // Exclude password
         if (!user) return res.status(404).json({ msg: "User not found" });
-        // Send user details, including liked songs and song history
+  
         res.json({
             id: user.id,
             username: user.username,

@@ -19,10 +19,12 @@ const userSchema = new mongoose.Schema({
         type: String, 
         required: function () {
             return !this.googleId; // require password if googleId is not set
+        }  
     },
     profileImage: { 
-        type: String
-    },
+        type: String,
+        default: ""
+
     },
     interests: { 
         type: [String], 
