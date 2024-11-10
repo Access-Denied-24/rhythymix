@@ -62,6 +62,7 @@ export default function LeftSidebar(){
         </div>
       </div>
       </Link>
+      <Link to='/songhistory'>
       <div
         role="button"
         tabIndex={0}
@@ -71,11 +72,11 @@ export default function LeftSidebar(){
           <MusicNoteIcon style={{width: "100%", height:"100%"}} />
         </div>
         <div className='flex flex-col'>
-          <span className='text-[18px]' style={{textDecoration:"none"}}>Playlist Name</span>
+          <span className='text-[18px]' style={{textDecoration:"none"}}>Song History</span>
           <span style={{textDecoration:"none"}}>Playlist • 69 songs</span>
         </div>
       </div>
-
+      </Link>
       <div
         role="button"
         tabIndex={0}
