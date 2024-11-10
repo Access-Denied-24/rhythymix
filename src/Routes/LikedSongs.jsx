@@ -16,8 +16,6 @@ import { useUser } from "../Context/UserContext";
 export default function LikedSongs({ newName }) {
 
     const { user, displayName, setDisplayName } = useUser();
-    const navigate = useNavigate();
-    if(!user) navigate('/login')
     const [likedSongs, setLikedSongs] = useState([]);
     const [loading, setLoading] = useState(true);
 
