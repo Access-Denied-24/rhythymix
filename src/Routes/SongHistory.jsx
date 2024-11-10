@@ -7,12 +7,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 
 import { useUser } from "../Context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 export default function SongHistory({ newName }) {
 
     const { user, displayName, setDisplayName } = useUser();
-    const [likedSongs, setLikedSongs] = useState([]);
+    const navigate = useNavigate();
+    if(!user) navigate('/login');
     const [loading, setLoading] = useState(true);
+    const [history, setHistory] = useState([]);
 
     const formatDuration = (durationMs) => {
         const minutes = Math.floor(durationMs / 60000);
@@ -20,31 +23,32 @@ export default function SongHistory({ newName }) {
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
 
-    const [history, setHistory] = useState([]);
-
-    const fetchSongHistory = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await axios.get('/api/v1/users/getHistory', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            console.log(response.data)
-            return response.data.history; // Adjust according to the actual response structure
-        } catch (error) {
-            console.error('Error fetching song history:', error);
-            return [];
-        }
-    };
+   
     // Fetch liked songs when component mounts
     useEffect(() => {
-        const getHistory = async () => {
-            const fetchedHistory = await fetchSongHistory();
-            setHistory(fetchedHistory);
-            console.log(fetchedHistory)
-        };
-        getHistory();
+            const fetchSongHistory = async () => {
+                try {
+                    const token = localStorage.getItem("token");
+                    if (!token) {
+                        console.error("No token found in localStorage.");
+                        return;
+                    }
+    
+                    const response = await axios.get('http://localhost:8000/api/v1/users/getHistory', {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+    
+    
+                    console.log(response.data.SongHistory);  // Log the response data to check
+                    setHistory(response.data.songHistory);
+                    setLoading(false);
+                } catch (error) {
+                    console.error("Error fetching liked songs:", error);
+                    setLoading(false);
+                }
+            };
+    
+            fetchSongHistory();
     }, []);
 
     if (loading) {
@@ -82,16 +86,6 @@ export default function SongHistory({ newName }) {
                                 </div>
                             </div>
                             <div>
-                            <ul>
-                            {history.map((song) => (
-                            <li key={song.id}>
-                                <p>{song.name} by {song.artists.map(artist => artist.name).join(', ')}</p>
-                                <p>Album: {song.album.name}</p>
-                                <p>Duration: {Math.floor(song.duration_ms / 60000)}:{((song.duration_ms % 60000) / 1000).toFixed(0).padStart(2, '0')} min</p>
-                                <img src={song.album.albumCoverUrl} alt={`${song.album.name} cover`} style={{ width: '50px' }} />
-                            </li>
-                            ))}
-                        </ul>
                                 <div className="liked-songs-list px-5">
                                     <div className="song-item flex w-100 h-10 align-bottom mt-4 -mb-4">
                                         <div className="w-8 text-center ml-12 mr-4">#</div>
@@ -102,8 +96,8 @@ export default function SongHistory({ newName }) {
                                         {/* Song duration */}
                                         <span>Duration</span>
                                     </div>
-                                    {likedSongs.length > 0 ? (
-                                        likedSongs.map((song, index) => (
+                                    {history.length > 0 ? (
+                                        history.map((song, index) => (
 
                                             <div key={index} className="song-item h-14 rounded-lg hover:bg-[#6f32978b] cursor-pointer p-2 flex w-100 h-10 align-bottom my-2">
                                                 <div className="w-8 text-center ml-10 mr-5 pt-2">{index + 1}</div>

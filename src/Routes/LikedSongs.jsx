@@ -16,6 +16,8 @@ import { useUser } from "../Context/UserContext";
 export default function LikedSongs({ newName }) {
 
     const { user, displayName, setDisplayName } = useUser();
+    const navigate = useNavigate();
+    if(!user) navigate('/login')
     const [likedSongs, setLikedSongs] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -39,9 +41,7 @@ export default function LikedSongs({ newName }) {
                 const response = await axios.get('http://localhost:8000/api/v1/users/liked-songs', {
                     headers: { Authorization: `Bearer ${token}` }
                 });
-
-
-                console.log(response.data.likedSongs);  // Log the response data to check
+  // Log the response data to check
                 setLikedSongs(response.data.likedSongs);
                 setLoading(false);
             } catch (error) {
