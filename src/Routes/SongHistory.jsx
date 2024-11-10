@@ -121,7 +121,7 @@ export default function SongHistory({ newName }) {
                                             </div>
                                         ))
                                     ) : (
-                                        <p>No liked songs yet</p>
+                                        <p>No Played songs yet</p>
                                     )}
                                 </div>
                             </div>
