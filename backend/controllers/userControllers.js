@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import sendEmail from "../utils/sendEmail.js";
 import { fetchSpotifySongDetails } from "../utils/spotify.js";
+import  uploadOnCloudinary  from "../utils/cloudinary.js";
 
 
 // Register new user
@@ -54,6 +55,7 @@ export const loginUser = async (req, res) => {
             username: user.username,
             email: user.email,
             interests: user.interests,
+            profileImage: user.profileImage,
             likedSongs: user.likedSongs,
             playlists: user.playlists,
             songHistory: user.songHistory
@@ -63,6 +65,7 @@ export const loginUser = async (req, res) => {
         res.status(500).send("Server error");
     }
 };
+
 
 // Update user information
 export const updateUser = async (req, res) => {
@@ -103,6 +106,32 @@ export const updateUser = async (req, res) => {
     }
   };
 
+  export const uploadProfileImage = async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+  
+      const cloudinaryResponse = await uploadOnCloudinary(req.file.path);
+  
+      if (!cloudinaryResponse) {
+        return res.status(500).json({ message: "Error uploading to Cloudinary" });
+      }
+  
+      const user = await User.findById(req.user.id);
+  
+      user.profileImage = cloudinaryResponse.secure_url;
+      await user.save();
+  
+      return res.status(200).json({
+        message: "Profile image uploaded successfully",
+        profileImage: cloudinaryResponse.secure_url,
+      });
+    } catch (error) {
+      console.error("Error in uploadProfileImage:", error.message);
+      return res.status(500).json({ message: "Server error" });
+    }
+  };
 // getting profile info
 export const getUserProfile = async (req, res) => {
     try {

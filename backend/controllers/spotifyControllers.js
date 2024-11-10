@@ -11,6 +11,7 @@ import {
     searchPlaylistByName,
     getPlaylistDetailsById,
     searchSongByName,
+    searchSongByGenre
   } from '../utils/spotify.js';
   
   // Search for an artist by name
@@ -161,6 +162,16 @@ import {
         console.error(error);
         res.status(500).json({ message: 'Failed to perform multi-search' });
     }
+};
+
+export const getSongByGenre = async (req, res) => {
+  try {
+    const { genre } = req.query;
+    const data = await searchSongByGenre(genre);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch songs by genre' });
+  }
 };
 
   

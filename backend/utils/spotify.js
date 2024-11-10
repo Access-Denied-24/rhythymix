@@ -97,4 +97,9 @@ export const searchSongByName = async (songName) => {
 export const fetchSpotifySongDetails = async (songId) => {
     const url = `https://api.spotify.com/v1/tracks/${songId}`;
     return spotifyFetch(url);
-  };
+};
+
+export const searchSongByGenre = async (genre) => {
+  const genreQuery = `genre:${encodeURIComponent(genre)}`;
+  return spotifyFetch(`https://api.spotify.com/v1/search?q=${genreQuery}&type=track&limit=10`);
+};

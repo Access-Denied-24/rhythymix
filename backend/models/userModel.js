@@ -20,7 +20,9 @@ const userSchema = new mongoose.Schema({
         required: function () {
             return !this.googleId; // require password if googleId is not set
     },
-    profilePicture: { type: String },
+    profileImage: { 
+        type: String
+    },
     },
     interests: { 
         type: [String], 
@@ -33,7 +35,7 @@ const userSchema = new mongoose.Schema({
     }],
     playlists: [{
         type: mongoose.Schema.Types.ObjectId, 
-        ref: "playlist" 
+        ref: "Playlist" 
     }],
     songHistory: [{ 
         type: String ,

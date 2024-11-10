@@ -1,9 +1,10 @@
 import express from "express";
 import auth from "../middleware/authMiddleware.js";
-import { addToHistory, forgotPassword, getHistory, getLikedSongs, getUserProfile, likeSong, loginUser, registerUser, resetPassword, unlikeSong, updateUser } from "../controllers/userControllers.js";
+import { addToHistory, forgotPassword, getHistory, getLikedSongs, getUserProfile, likeSong, loginUser, registerUser, resetPassword, unlikeSong, updateUser, uploadProfileImage } from "../controllers/userControllers.js";
 import User from '../models/userModel.js';
 import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
+import { upload } from "../middleware/multerMiddleware.js";
 
 const router = express.Router();
 // Register route
@@ -11,7 +12,9 @@ router.post("/register", registerUser);
 // Login route
 router.post("/login", loginUser);
 // Update user routes
-router.put("/update", auth, updateUser);
+router.put("/update", auth,updateUser);
+//upload profile image
+router.post("/profileImage",auth, upload.single("profileImage"), uploadProfileImage);
 // profile routes 
 router.get("/profile", auth, getUserProfile);
 // gorgot password routes

@@ -12,6 +12,7 @@ import {
   fetchPlaylistDetails,
   searchSong,
   multiSearch,
+  getSongByGenre,
 } from '../controllers/spotifyControllers.js';
 
 const router = express.Router();
@@ -46,8 +47,10 @@ router.get('/search/song', searchSong);
 //multisearch in one search bar like song, album artist 
 router.get('/multi-search', multiSearch);
 
+// search song BY genre which is for suggestion 
+router.get('/songs/genre', getSongByGenre);
+
 router.get('/test', (req, res) => {
     res.send('Spotify route test is working');
 });
-
 export default router;
