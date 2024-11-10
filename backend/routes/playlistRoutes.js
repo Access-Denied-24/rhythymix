@@ -1,5 +1,5 @@
 import express from 'express';
-import { addSongToPlaylist, createPlaylist, getPlaylistWithDetails, getUserPlaylists, removeSongFromPlaylist, sharePlaylist } from '../controllers/playlistControllers.js';
+import { addSongToPlaylist, createPlaylist, getPlaylistByLink, getPlaylistWithDetails, getUserPlaylists, removeSongFromPlaylist, sharePlaylist } from '../controllers/playlistControllers.js';
 import auth from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -14,6 +14,7 @@ router.put('/:playlistId/remove-song', auth, removeSongFromPlaylist);
 router.get('/getPlaylists', auth, getUserPlaylists);
 //playlist share
 router.put('/:playlistId/share', auth, sharePlaylist);
+router.get('/:playlistId/link', getPlaylistByLink);
 //get playlist with there song
 router.get('/:playlistId', auth, getPlaylistWithDetails);
 

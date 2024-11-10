@@ -22,6 +22,9 @@ const playlistSchema = new mongoose.Schema({
         type: Boolean, 
         default: false 
     },
+    shareableLink: { 
+        type: String
+    },
     createdAt: { 
         type: Date, 
         default: Date.now 

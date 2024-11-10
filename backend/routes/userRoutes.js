@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken';
 import { upload } from "../middleware/multerMiddleware.js";
 
 const router = express.Router();
+
 // Register route
 router.post("/register", registerUser);
 // Login route
