@@ -26,6 +26,7 @@ export default function ProfilePage(){
   const inputRef = useRef(null);
 
   const navigate = useNavigate();
+  // console.log(displayName);
 
   const handleModalClick = () => {
     setShowModal(true);
@@ -147,8 +148,9 @@ export default function ProfilePage(){
               </div>
               <div className="rightSide flex w-[75%] h-[65%] self-end gap-3 p-4 flex-col">
                 {/* <span className="no-underline text-white cursor-default" style={{textDecoration:"none"}}>{user.email}</span> */}
-                <span className="text-5xl font-bold" style={{textDecoration:"none"}}>{user.username}</span>
+                {/* <span className="text-5xl font-bold" style={{textDecoration:"none"}}>{user.username}</span> */}
                 <span className="text-5xl font-bold" style={{textDecoration:"none"}}>{displayName}</span>
+                {/* {console.log('displayname : ',displayName)} */}
                 <div className="playlists_flw">
                   <span className="cursor-text" style={{textDecoration:"none"}}>2 Playlists</span>
                   {/* <span>3 Followers</span> */}

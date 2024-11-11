@@ -24,7 +24,7 @@ export default function SongHistory({ newName }) {
     };
 
    
-    // Fetch liked songs when component mounts
+    // Fetch history songs when component mounts
     useEffect(() => {
             const fetchSongHistory = async () => {
                 try {

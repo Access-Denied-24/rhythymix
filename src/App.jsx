@@ -18,12 +18,8 @@ import SongHistory from './Routes/SongHistory';
 // import respas from './Components/respas';
 import { UserProvider } from './Context/UserContext';
 import { SearchProvider } from './Context/SearchedContext';
-<<<<<<< HEAD
-import PlaylistDetails from './Components/playlistByLink';
-=======
 import { PlayerContextProvider } from './Context/PlayerContext';
 import PlaylistsPage from './Routes/PlaylistsPage';
->>>>>>> 67e2a54f (Fixed upload photo + playlist)
 
 const router = createBrowserRouter([
   {

@@ -19,10 +19,6 @@ const uploadOnCloudinary = async (localFilePath) => {
         // Log the uploaded file URL for verification
         console.log("File uploaded successfully:", response.secure_url);
 
-<<<<<<< HEAD
-=======
-        // Delete the local file after successful upload
->>>>>>> 67e2a54f (Fixed upload photo + playlist)
         fs.unlinkSync(localFilePath);
 
         return response.secure;

@@ -11,7 +11,7 @@ export const useUser = () => {
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  let [ displayName, setDisplayName ] = useState('vortex' || '');
+  let [ displayName, setDisplayName ] = useState('');
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -35,7 +35,7 @@ export const UserProvider = ({ children }) => {
 
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, displayName, setDisplayName }}>
       {children}
     </UserContext.Provider>
   );

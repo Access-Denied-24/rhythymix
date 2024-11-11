@@ -63,7 +63,7 @@ export default function Controls() {
         
         
           useEffect(() => {
-            console.log('Current track details:', currentTrack);
+            // console.log('Current track details:', currentTrack);
           }, [currentTrack]);
 
   const handleLike = () => {
@@ -108,7 +108,7 @@ export default function Controls() {
           <ShuffleIcon className={`cursor-pointer ${isShuffled ? 'text-blue-500 fill-blue-500 bg-green-500' : ''}`} onClick={toggleShuffle} />
           <SkipPreviousIcon className={`cursor-pointer`} onClick={previousTrack} />
 
-          {console.log('curr :', currentTrack)}
+          {/* {console.log('curr :', currentTrack)} */}
           {
             isPlaying ? (
               <PauseCircleIcon className='w-[30px]' onClick={() => togglePlayPause(currentTrack.preview_url, currentTrack.id, currentTrack.name)} />

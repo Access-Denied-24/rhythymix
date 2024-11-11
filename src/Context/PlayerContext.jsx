@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 
 export const PlayerContext = createContext();
 
@@ -14,11 +15,24 @@ export const PlayerContextProvider = ({ children }) => {
   const audioRef = useRef(new Audio());
   const [activeTrackId, setActiveTrackId] = useState(null);
 
+  const token = localStorage.getItem('token')
+
   const playTrack = (trackURL) => {
     console.log('Playing track URL : ', trackURL);
 
     const audio = audioRef.current;
-    console.log('playing...')
+    console.log('playing...');
+
+    axios.post('localhost:8000/api/v1/users/addToHistory',{
+      songId: currentTrack.id,
+    })
+    .then(response => {
+      console.log('Song added to history:', response.data);
+    })
+    .catch(error => {
+      console.log('Error addding track', error);
+    });
+
 
     if(audio.paused === false) audio.pause();
 
@@ -78,6 +92,21 @@ export const PlayerContextProvider = ({ children }) => {
         setIsPlaying(true);
       }
     }
+
+    axios.post('http://localhost:8000/api/v1/users/addToHistory',{
+      songId: trackId,
+    },{
+      headers: {
+        Authorization: `Bearer ${token}`,  // Set the token in headers
+      }
+    }
+    )
+    .then(response => {
+      console.log('Song added to history:', response.data);
+    })
+    .catch(error => {
+      console.log('Error addding track', error);
+    });
   };
 
   const seek = (time) => {
