@@ -80,7 +80,8 @@ export default function Navbar({ setTracks, audioRef, setIsPlaying }) {
   // };
 
   return (
-    <Disclosure as="nav" className="my-2" style={{ backgroundColor: "#1B0025" }}>
+    <Disclosure as="nav" className="bg-[#120018] py-2 fixed w-[100vw]" >
+      <div className="" style={{ backgroundColor: "#1B0025" }}>
       <div className="px-4">
         <div className="relative flex p-2 h-14 items-center justify-between">
           <div className="hidden lg:flex items-center justify-between">
@@ -94,7 +95,7 @@ export default function Navbar({ setTracks, audioRef, setIsPlaying }) {
               </Link>
             </div>
           </div>
-          <div className="middleSection -translate-x-5 lg:translate-x-0 flex w-[75%] lg:w-[50%] h-[100%] justify-between">
+          <div className="middleSection -translate-x-5 lg:translate-x-0 flex w-[76%] lg:w-[50%] h-[100%] justify-between">
             <Link to="/">
               <HomeIcon className={`w-[50px] h-[40px] lg:mx-4 cursor-pointer rounded-3xl p-1
               ${isClicked ? 'fill-white text-white' : 'text-gray-500'}
@@ -171,6 +172,7 @@ export default function Navbar({ setTracks, audioRef, setIsPlaying }) {
                 <Link to="/login" className='w-full h-full text-center self-center content-center'>Login</Link>
               </div>
             )}
+          </div>
           </div>
         </div>
       </div>

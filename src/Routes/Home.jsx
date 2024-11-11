@@ -59,8 +59,8 @@ export default function Home() {
       <Navbar setTracks={setTracks} />
       <div className="flex flex-grow">
         <LeftSidebar />
-        <div className="flex justify-center items-start flex-grow w-[100%] h-[100%] overflow-auto">
-          <div className="middleCont w-[100%] lg:w-[57%] h-[100%] flex flex-col rounded-xl bg-neutral-800 text-white p-4 shadow-xl shadow-blue-gray-900/5 z-5" style={{backgroundColor:"#1B0025"}}>
+        <div className="flex justify-center items-start flex-grow w-[100%] h-[100%] overflow-auto ">
+          <div className="middleCont w-[80%] lg:w-[57%] h-[100%] flex flex-col rounded-xl pt-24 pb-12 bg-neutral-800 text-white p-4 shadow-xl shadow-blue-gray-900/5 z-5" style={{backgroundColor:"#1B0025"}}>
             {/* <b>Home Page</b> */}
 
             {console.log(isSearched)}
