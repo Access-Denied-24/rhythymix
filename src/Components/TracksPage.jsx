@@ -1,6 +1,9 @@
 import { useContext, useEffect } from "react";
 import { PlayerContext } from "../Context/PlayerContext";
 import QueueList from "./QueueList";
+import QueueMusicIcon from '@mui/icons-material/QueueMusic';
+import PlayCircleOutlinedIcon from '@mui/icons-material/PlayCircleOutlined';
+import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
 
 export default function TracksPage({ tracks, setIsSearched }) {
   // console.log('tracks data :', tracks.songs);
@@ -55,7 +58,7 @@ export default function TracksPage({ tracks, setIsSearched }) {
       <div className="Cont flex flex-wrap justify-center w-[100%] mx-auto overflow-auto max-h-[70vh] z-5">
         {songList.map((element, index) => (
           <div key={index} className="m-4 flex justify-center">
-            <div className="Card bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" style={{ width: "9rem", }} >
+            <div className="Card bg-white border border-gray-200 rounded-lg shadow dark:bg-[#120018] p-2 rounded-xl dark:border-gray-700" style={{ width: "9rem", }} >
               <a href="#">
                 <img className="rounded-t-lg" src={element.album.images[0].url} alt={element.name} />
               </a>
@@ -64,7 +67,7 @@ export default function TracksPage({ tracks, setIsSearched }) {
 
                 <div className="songDetails p-1">
                   <a href="#">
-                    <h5 className="songTitle mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white border ">
+                    <h5 className="songTitle mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
                     {element.name}
                     </h5>
                   </a>
@@ -83,13 +86,13 @@ export default function TracksPage({ tracks, setIsSearched }) {
           >
             {activeTrackId === element.id ? 'Pause' : 'Play'}
           </button> */}
-                    <button className="text-black"
+                    <div className="text-black"
                     onClick={() => togglePlayPause(element.preview_url, element.id, element.name)} // Pass track URL and ID
                     >
 
-                    {activeTrackId === element.id && isPlaying ? 'Pause' : 'Play'}
-                    </button>
-                    <button className="text-black" onClick={() => addToQueue(element)}>Add to queue</button>
+                    {activeTrackId === element.id && isPlaying ? <PauseCircleOutlineIcon className="cursor-pointer"/> : <PlayCircleOutlinedIcon className="cursor-pointer"/> }
+                    </div>
+                    <QueueMusicIcon className="cursor-pointer" onClick={() => addToQueue(element)}/>
 
                   {/* <audio preload="auto" controls></audio> */}
                 </div>

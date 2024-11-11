@@ -61,12 +61,12 @@ export default function LikedSongs({ newName }) {
                 <Navbar />
                 <div className="flex flex-grow">
                     <LeftSidebar />
-                    <div className="middlePart flex justify-center items-start w-[100%] h-[100%]">
-                        <div className=" w-[57%] h-[100%] min-w-[57%] mim-h-[100%] flex flex-col text-white shadow-xl shadow-blue-gray-900/5
+                    <div className="middlePart flex justify-center items-start w-[100%] h-[100%] pb-20">
+                        <div className=" w-[100%] lg:w-[57%] h-[100%] min-w-[57%] mim-h-[100%] flex flex-col text-white shadow-xl shadow-blue-gray-900/5
           bg-clip-border rounded-xl" style={{ backgroundColor: "#1B0025" }}>
-                            <div className="banner flex h-[50%] w-full p-2 bg-clip-border rounded-t-xl" style={{ backgroundColor: "#3e0652" }}>
+                            <div className="banner flex  h-[40%] lg:h-[50%] w-full p-2 bg-clip-border rounded-t-xl" style={{ backgroundColor: "#3e0652" }}>
 
-                                <div className="PicleftSide relative w-[100px] h-[70%] flex flex-col justify-center self-end bg-neutral-800 transition-all" style={{ borderRadius: "60%", minWidth: "25%" }}>
+                                <div className="PicleftSide relative w-[100px] -translate-y-6 lg:translate-y-0 h-[40%] lg:h-[70%]  flex flex-col justify-center self-end bg-neutral-800 transition-all" style={{ borderRadius: "60%", minWidth: "25%" }}>
 
                                     <FavoriteIcon className={`my-8 justify-center self-center
                   `} style={{ width: "60%", height: "60%", fill: "violet" }} />
@@ -78,7 +78,7 @@ export default function LikedSongs({ newName }) {
                                     <div className="playlists_flw">
                                         <span>Playlist</span>
                                     </div>
-                                    <span className="text-5xl font-bold" style={{ textDecoration: "none" }}>Liked Songs</span>
+                                    <span className="text-xl lg:text-5xl font-bold" style={{ textDecoration: "none" }}>Liked Songs</span>
                                     <div className="playlists_flw">
                                         <span className="cursor-text" style={{ textDecoration: "none" }}>{user.username}</span>
                                     </div>

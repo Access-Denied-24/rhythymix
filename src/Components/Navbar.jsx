@@ -80,10 +80,11 @@ export default function Navbar({ setTracks, audioRef, setIsPlaying }) {
   // };
 
   return (
-    <Disclosure as="nav" className="my-2" style={{ backgroundColor: "#1B0025" }}>
+    <Disclosure as="nav" className="bg-[#120018] py-2 fixed w-[100vw]" >
+      <div className="" style={{ backgroundColor: "#1B0025" }}>
       <div className="px-4">
         <div className="relative flex p-2 h-14 items-center justify-between">
-          <div className="flex items-center justify-between">
+          <div className="hidden lg:flex items-center justify-between">
             <div className="flex flex-shrink-0 items-center">
               <Link to="/">
                 <img
@@ -94,9 +95,9 @@ export default function Navbar({ setTracks, audioRef, setIsPlaying }) {
               </Link>
             </div>
           </div>
-          <div className="middleSection flex w-[50%] h-[100%] justify-between">
+          <div className="middleSection -translate-x-5 lg:translate-x-0 flex w-[76%] lg:w-[50%] h-[100%] justify-between">
             <Link to="/">
-              <HomeIcon className={`w-[50px] h-[40px] mx-4 cursor-pointer rounded-3xl p-1
+              <HomeIcon className={`w-[50px] h-[40px] lg:mx-4 cursor-pointer rounded-3xl p-1
               ${isClicked ? 'fill-white text-white' : 'text-gray-500'}
               hover:bg-neutral-800 active:outline-white focus: text-white
               `}
@@ -114,7 +115,7 @@ export default function Navbar({ setTracks, audioRef, setIsPlaying }) {
               />
               <button
                 type='button'
-                className="w-[20%] h-[100%] rounded-r-3xl"
+                className="w-[40%] lg:w-[20%] h-[100%] rounded-r-3xl"
                 onClick={getTracks} onKeyDown={handleKeyDown}
               >
                 <Search
@@ -124,7 +125,7 @@ export default function Navbar({ setTracks, audioRef, setIsPlaying }) {
               </button>
             </div>
           </div>
-          <div className="w-[10%] absolute inset-y-0 right-0 flex justify-between items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+          <div className="w-[10%] absolute inset-y-0 -translate-x-12  right-0 flex justify-between items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button
               type="button"
               className="relative rounded-full bg-neutral-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -171,6 +172,7 @@ export default function Navbar({ setTracks, audioRef, setIsPlaying }) {
                 <Link to="/login" className='w-full h-full text-center self-center content-center'>Login</Link>
               </div>
             )}
+          </div>
           </div>
         </div>
       </div>
