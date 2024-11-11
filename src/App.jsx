@@ -18,6 +18,7 @@ import SongHistory from './Routes/SongHistory';
 // import respas from './Components/respas';
 import { UserProvider } from './Context/UserContext';
 import { SearchProvider } from './Context/SearchedContext';
+import PlaylistDetails from './Components/playlistByLink';
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,11 @@ const router = createBrowserRouter([
     path: "/settings",
     element: <Settings />
   }
+  //,
+  // {
+  //   path: "/playlist/:playlistId",
+  //   element: <PlaylistDetails/>
+  // }
 ]);
 
 function App() {

@@ -14,8 +14,9 @@ router.put('/:playlistId/remove-song', auth, removeSongFromPlaylist);
 router.get('/getPlaylists', auth, getUserPlaylists);
 //playlist share
 router.put('/:playlistId/share', auth, sharePlaylist);
+//get Playlist by link with songs 
 router.get('/:playlistId/link', getPlaylistByLink);
-//get playlist with there song
+//get playlist with there songs
 router.get('/:playlistId', auth, getPlaylistWithDetails);
 
 export default router;

@@ -108,24 +108,23 @@ export const updateUser = async (req, res) => {
       if (!req.file) {
         return res.status(400).json({ message: "No file uploaded" });
       }
-  
+
       const cloudinaryResponse = await uploadOnCloudinary(req.file.path);
       // console.log(cloudinaryResponse)
-  
+
       if (!cloudinaryResponse) {
         return res.status(500).json({ message: "Error uploading to Cloudinary" });
       }
-  
-      
-       const user = await User.findById(req.user.id);
-      if (!user) {
+
+      const user= await User.findById(req.user.id);
+      if(!user){
           return res.status(404).json({ message: "User not found" });
       }
 
       user.profileImage = cloudinaryResponse.secure_url;
       await user.save();
-      // console.log("Updated user:", user);
-  
+      // console.log(user);
+
       return res.status(200).json({
         message: "Profile image uploaded successfully",
         profileImage: cloudinaryResponse.secure_url,
