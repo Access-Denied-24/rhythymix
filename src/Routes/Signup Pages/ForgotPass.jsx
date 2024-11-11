@@ -10,12 +10,12 @@ export default function ForgotPass() {
 
   const handleRequestResetLink = async () => {
     try {
-      const res = await axios.post("http://localhost:8000/forgotPassword", { email });
+      const res = await axios.post("http://localhost:8000/api/v1/users/forgotPassword", { email });
       setMessage(res.data.msg);
       setError('');
     } catch (err) {
       setError(err.response?.data?.msg || 'Something went wrong');
-      setMessage('');
+      setMessage('');       
     }
   };
 

@@ -110,8 +110,7 @@ export default function ProfilePage(){
       <div className="flex flex-grow">
         <LeftSidebar />
         <div className="middlePart flex justify-center items-start w-[100%] h-[100%]">
-          <div className=" w-[57%] h-[100%] min-w-[57%] mim-h-[100%] flex flex-col text-white shadow-xl shadow-blue-gray-900/5
-          bg-clip-border rounded-xl
+          <div className=" w-[57%] h-[100%] min-w-[57%] min-h-[100%] flex flex-col text-white shadow-xl shadow-blue-gray-900/5 bg-clip-border rounded-xl
           " style={{backgroundColor:"#1B0025"}}>
             {/* Profile Page */}
             <div className="banner flex h-[50%] w-full p-2 bg-clip-border rounded-t-xl" style={{backgroundColor:"#3e0652"}}>
@@ -156,28 +155,25 @@ export default function ProfilePage(){
                   {/* <span>3 Followers</span> */}
                 </div>
               </div>
-
-              <button></button>
-              <Menu as="div" >
-                <div>
-                  <MenuButton>
+              <Menu as="div" className='translate-y-16' >
+                  <MenuButton >
                     <MoreHorizIcon />
                   </MenuButton>
-                </div>
                 <MenuItems transition className="
-                absolute right-[22%] z-10  w-[190px] origin-top-right rounded-md bg-neutral-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in">
+                 absolute right-[22%] z-10 w-[190px] origin-top-right rounded-md bg-neutral-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in">
                   <MenuItem className="block p-1 text-neutral-500 data-[focus]:bg-neutral-700">
                     {/* <Link to="">Edit profile</Link> */}
-                    <button onClick={handleModalClick}>Edit Profile</button>
+                    <button className="" onClick={(e) => {e.stopPropagation(); setShowModal(true);}}>Edit Profile</button>
                   </MenuItem>
-                    {showModal && (<ChangeName onClose={() => setShowModal(false)}
-                    onNameChange={setDisplayName}
-                    />)}
+                    
 
                   <MenuItem className="block p-1 text-neutral-500 data-[focus]:bg-neutral-700">
                     <Link to="">Change Password</Link>
                   </MenuItem>
                 </MenuItems>
+                {showModal && (<ChangeName onClose={() => {setShowModal(false)}}
+                    onNameChange={setDisplayName}
+                    />)}
               </Menu>
             </div>
           </div>
