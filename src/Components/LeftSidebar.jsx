@@ -34,7 +34,7 @@ export default function LeftSidebar(){
   return (
     <>
   {/* <div className="relative flex flex-col bg-clip-border rounded-xl bg-neutral-800 text-white h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5"> */}
-  <div className="absolute left-0 top-[89px] bottom-[10%] overflow-auto flex flex-col bg-clip-border rounded-xl  text-white w-60 p-4 shadow-xl shadow-blue-gray-900/5" style={{backgroundColor:"#1B0025", minWidth:"100px",}}>
+  <div className="absolute hidden left-0 top-[89px] bottom-[10%] overflow-auto lg:flex flex-col bg-clip-border rounded-xl  text-white w-60 p-4 shadow-xl shadow-blue-gray-900/5" style={{backgroundColor:"#1B0025", minWidth:"100px",}}>
     {/* <div className="mb-2 p-4">
       <h5 className="block antialiased tracking-normal font-sans text-xl leading-snug text-white font-bold">
         Your Playlists

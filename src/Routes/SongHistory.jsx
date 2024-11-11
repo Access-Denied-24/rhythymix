@@ -61,7 +61,7 @@ export default function SongHistory({ newName }) {
                 <Navbar />
                 <div className="flex flex-grow">
                     <LeftSidebar />
-                    <div className="middlePart flex justify-center items-start w-[100%] h-[100%]">
+                    <div className="middlePart flex justify-center items-start w-[100%] h-[100%] pb-20">
                         <div className=" w-[57%] h-[100%] min-w-[57%] mim-h-[100%] flex flex-col text-white shadow-xl shadow-blue-gray-900/5
           bg-clip-border rounded-xl
           " style={{ backgroundColor: "#1B0025" }}>

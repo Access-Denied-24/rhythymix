@@ -5,7 +5,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 export default function RightSidebar(){
   return (
     <>
-  <div className="absolute right-0 bottom-[10%] overflow-auto top-[89px] flex flex-col bg-clip-border rounded-xl text-white w-60 p-4 shadow-xl shadow-blue-gray-900/5" style={{backgroundColor:"#1B0025"}}>
+  <div className="absolute hidden right-0 bottom-[10%] overflow-auto top-[89px] lg:flex flex-col bg-clip-border rounded-xl text-white w-60 p-4 shadow-xl shadow-blue-gray-900/5" style={{backgroundColor:"#1B0025"}}>
     <div className="mb-2 p-4">
       <h5 className="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-white font-bold">
         Active Songs

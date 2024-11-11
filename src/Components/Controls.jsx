@@ -73,9 +73,9 @@ export default function Controls() {
         
   return (
     <div className="controlsCont bg-neutral-900 h-[70px] flex z-1 fixed left-0 right-0 bottom-0 py-1">
-      <div className='SongDetails p-2 w-[22%] flex justify-between'>
-        <div className='flex w-[80%]'>
-          <img src="/playlistPhoto1.webp" alt="" className='w-[15%] mr-4' />
+      <div className='SongDetails p-2 lg:w-[22%] w-[50%] flex justify-between'>
+        <div className='flex w-[100%] lg:w-[80%]'>
+          <img src="/playlistPhoto1.webp" alt="" className='w-[40px] mr-4' />
           <div className='flex flex-col'>
             {/* {console.log(currentTrack)} */}
             {/* <span className='text-white'>{currentTrack || 'No track Playing'}</span> */}
@@ -103,8 +103,8 @@ export default function Controls() {
           ''
         )}
       </div>
-      <div className='msControls w-[56%] flex flex-col justify-center content-center gap-1'>
-        <div className=' w-[30%] flex justify-between self-center'>
+      <div className='msControls w-[56%]  flex flex-col justify-center content-center gap-1'>
+        <div className=' w-[30%] -translate-x-12 lg:translate-x-0 flex justify-between self-center'>
           <ShuffleIcon className={`cursor-pointer ${isShuffled ? 'text-blue-500 fill-blue-500 bg-green-500' : ''}`} onClick={toggleShuffle} />
           <SkipPreviousIcon className={`cursor-pointer`} onClick={previousTrack} />
 
@@ -142,7 +142,7 @@ export default function Controls() {
 
 
       </div>
-      <div className='Options w-[22%] flex'>
+      <div className='Options w-[22%] lg:flex hidden'>
         <div className='flex justify-center w-full self-center'>
           <VolumeUpIcon style={{width:"40px", cursor:"pointer"}} />
           {/* <div className="flex w-[60%] h-[3px]  bg-neutral-600 rounded-full dark:bg-white border-none self-center cursor-pointer"> */}
