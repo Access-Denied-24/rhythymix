@@ -55,22 +55,21 @@ export default function Home() {
 
   return (
     <>
-    <div className="flex flex-col h-[90vh]">
+    <div className="flex flex-col h-[90vh] ">
       <Navbar setTracks={setTracks} />
       <div className="flex flex-grow">
         <LeftSidebar />
-        {/* <CreatePlaylistForm onPlaylistCreated={addNewPlaylist} /> */}
-        <div className="flex justify-center items-start flex-grow w-[100%] h-[100%]">
-          <div className="middleCont w-[57%] h-[100%] flex flex-col justify-center rounded-xl bg-neutral-800 text-white p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto" style={{backgroundColor:"#1B0025"}}>
+        <div className="flex justify-center items-start flex-grow w-[100%] h-[100%] overflow-auto">
+          <div className="middleCont w-[57%] h-[100%] flex flex-col rounded-xl bg-neutral-800 text-white p-4 shadow-xl shadow-blue-gray-900/5 z-5" style={{backgroundColor:"#1B0025"}}>
             {/* <b>Home Page</b> */}
 
             {console.log(isSearched)}
             {isSearched ? (
               <TracksPage tracks={tracks || []} />
             ) : (
-              <div className="homeContent w-full h-max-[500px] text-center overflow-auto">
+              <div className="homeContent w-full max-h-[500px] text-center overflow-auto">
 
-                <div className="recommended ">
+                <div className="recommended">
                   <h2>Top 5 Recommended Albums</h2>
     
                   <div className="albumsGrid flex flex-wrap gap-4 justify-center">

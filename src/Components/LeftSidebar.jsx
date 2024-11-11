@@ -77,75 +77,41 @@ export default function LeftSidebar(){
         </div>
       </div>
       </Link>
-      <div
-        role="button"
-        tabIndex={0}
-        className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-purple-900 hover:bg-opacity-80 focus:bg-purple-900 focus:bg-opacity-80 active:bg-purple-900 active:bg-opacity-80"
-      >
-        <div className="flex mr-4 w-[40px] h-[40px] ">
-          <MusicNoteIcon style={{width: "100%", height:"100%"}} />
-        </div>
-        <div className='flex flex-col'>
-          <span className='text-[18px]' style={{textDecoration:"none"}}>Playlist Name</span>
-          <span style={{textDecoration:"none"}}>Playlist • 69 songs</span>
-        </div>
-      </div>
 
-      <div
-        role="button"
-        tabIndex={0}
-        className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-purple-900 hover:bg-opacity-80 focus:bg-purple-900 focus:bg-opacity-80 active:bg-purple-900 active:bg-opacity-80"
-      >
-        <div className="flex mr-4 w-[40px] h-[40px] ">
-          <MusicNoteIcon style={{width: "100%", height:"100%"}} />
+      <Link to="/playlist">
+        <div
+          role="button"
+          tabIndex={0}
+          className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-purple-900 hover:bg-opacity-80 focus:bg-purple-900 focus:bg-opacity-80 active:bg-purple-900 active:bg-opacity-80"
+          >
+          <div className="flex mr-4 w-[40px] h-[40px] ">
+            <MusicNoteIcon style={{width: "100%", height:"100%"}} />
+          </div>
+          <div className='flex flex-col'>
+            <span className='text-[18px]' style={{textDecoration:"none"}}>Playlist Name</span>
+            <span style={{textDecoration:"none"}}>Playlist • 69 songs</span>
+          </div>
         </div>
-        <div className='flex flex-col'>
-          <span className='text-[18px]' style={{textDecoration:"none"}}>Playlist Name</span>
-          <span style={{textDecoration:"none"}}>Playlist • 69 songs</span>
-        </div>
-      </div>
+      </Link>
 
-      <div
-        role="button"
-        tabIndex={0}
-        className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-purple-900 hover:bg-opacity-80 focus:bg-purple-900 focus:bg-opacity-80 active:bg-purple-900 active:bg-opacity-80"
-      >
-        <div className="flex mr-4 w-[40px] h-[40px] ">
-          <MusicNoteIcon style={{width: "100%", height:"100%"}} />
+      <Link to="/playlist">
+        <div
+          role="button"
+          tabIndex={0}
+          className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-purple-900 hover:bg-opacity-80 focus:bg-purple-900 focus:bg-opacity-80 active:bg-purple-900 active:bg-opacity-80"
+        >
+          <div className="flex mr-4 w-[40px] h-[40px] ">
+            <MusicNoteIcon style={{width: "100%", height:"100%"}} />
+          </div>
+          <div className='flex flex-col'>
+            <span className='text-[18px]' style={{textDecoration:"none"}}>Playlist Name</span>
+            <span style={{textDecoration:"none"}}>Playlist • 69 songs</span>
+          </div>
+            
         </div>
-        <div className='flex flex-col'>
-          <span className='text-[18px]' style={{textDecoration:"none"}}>Playlist Name</span>
-          <span style={{textDecoration:"none"}}>Playlist • 69 songs</span>
-        </div>
-      </div>
+      </Link>
 
-      <div
-        role="button"
-        tabIndex={0}
-        className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-purple-900 hover:bg-opacity-80 focus:bg-purple-900 focus:bg-opacity-80 active:bg-purple-900 active:bg-opacity-80"
-      >
-        <div className="flex mr-4 w-[40px] h-[40px] ">
-          <MusicNoteIcon style={{width: "100%", height:"100%"}} />
-        </div>
-        <div className='flex flex-col'>
-          <span className='text-[18px]' style={{textDecoration:"none"}}>Playlist Name</span>
-          <span style={{textDecoration:"none"}}>Playlist • 69 songs</span>
-        </div>
-      </div>
-
-      <div
-        role="button"
-        tabIndex={0}
-        className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-purple-900 hover:bg-opacity-80 focus:bg-purple-900 focus:bg-opacity-80 active:bg-purple-900 active:bg-opacity-80"
-      >
-        <div className="flex mr-4 w-[40px] h-[40px] ">
-          <MusicNoteIcon style={{width: "100%", height:"100%"}} />
-        </div>
-        <div className='flex flex-col'>
-          <span className='text-[18px]' style={{textDecoration:"none"}}>Playlist Name</span>
-          <span style={{textDecoration:"none"}}>Playlist • 69 songs</span>
-        </div>
-      </div>
+      
     </nav>
   </div>
    

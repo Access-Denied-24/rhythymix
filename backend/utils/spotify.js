@@ -71,7 +71,7 @@ export const getAllAlbumsOfArtist = async (artistId) => {
 
 // 6. Fetch featured albums (or "New Releases")
 export const getFeaturedAlbums = async () => {
-  return spotifyFetch(`https://api.spotify.com/v1/browse/new-releases?country=India&limit=10`);
+  return spotifyFetch(`https://api.spotify.com/v1/browse/new-releases?country=India&limit=15`);
 };
 
 // 7. Fetch popular/featured playlists

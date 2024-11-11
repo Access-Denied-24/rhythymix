@@ -15,10 +15,10 @@ import Home from "./Home";
 import { Navigate } from "react-router-dom";
 import { useUser } from "../Context/UserContext";
 
-export default function ProfilePage({newName}){
+export default function ProfilePage(){
 
   // const [user, setUser] = useState(null);
-  const {user, displayName, setDisplayName} = useUser();
+  const {user, displayName, setDisplayName, setUser} = useUser();
   // let [ displayName, setDisplayName ] = useState('vortex' || '');
   const [ showModal, setShowModal ] = useState(false);
   const [ isHovering, setIsHovering ] = useState(false);
@@ -34,43 +34,74 @@ export default function ProfilePage({newName}){
 
   const handleImageClick = () => {
     inputRef.current.click();
-  };
+    };
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    setImage(file);
-  };
+    const handleImageChange = async(event) => {
+      const file = event.target.files[0];
+      // setImage(file);
 
-  // console.log(useUser)
+      const formData = new FormData();
+      formData.append("profileImage", file);
+
+        // try {
+        //   const response = await axios.post("/profileImage", formData, {
+        //     headers: {
+        //       "Content-Type": "multipart/form-data",
+        //     },
+        //   });
+
+        //   // Update user profile image URL
+        //   const imageUrl = response.data.secure_url;
+        //   setUser(prevUser => ({ ...prevUser, profileImage: imageUrl }));
+        // } catch (error) {
+        //   console.error("Failed to upload image:", error);
+        // }
+        axios
+        .post("/profileImage", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data", // Optional if axios is used with FormData
+          },
+        })
+        .then((response) => {
+          // Update the image URL state after successful upload
+          setImage(response.data.imageUrl); // Assuming backend sends the URL in `imageUrl`
+        })
+        .catch((error) => {
+          console.error("Error uploading image:", error.response || error.message); // Log the error
+          alert("Failed to upload image. Please try again.");
+        });
+      };
+
+      useEffect(() => {
+        // Fetch user profile data on component load
+        const fetchUserData = async () => {
+          try {
+            const response = await axios.get("/getUserProfile");
+            const profileImage = response.data.profileImage;
+
+            console.log("Fetched user data:", response.data.profileImage); 
+            
+            if (profileImage) setImage(profileImage);
+            setUser(response.data);
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+          }
+        };
+    
+        fetchUserData();
+      }, [setUser]);
+    
 
 
 
-  // useEffect(() => {
-  //   const fetchProfile = async () => {
-  //     const token = localStorage.getItem('token');
-  //     try {
-  //       const { data } = await axios.get('http://localhost:8000/api/v1/users/profile', {
-  //         headers: { Authorization: `Bearer ${token}` }
-  //       });
-  //       setUser(data);
-  //       setDisplayName(data.username);
-  //     } catch (err) {
-  //       console.error("Error fetching profile data:", err);
-  //     }
-  //   };
+    if (!user) return <p>Loading profile...</p>;
+    
+    // if(!user) return navigate('/');
 
-  //   fetchProfile();
-  // }, []);
+    // let displayName = user.username;
 
-  // setUserEmail = user.email;
-
-
-  if (!user) return <p>Loading profile...</p>;
+    
   
-  // if(!user) return navigate('/');
-
-  // let displayName = user.username;
-
   return (
     <>
     <div className="flex flex-col h-screen">
@@ -119,8 +150,8 @@ export default function ProfilePage({newName}){
                 <span className="text-5xl font-bold" style={{textDecoration:"none"}}>{user.username}</span>
                 <span className="text-5xl font-bold" style={{textDecoration:"none"}}>{displayName}</span>
                 <div className="playlists_flw">
-                  <span className="cursor-text" style={{textDecoration:"none"}}>2 Playlists • </span>
-                  <span>3 Followers</span>
+                  <span className="cursor-text" style={{textDecoration:"none"}}>2 Playlists</span>
+                  {/* <span>3 Followers</span> */}
                 </div>
               </div>
 
@@ -158,3 +189,27 @@ export default function ProfilePage({newName}){
     </>
   );
 }
+
+
+ // console.log(useUser)
+
+
+
+  // useEffect(() => {
+  //   const fetchProfile = async () => {
+  //     const token = localStorage.getItem('token');
+  //     try {
+  //       const { data } = await axios.get('http://localhost:8000/api/v1/users/profile', {
+  //         headers: { Authorization: `Bearer ${token}` }
+  //       });
+  //       setUser(data);
+  //       setDisplayName(data.username);
+  //     } catch (err) {
+  //       console.error("Error fetching profile data:", err);
+  //     }
+  //   };
+
+  //   fetchProfile();
+  // }, []);
+
+  // setUserEmail = user.email;
