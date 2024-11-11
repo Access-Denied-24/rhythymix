@@ -59,12 +59,12 @@ export default function SongHistory({ newName }) {
 
     return (
         <>
-            <div className="flex flex-col h-screen">
-                <Navbar />
+            <div className="flex flex-col h-screen border">
+                {/* <Navbar /> */}
                 <div className="flex flex-grow">
                     <LeftSidebar />
                     <div className="middlePart flex justify-center items-start w-[100%] h-[100%] pb-20">
-                        <div className=" w-[100%] lg:w-[57%] h-[100%] min-w-[57%] mim-h-[100%] flex flex-col text-white shadow-xl shadow-blue-gray-900/5
+                        <div className=" w-[10%] lg:w-[57%] h-[100%] min-w-[57%] min-h-[100%] flex flex-col text-white shadow-xl shadow-blue-gray-900/5
           bg-clip-border rounded-xl
           " style={{ backgroundColor: "#1B0025" }}>
                             <div className="banner flex h-[40%] lg:h-[300px] w-full p-2 bg-clip-border rounded-t-xl" style={{ backgroundColor: "#3e0652" }}>
@@ -134,7 +134,7 @@ export default function SongHistory({ newName }) {
                 </div>
             </div>
 
-      <Controls />
+      {/* <Controls /> */}
     </>
   );
 }

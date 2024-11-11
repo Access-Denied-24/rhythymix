@@ -60,7 +60,8 @@ export default function Home() {
       <Navbar setTracks={setTracks} />
       <div className="flex flex-grow">
         <LeftSidebar />
-        <div className="flex justify-center items-start flex-grow w-[100%] h-[100%] overflow-auto">
+        <div className="flex justify-center items-start flex-grow w-[100%] h-[100%] overflow-auto border">
+
           <div className="middleCont w-[57%] h-[100%] flex flex-col rounded-xl bg-neutral-800 text-white p-4 shadow-xl shadow-blue-gray-900/5 z-5" style={{backgroundColor:"#1B0025"}}>
             {/* <b>Home Page</b> */}
 
@@ -68,7 +69,7 @@ export default function Home() {
             {isSearched ? (
               <TracksPage tracks={tracks || []} />
             ) : (
-              <div className="homeContent w-full max-h-[500px] text-center overflow-auto">
+              <div className="homeContent border w-full max-h-[500px] text-center overflow-auto">
 
                 <div className="recommended">
                   <h2>Top 5 Recommended Albums</h2>

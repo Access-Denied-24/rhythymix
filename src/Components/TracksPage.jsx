@@ -58,7 +58,7 @@ export default function TracksPage({ tracks, setIsSearched }) {
       <div className="Cont flex flex-wrap justify-center w-[100%] mx-auto overflow-auto max-h-[70vh] z-5">
         {songList.map((element, index) => (
           <div key={index} className="m-4 flex justify-center">
-            <div className="Card bg-white border border-gray-200 rounded-lg shadow dark:bg-[#120018] p-2 rounded-xl dark:border-gray-700" style={{ width: "9rem", }} >
+            <div className="Card bg-white border border-gray-200  shadow dark:bg-[#120018] p-2 rounded-xl dark:border-gray-700" style={{ width: "9rem", }} >
               <a href="#">
                 <img className="rounded-t-lg" src={element.album.images[0].url} alt={element.name} />
               </a>
