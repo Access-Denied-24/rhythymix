@@ -1,6 +1,21 @@
 import express from "express";
 import auth from "../middleware/authMiddleware.js";
-import { addToHistory, forgotPassword, getHistory, getLikedSongs, getUserProfile, likeSong, loginUser, registerUser, resetPassword, unlikeSong, updateUser, uploadProfileImage } from "../controllers/userControllers.js";
+import { 
+  addToHistory, 
+  followArtist, 
+  forgotPassword, 
+  getFollowedArtists, 
+  getHistory, 
+  getLikedSongs, 
+  getUserProfile, 
+  likeSong, 
+  loginUser, 
+  registerUser, 
+  resetPassword, 
+  unfollowArtist, 
+  unlikeSong, 
+  updateUser, 
+  uploadProfileImage } from "../controllers/userControllers.js";
 import User from '../models/userModel.js';
 import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
@@ -32,6 +47,14 @@ router.get('/liked-songs', auth, getLikedSongs);
 router.post('/addToHistory', auth, addToHistory);
 //getHistory 
 router.get('/getHistory', auth, getHistory);
+
+//Follow Routes
+router.post('/follow', auth, followArtist);
+// unfollow Routes
+router.post('/unfollow', auth, unfollowArtist);
+// get followed artist 
+router.get('/followed-artist', auth, getFollowedArtists);
+
 
 
 // Google Login Route

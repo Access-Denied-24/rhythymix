@@ -43,6 +43,9 @@ const userSchema = new mongoose.Schema({
         type: String ,
         default: [] 
     }],
+    followedArtists: [{
+        type: String 
+    }],
 
     resetPasswordToken: String,
     resetPasswordExpires: Date

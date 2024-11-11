@@ -103,3 +103,30 @@ export const searchSongByGenre = async (genre) => {
   const genreQuery = `genre:${encodeURIComponent(genre)}`;
   return spotifyFetch(`https://api.spotify.com/v1/search?q=${genreQuery}&type=track&limit=10`);
 };
+
+export const getArtistDetailsById = async (artistId) => {
+  return spotifyFetch(`https://api.spotify.com/v1/artists/${artistId}`);
+};
+
+// Function to get artist details by name
+export const getArtistDetailsByName = async (artistName) => {
+  const artistSearchResult = await searchArtistByName(artistName);
+
+  if (artistSearchResult.artists && artistSearchResult.artists.length > 0) {
+      const artist = artistSearchResult.artists[0];
+      // const albumsData = await getAllAlbumsOfArtist(artist.id);
+
+      return {
+          artists: {
+              items: [
+                  {
+                      ...artist,
+                      // albums: albumsData.items || []
+                  }
+              ]
+          }
+      };
+  } else {
+      return { artists: { items: [] } };
+  }
+};

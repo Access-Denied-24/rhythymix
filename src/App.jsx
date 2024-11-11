@@ -14,12 +14,11 @@ import Settings from './Routes/Settings';
 import Navbar from './Components/Navbar';
 import LikedSongs from './Routes/LikedSongs'
 import SongHistory from './Routes/SongHistory';
-// import ResetPass from './Components/ResetPass';
-// import respas from './Components/respas';
 import { UserProvider } from './Context/UserContext';
 import { SearchProvider } from './Context/SearchedContext';
 import { PlayerContextProvider } from './Context/PlayerContext';
 import PlaylistsPage from './Routes/PlaylistsPage';
+import ResetPassword from './Components/ResetPass';
 
 const router = createBrowserRouter([
   {
@@ -55,8 +54,8 @@ const router = createBrowserRouter([
     element: <SongHistory />
   },
   {
-    path: "/resetpass/:token",
-    element: <respas />
+    path: "/resetPassword/:token",
+    element: <ResetPassword/>
   },
   {
     path: "/modal",

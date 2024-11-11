@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import sendEmail from "../utils/sendEmail.js";
-import { fetchSpotifySongDetails } from "../utils/spotify.js";
+import { fetchSpotifySongDetails, getAllAlbumsOfArtist, getArtistDetailsById } from "../utils/spotify.js";
 import  uploadOnCloudinary  from "../utils/cloudinary.js";
 
 
@@ -30,7 +30,8 @@ export const registerUser = async (req, res) => {
         interests: user.interests,
         likedSongs: user.likedSongs,
         playlists: user.playlists,
-        songHistory: user.songHistory
+        songHistory: user.songHistory,
+        followedArtists:user.followedArtists
     }});
   } catch (err) {
     console.error(err.message);
@@ -58,7 +59,8 @@ export const loginUser = async (req, res) => {
             profileImage: user.profileImage,
             likedSongs: user.likedSongs,
             playlists: user.playlists,
-            songHistory: user.songHistory
+            songHistory: user.songHistory,
+            followedArtists:user.followedArtists
         }});
     } catch (err) {
         console.error(err.message);
@@ -86,8 +88,6 @@ export const updateUser = async (req, res) => {
       }
   
       await user.save();
-  
-      // Send updated user information
       res.json({
         id: user.id,
         username: user.username,
@@ -157,6 +157,28 @@ export const getUserProfile = async (req, res) => {
 
 // forgotPassword
 
+// export const forgotPassword = async (req, res) => {
+//   const { email } = req.body;
+
+//   try {
+//     const user = await User.findOne({ email });
+//     if (!user) return res.status(404).json({ msg: "User not found" });
+
+//     const resetToken = user.createPasswordResetToken();
+//     await user.save({ validateBeforeSave: false });
+
+//     const resetURL = `${req.protocol}://${req.get("host")}/resetPassword/${resetToken}`;
+//     const message = `You requested a password reset. Click here to reset your password: \n\n ${resetURL}`;
+
+//     await sendEmail({ email: user.email, subject: "Password Reset", message });
+
+//     res.json({ msg: "Password reset link sent to your email" });
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send("Server error");
+//   }
+// };
+
 export const forgotPassword = async (req, res) => {
   const { email } = req.body;
 
@@ -167,7 +189,7 @@ export const forgotPassword = async (req, res) => {
     const resetToken = user.createPasswordResetToken();
     await user.save({ validateBeforeSave: false });
 
-    const resetURL = `${req.protocol}://${req.get("host")}/resetPassword/${resetToken}`;
+    const resetURL = `${process.env.FRONTEND_URL}/resetPassword/${resetToken}`;
     const message = `You requested a password reset. Click here to reset your password: \n\n ${resetURL}`;
 
     await sendEmail({ email: user.email, subject: "Password Reset", message });
@@ -216,7 +238,8 @@ export const likeSong = async (req, res) => {
     const userId = req.user.id;
 
     const user = await User.findById(userId);
-
+    if(!user) return res.status(404).json({ message: 'User not found' });
+    
     if (!user.likedSongs.includes(songId)) {
       user.likedSongs.push(songId);
       await user.save();
@@ -327,5 +350,67 @@ export const getHistory = async (req, res) => {
   } catch (error) {
     console.error("Error fetching song history:", error.message);
     res.status(500).json({ error: 'Failed to retrieve song history' });
+  }
+};
+
+
+// for following 
+
+// Follow an artist
+export const followArtist = async (req, res) => {
+  try {
+    const { artistId } = req.body;
+
+    const userId = req.user.id;
+    const user = await User.findById(userId);
+    if(!user) return res.status(404).json({ message: 'User not found' });
+
+    if(user.followedArtists.includes(artistId)){
+      return res.status(400).json({ message: 'Already following this artist' });
+    }
+    user.followedArtists.push(artistId);
+    await user.save();
+    res.status(200).json({ message: 'Artist followed successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error following artist' });
+  }
+};
+
+// Unfollow an artist
+export const unfollowArtist = async (req, res) => {
+  try {
+    const { artistId } = req.body;
+    const userId = req.user.id;
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    user.followedArtists = user.followedArtists.filter(id => id !== artistId);
+    await user.save();
+    res.status(200).json({ message: 'Artist unfollowed successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error unfollowing artist' });
+  }
+};
+
+// Get followed artists with albums
+export const getFollowedArtists = async (req, res) => {
+  try {
+    const userId=req.user.id;
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    // Fetch artist details and albums for each followed artist
+    const artistDetails = await Promise.all(user.followedArtists.map(async (artistId) => {
+      const artistData = await getArtistDetailsById(artistId);  
+      const albums = await getAllAlbumsOfArtist(artistId);
+      return { artist: artistData, albums: albums.items};
+    }));
+
+    res.status(200).json({ followedArtists: artistDetails });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching followed artists' });
   }
 };

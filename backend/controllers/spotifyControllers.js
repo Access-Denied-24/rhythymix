@@ -1,8 +1,5 @@
-// controllers/spotifyController.js
-
 import {
     searchArtistByName,
-    getAlbumsByArtistId,
     getTracksByAlbumId,
     searchAlbumByName,
     getAllAlbumsOfArtist,
@@ -10,10 +7,24 @@ import {
     getFeaturedPlaylists,
     searchPlaylistByName,
     getPlaylistDetailsById,
+    getArtistDetailsById,
     searchSongByName,
-    searchSongByGenre
+    searchSongByGenre,
+    getArtistDetailsByName
   } from '../utils/spotify.js';
   
+  // get artist details by Id
+  export const getArtistDetails = async (req, res) => {
+    try {
+      const { artistId } = req.params;
+      const artistData = await getArtistDetailsById(artistId);
+      res.status(200).json(artistData);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Failed to fetch artist details' });
+    }
+  };
+
   // Search for an artist by name
   export const searchArtist = async (req, res) => {
     try {
@@ -145,24 +156,25 @@ import {
 
         // Perform parallel requests to fetch data for artists, albums, songs, and playlists
         const [artistData, albumData, songData, playlistData] = await Promise.all([
-            searchArtistByName(query),
+            getArtistDetailsByName(query),
             searchAlbumByName(query),
             searchSongByName(query),
-            searchPlaylistByName(query)
+            searchPlaylistByName(query),
         ]);
 
         // Return the response with full details for each category
         res.json({
-            artists: artistData?.artists?.items || [],
+            artists: artistData ? [artistData] : [],  // Wrap artistData in an array if it exists
             albums: albumData?.albums?.items || [],
             songs: songData?.tracks?.items || [],
-            playlists: playlistData?.playlists?.items || [] 
+            playlists: playlistData?.playlists?.items || []
         });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Failed to perform multi-search' });
     }
 };
+
 
 export const getSongByGenre = async (req, res) => {
   try {

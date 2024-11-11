@@ -44,3 +44,64 @@
 //     </div>
 //   )
 // }
+
+// ResetPassword.js
+import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+const ResetPassword = () => {
+  const { token } = useParams();
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    try {
+      const response = await axios.post(`http://localhost:8000/api/v1/users/resetPassword/${token}`, { password });
+      setMessage(response.data.msg);
+      setTimeout(() => navigate('/login'), 5173); // Redirect to login after successful reset
+    } catch (err) {
+      setError(err.response?.data?.msg || "An error occurred");
+    }
+  };
+
+  return (
+    <div className="reset-password-container">
+      <h2>Reset Password</h2>
+      {message && <p className="success-message">{message}</p>}
+      {error && <p className="error-message">{error}</p>}
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>New Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Confirm Password</label>
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit">Reset Password</button>
+      </form>
+    </div>
+  );
+};
+
+export default ResetPassword;
