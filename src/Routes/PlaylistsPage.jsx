@@ -11,8 +11,40 @@ import CreatePlaylistForm from "../Components/CreatePlaylistForm";
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Link } from "react-router-dom";
+import axios from "axios";
+
 
 export default function PlaylistsPage() {
+  const [playlist, setPlaylist] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const playlistId = 'somePlaylistId'; // Replace with dynamic playlist ID
+
+  useEffect(() => {
+    // Fetch playlist details on component mount
+    const fetchPlaylist = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/v1/playlists/${playlistId}`);
+        setPlaylist(response.data); // Save playlist data to state
+      } catch (err) {
+        setError('Failed to fetch playlist');
+        console.error(err);
+      } finally {
+        setLoading(false); // Stop loading state
+      }
+    };
+
+    fetchPlaylist();
+  }, [playlistId]); // Re-run if playlistId changes
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <>
@@ -48,6 +80,24 @@ export default function PlaylistsPage() {
                   </MenuItem>
                 </MenuItems>
               </Menu>
+            </div>
+
+
+            <div className="border h-[50%]" >
+            {playlist ? (
+              <div>
+                <h2>{playlist.name}</h2>
+                <p>{playlist.description}</p>
+                <ul>
+                  {playlist.songDetails && playlist.songDetails.map((song, index) => (
+                    <li key={index}>{song.name}</li>
+                  ))}
+                </ul>
+              </div>
+              ) : (
+                <p>No playlist found</p>
+              )}
+
             </div>
           </div>
         </div>

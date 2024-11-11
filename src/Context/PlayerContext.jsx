@@ -14,6 +14,8 @@ export const PlayerContextProvider = ({ children }) => {
   const [ duration, setDuration ] = useState(0);
   const audioRef = useRef(new Audio());
   const [activeTrackId, setActiveTrackId] = useState(null);
+  const [ isLiked, setIsLiked ] = useState(false);
+
 
   const token = localStorage.getItem('token')
 
@@ -23,7 +25,7 @@ export const PlayerContextProvider = ({ children }) => {
     const audio = audioRef.current;
     console.log('playing...');
 
-    axios.post('localhost:8000/api/v1/users/addToHistory',{
+    axios.post('http://localhost:8000/api/v1/users/addToHistory',{
       songId: currentTrack.id,
     })
     .then(response => {
@@ -59,8 +61,8 @@ export const PlayerContextProvider = ({ children }) => {
     setIsPlaying(false);
   }
 
-  const togglePlayPause = (trackURL, trackId, trackName) => {
-    console.log('Track Details : ', trackURL, trackId, trackName);
+  const togglePlayPause = (trackURL, trackId, trackName, trackArtists) => {
+    console.log('Track Details : ', trackURL, trackId, trackName, trackArtists);
 
     const audio = audioRef.current;
     
@@ -78,7 +80,7 @@ export const PlayerContextProvider = ({ children }) => {
     if (activeTrackId !== trackId) {
       audio.src = trackURL;
       // setCurrentTrack(trackName); // Set current track name
-      setCurrentTrack({ id: trackId, name: trackName, preview_url: trackURL });
+      setCurrentTrack({ id: trackId, name: trackName, preview_url: trackURL, artists: trackArtists });
       setActiveTrackId(trackId);
       audio.play()
         .then(() => setIsPlaying(true))
@@ -131,6 +133,7 @@ export const PlayerContextProvider = ({ children }) => {
     console.log('shuffle toggled :', isShuffled);
     const randomTrack = queue[Math.floor(Math.random() * queue.length)];
     setCurrentTrack(randomTrack);
+    console.log(randomTrack);
     playTrack(randomTrack.preview_url);
   }
 
@@ -187,6 +190,7 @@ export const PlayerContextProvider = ({ children }) => {
       const prevTrack = queue[prevIndex];
       setCurrentTrack(prevTrack);
       playTrack(prevTrack.preview_url);
+
     }
 
     
@@ -215,6 +219,26 @@ export const PlayerContextProvider = ({ children }) => {
       }
     });
   };
+
+  // Automatically go to the next track when the current track ends
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    const handleEnded = () => {
+      if (isLooping) {
+        audio.currentTime = 0;
+        audio.play();
+      } else {
+        nextTrack();
+      }
+    };
+
+    audio.addEventListener('ended', handleEnded);
+
+    return () => {
+      audio.removeEventListener('ended', handleEnded);
+    };
+  }, [isLooping, nextTrack]);
   
   // console.log('Current Queue : ', queue);
 
@@ -228,7 +252,8 @@ export const PlayerContextProvider = ({ children }) => {
       duration, setQueue, audioRef, 
       isShuffled, nextTrack, previousTrack, 
       setIsLooping, setIsPlaying, activeTrackId,
-      setDuration, nextTrack, previousTrack, addToQueue, queue
+      setDuration, nextTrack, previousTrack, addToQueue, queue,
+      isLiked, setIsLiked
 // next track, previous track
      }}>
       {children}

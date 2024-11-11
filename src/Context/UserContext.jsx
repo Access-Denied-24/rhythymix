@@ -12,6 +12,10 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   let [ displayName, setDisplayName ] = useState('');
+  const [history, setHistory] = useState([]);
+  const [likedSongs, setLikedSongs] = useState([]);
+
+
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -35,7 +39,7 @@ export const UserProvider = ({ children }) => {
 
 
   return (
-    <UserContext.Provider value={{ user, setUser, displayName, setDisplayName }}>
+    <UserContext.Provider value={{ user, setUser, displayName, setDisplayName, history, setHistory, likedSongs, setLikedSongs }}>
       {children}
     </UserContext.Provider>
   );

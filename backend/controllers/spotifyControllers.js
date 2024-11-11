@@ -43,6 +43,7 @@ import {
     try {
       const { albumId } = req.params;
       const data = await getTracksByAlbumId(albumId);
+      console.log("Tracks Data:", data.items); 
       res.json(data.items);
     } catch (error) {
       console.error(error);

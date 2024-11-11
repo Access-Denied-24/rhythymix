@@ -1,23 +1,3 @@
-// import axios from 'axios';
-// import React, { createContext, useContext, useState, useEffect } from 'react';
-
-// const SearchedContext = createContext();
-
-// export const useSearched = () => {
-//   return useContext(SearchedContext);
-// };
-
-// export const searchProvider = ({ children }) => {
-  
-//   const [ isSearched, setIsSearched ] = useState(false);
-
-//   return (
-//     <SearchedContext.Provider value={{ isSearched, setIsSearched }}>
-//       {children}
-//     </SearchedContext.Provider>
-//   );
-// };
-
 import { createContext, useContext, useState } from 'react';
 
 const SearchedContext = createContext();
@@ -25,10 +5,18 @@ const SearchedContext = createContext();
 export const useSearched = () => useContext(SearchedContext);
 
 export const SearchProvider = ({ children }) => {
+  const [tracks, setTracks] = useState({
+    songs: [],
+    albums: [],
+    playlists: [],
+    artists: [],
+  });
+
   const [isSearched, setIsSearched] = useState(false);
 
+
   return (
-    <SearchedContext.Provider value={{ isSearched, setIsSearched }}>
+    <SearchedContext.Provider value={{ isSearched, setIsSearched, tracks, setTracks }}>
       {children}
     </SearchedContext.Provider>
   );

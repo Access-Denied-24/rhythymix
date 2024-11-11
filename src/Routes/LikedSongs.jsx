@@ -12,11 +12,12 @@ import axios from 'axios';
 import ChangeName from "../Components/ChangeName";
 
 import { useUser } from "../Context/UserContext";
+// import {  }
 
 export default function LikedSongs({ newName }) {
 
-    const { user, displayName, setDisplayName } = useUser();
-    const [likedSongs, setLikedSongs] = useState([]);
+    const { user, displayName, setDisplayName, likedSongs, setLikedSongs } = useUser();
+    // const [likedSongs, setLikedSongs] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const formatDuration = (durationMs) => {

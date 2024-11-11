@@ -1,59 +1,61 @@
 import LeftSidebar from "../Components/LeftSidebar";
 import Navbar from "../Components/Navbar";
 import RightSidebar from "../Components/RightSidebar";
-import HistoryIcon from '@mui/icons-material/History';
+import HistoryIcon from "@mui/icons-material/History";
 import Controls from "../Components/Controls";
-import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
+import React, { useContext, useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { PlayerContext } from "../Context/PlayerContext";
 
 import { useUser } from "../Context/UserContext";
 import { useNavigate } from "react-router-dom";
 
 export default function SongHistory({ newName }) {
+  const { user, displayName, setDisplayName, history, setHistory } = useUser();
+  const navigate = useNavigate();
+  if (!user) navigate("/login");
+  const [loading, setLoading] = useState(true);
+//   const [history, setHistory] = useState([]);
+  const { togglePlayPause } = useContext(PlayerContext);
 
-    const { user, displayName, setDisplayName } = useUser();
-    const navigate = useNavigate();
-    if(!user) navigate('/login');
-    const [loading, setLoading] = useState(true);
-    const [history, setHistory] = useState([]);
+  const formatDuration = (durationMs) => {
+    const minutes = Math.floor(durationMs / 60000);
+    const seconds = ((durationMs % 60000) / 1000).toFixed(0);
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  };
 
-    const formatDuration = (durationMs) => {
-        const minutes = Math.floor(durationMs / 60000);
-        const seconds = ((durationMs % 60000) / 1000).toFixed(0);
-        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  // Fetch history songs when component mounts
+  useEffect(() => {
+    const fetchSongHistory = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("No token found in localStorage.");
+          return;
+        }
+
+        const response = await axios.get(
+          "http://localhost:8000/api/v1/users/getHistory",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        console.log(response.data.SongHistory); // Log the response data to check
+        setHistory(response.data.songHistory);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching liked songs:", error);
+        setLoading(false);
+      }
     };
 
-   
-    // Fetch history songs when component mounts
-    useEffect(() => {
-            const fetchSongHistory = async () => {
-                try {
-                    const token = localStorage.getItem("token");
-                    if (!token) {
-                        console.error("No token found in localStorage.");
-                        return;
-                    }
-    
-                    const response = await axios.get('http://localhost:8000/api/v1/users/getHistory', {
-                        headers: { Authorization: `Bearer ${token}` }
-                    });
-    
-    
-                    console.log(response.data.SongHistory);  // Log the response data to check
-                    setHistory(response.data.songHistory);
-                    setLoading(false);
-                } catch (error) {
-                    console.error("Error fetching liked songs:", error);
-                    setLoading(false);
-                }
-            };
-    
-            fetchSongHistory();
-    }, []);
+    fetchSongHistory();
+  }, []);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
     return (
         <>
@@ -132,8 +134,7 @@ export default function SongHistory({ newName }) {
                 </div>
             </div>
 
-            <Controls />
-
-        </>
-    );
+      <Controls />
+    </>
+  );
 }

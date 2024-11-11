@@ -9,19 +9,24 @@ import RepeatIcon from '@mui/icons-material/Repeat';
 import { PauseCircleIcon } from '@heroicons/react/24/outline';
 import { AddCircle } from '@mui/icons-material';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
+import axios from 'axios';
 
 export default function Controls() {
 
+  const token = localStorage.getItem('token')
+// https://yank.g3v.co.uk/track/0afhq8XCExXpqazXczTSve
   const {
     currentTrack, setCurrentTrack,
       isLooping, toggleLooping, toggleShuffle,
       isPlaying, togglePlayPause,
       play, pause, seek, currentTime,
       duration, setQueue, audioRef, isShuffled,
-      nextTrack, previousTrack, addToQueue
+      nextTrack, previousTrack, addToQueue,
+      isLiked, setIsLiked
   } = useContext(PlayerContext);
 
-  const [ isLiked, setIsLiked ] = useState(false);
+  const [ likedTrackId, setLikedTrackId ] = useState(null);
+
 
   // {console.log(currentTrack)}
 
@@ -42,35 +47,75 @@ export default function Controls() {
     addToQueue(currentTrack);
   }
   
-  // const handlePlayPause = () => {
-    //   if (currentTrack && currentTrack.preview_url && currentTrack.id) {
-      //     console.log("Playing track:", currentTrack);
-      //     togglePlayPause(currentTrack.preview_url, currentTrack.id, currentTrack.name);
-      //   } else {
-        //     console.error("Track or track details are missing");
-        //   }
-        // }
-        
-        // const handlePlayPause = () => {
-        //   if (currentTrack && currentTrack.preview_url && currentTrack.id) {
-        //     console.log('Playing track:', currentTrack);
+  
+  console.log('curr : ', currentTrack);
+  // useEffect(() => {
+  //   // console.log('Current track details:', currentTrack);
+  // }, [currentTrack]);
 
-        //     togglePlayPause(currentTrack.preview_url, currentTrack.id, currentTrack.name,);
-        //   } else {
-        //     console.error('Track or track details are missing:', currentTrack);
-        //   }
-        // };
-        
-        
-          useEffect(() => {
-            // console.log('Current track details:', currentTrack);
-          }, [currentTrack]);
 
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-  } 
-        
-        
+  // Fetch liked song ID from the backend
+  useEffect(() => {
+    if (token) {
+      axios.get('http://localhost:8000/api/v1/users/liked-songs', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(response => {
+        if (response.data.likedSongs && response.data.likedSongs.length > 0) {
+          setLikedTrackId(response.data.likedSongs[0].id);  // Assuming you want the first liked song ID
+        }
+      })
+      .catch(error => {
+        console.log('Error fetching liked songs:', error);
+      });
+    }
+  }, [token]);
+
+  // Handle like/unlike functionality
+  const handleLike = (songId) => {
+    if (!token) {
+      console.log("User not authenticated");
+      return;
+    }
+
+    console.log('currentTrack:', currentTrack);
+    console.log('likedTrackId:', likedTrackId);
+    console.log('Song ID:', songId);
+
+    // Check if the current track is already liked
+    if (likedTrackId !== songId) {
+      // Like the song
+      axios.post('http://localhost:8000/api/v1/users/like-song', { songId }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(response => {
+        console.log('Song liked:', response.data);
+        setLikedTrackId(songId);  // Update state with the newly liked song ID
+      })
+      .catch(error => {
+        console.log('Error liking the song:', error);
+      });
+    } else {
+      // Unlike the song
+      axios.post('http://localhost:8000/api/v1/users/unlike-song', { songId }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(response => {
+        console.log('Song unliked:', response.data);
+        setLikedTrackId(null);  // Reset the likedTrackId state
+      })
+      .catch(error => {
+        console.log('Error unliking the song:', error);
+      });
+    }
+  };
+    
   return (
     <div className="controlsCont bg-neutral-900 h-[70px] flex z-1 fixed left-0 right-0 bottom-0 py-1">
       <div className='SongDetails p-2 lg:w-[22%] w-[50%] flex justify-between'>
@@ -78,25 +123,33 @@ export default function Controls() {
           <img src="/playlistPhoto1.webp" alt="" className='w-[40px] mr-4' />
           <div className='flex flex-col'>
             {/* {console.log(currentTrack)} */}
-            {/* <span className='text-white'>{currentTrack || 'No track Playing'}</span> */}
-            <span className='text-white'>{currentTrack ? currentTrack.name : 'No track Playing'}</span>
-            {/* <span className='text-white'>{isPlaying ? currentTrack : 'No track Playing'}</span> */}
 
-            {/* <span>Artists name</span> */}
-            {/* <span className='text-white'>{currentTrack ? currentTrack.artists : 'No artists'}</span> */}
-            {/* <span className='text-white'>{currentTrack ? currentTrack.artists.join(', ') : 'No artist available'}</span> */}
-            <span className='text-white'>
-    {Array.isArray(currentTrack?.artists) 
-      ? currentTrack.artists.join(', ') 
-      : currentTrack?.artists || 'No artist available'}
-  </span>
+            <span className='text-white'>{currentTrack ? currentTrack.name : 'No track Playing'}</span>
+           
+            {/* <span className='text-white'>
+    {currentTrack.artists
+      ? (currentTrack.artists.join(', ') )
+      : (currentTrack?.artists || 'No artist available')
+    }
+
+    {
+      console.log(currentTrack.artists)
+    }
+  </span> */}
+        <span className='text-white'>
+  {currentTrack && currentTrack.artists && currentTrack.artists.length > 0
+    ? currentTrack.artists.map(artist => artist.name).join(', ') // Safely join the artist names
+    : 'No artists available'}
+  {console.log(currentTrack)} {/* For debugging */}
+</span>
+
         </div>
 
         </div>
        
         {currentTrack ? (
-          <FavoriteOutlinedIcon className='text-white' onClick={handleLike} style={{
-            fill: isLiked ? 'pink' : 'white'
+          <FavoriteOutlinedIcon className='text-white' onClick={() => handleLike(currentTrack.id)} style={{
+            fill: (likedTrackId === currentTrack.id) ? 'pink' : 'white'
           }} />
           
         ) : (

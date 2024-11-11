@@ -5,37 +5,44 @@ import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { useUser } from '../Context/UserContext';
+import { PlayerContext } from '../Context/PlayerContext';
 
 export default function LeftSidebar(){
-  // const [playlists, setPlaylists] = useState([]);
-  // const token = localStorage.getItem("token");
+  const [playlists, setPlaylists] = useState([]);
+  const token = localStorage.getItem("token");
 
-  // if (!token) {
-  //   console.error("No token found in localStorage.");
-  //   return;
-  // }
-  // useEffect(() => {
-  //     const fetchPlaylists = async () => {
-  //       try {
-  //         const response = await axios.get("http://localhost:8000/api/v1/playlists/getPlaylists", {
-  //           headers: {
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         }); // Assuming this is your endpoint
-  //         const playlistData = response.data;
-  //         setPlaylists(response.data);
-  //         console.log(playlistData);
-  //         } catch (error) {
-  //         console.error("Error fetching playlists:", error.response || error.message);
-  //         }
-  //     };
-  //     fetchPlaylists();
-  // }, []);
+  if (!token) {
+    console.error("No token found in localStorage.");
+    return;
+  }
+  useEffect(() => {
+      const fetchPlaylists = async () => {
+        try {
+          const response = await axios.get("http://localhost:8000/api/v1/playlists/getPlaylists", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }); // Assuming this is your endpoint
+          const playlistData = response.data;
+          setPlaylists(response.data);
+          console.log(playlistData);
+          } catch (error) {
+          console.error("Error fetching playlists:", error.response || error.message);
+          }
+      };
+      fetchPlaylists();
+  }, []);
+
+  const { history, setHistory, likedSongs, setLikedSongs } = useUser();
+  // const { isLiked }
+  // const {  } = 
+
   return (
     <>
   {/* <div className="relative flex flex-col bg-clip-border rounded-xl bg-neutral-800 text-white h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5"> */}
-  <div className="absolute hidden left-0 top-[89px] bottom-[10%] overflow-auto lg:flex flex-col bg-clip-border rounded-xl  text-white w-60 p-4 shadow-xl shadow-blue-gray-900/5" style={{backgroundColor:"#1B0025", minWidth:"100px",}}>
-    {/* <div className="mb-2 p-4">
+  <div className="absolute left-0 top-[89px] bottom-[10%] overflow-auto flex flex-col bg-clip-border rounded-xl  text-white w-60 p-4 shadow-xl shadow-blue-gray-900/5" style={{backgroundColor:"#1B0025", minWidth:"100px",}}>
+    <div className="mb-2 p-4">
       <h5 className="block antialiased tracking-normal font-sans text-xl leading-snug text-white font-bold">
         Your Playlists
       </h5>
@@ -44,7 +51,7 @@ export default function LeftSidebar(){
       {playlists.map((playlist) => (
         <li key={playlist._id}>{playlist.name}</li>
       ))}
-    </ul> */}
+    </ul>
     <nav className="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-white">
     <Link to='/likedsongs'>
       <div
@@ -58,7 +65,8 @@ export default function LeftSidebar(){
         </div>
         <div className='flex flex-col'>
           <span className='text-[18px]' style={{textDecoration:"none"}}>Liked Songs</span>
-          <span style={{textDecoration:"none"}}>Playlist • 69 songs</span>
+          <span style={{textDecoration:"none"}}>Playlist • {likedSongs.length} songs</span>
+          {/* {console.log(likedSongs.length)} */}
         </div>
       </div>
       </Link>
@@ -73,7 +81,7 @@ export default function LeftSidebar(){
         </div>
         <div className='flex flex-col'>
           <span className='text-[18px]' style={{textDecoration:"none"}}>Song History</span>
-          <span style={{textDecoration:"none"}}>Playlist • 69 songs</span>
+          <span style={{textDecoration:"none"}}>Playlist • {history.length} songs</span>
         </div>
       </div>
       </Link>

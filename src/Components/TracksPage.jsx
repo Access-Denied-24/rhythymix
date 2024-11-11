@@ -87,7 +87,7 @@ export default function TracksPage({ tracks, setIsSearched }) {
             {activeTrackId === element.id ? 'Pause' : 'Play'}
           </button> */}
                     <div className="text-black"
-                    onClick={() => togglePlayPause(element.preview_url, element.id, element.name)} // Pass track URL and ID
+                    onClick={() => togglePlayPause(element.preview_url, element.id, element.name, element.artists)} // Pass track URL and ID
                     >
 
                     {activeTrackId === element.id && isPlaying ? <PauseCircleOutlineIcon className="cursor-pointer mr-5"/> : <PlayCircleOutlinedIcon className="cursor-pointer"/> }

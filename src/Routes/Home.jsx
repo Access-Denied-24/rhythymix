@@ -8,17 +8,20 @@ import ToastNotif from "../Components/SuccessMsg";
 import TracksPage from "../Components/TracksPage";
 import { useSearched } from "../Context/SearchedContext";
 import CreatePlaylistForm from "../Components/CreatePlaylistForm";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   const { isSearched } = useSearched();
-  const [ tracks, setTracks ] = useState([]);
+  // const [ tracks, setTracks ] = useState([]);
   const [ isLoading, setIsLoading ] = useState(true);
   const [ albums, setAlbums ] = useState([]);
   const [playlists, setPlaylists] = useState([]);
+  const { tracks, setTracks } = useSearched();
 
   const addNewPlaylist = (playlist) => {
       setPlaylists((prevPlaylists) => [...prevPlaylists, playlist]);
   };
+
 
   useEffect(() => {
     const fetchNewReleases= async() => {
@@ -84,7 +87,19 @@ export default function Home() {
                             <p>Total Tracks : {album.total_tracks}</p>
                           </div>
                         </div>
-                      ))}
+                      ))} 
+                      {albums.map((album) => (
+  <Link to={`/album/${album.id}`} key={album.id} className="card border rounded-md flex flex-col w-[25%]">
+    <div className="ImgCont">
+      <img src={album.images[0].url} alt={album.name} className="rounded-md" />
+    </div>
+    <div className="infoCont p-2">
+      <p><strong>{album.name}</strong></p>
+      <p>{album.artists.map(artist => artist.name).join(', ')}</p>
+      <p>Total Tracks : {album.total_tracks}</p>
+    </div>
+  </Link>
+))}
                     </div>
                 </div>
 
