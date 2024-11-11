@@ -8,11 +8,13 @@ import { Link } from 'react-router-dom';
 import { useUser } from '../Context/UserContext';
 import { PlayerContext } from '../Context/PlayerContext';
 import CreatePlaylist from './CreatePlaylist';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
 export default function LeftSidebar(){
-  const [playlists, setPlaylists] = useState([]);
+  // const [playlists, setPlaylists] = useState([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { playlists, setPlaylists } = useUser();
 
 
   const token = localStorage.getItem("token");
@@ -126,7 +128,7 @@ export default function LeftSidebar(){
   {Array.isArray(playlists) && playlists.length > 0 ? (
     playlists.map((playlist) => (
       <Link to={`/playlist/${playlist._id}`} key={playlist._id}>
-        <li className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-purple-900 hover:bg-opacity-80 focus:bg-purple-900 focus:bg-opacity-80 active:bg-purple-900 active:bg-opacity-80">
+        <li className="group flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-purple-900 hover:bg-opacity-80 focus:bg-purple-900 focus:bg-opacity-80 active:bg-purple-900 active:bg-opacity-80 justify-between">
           <div className="flex mr-4 w-[40px] h-[40px]">
             <MusicNoteIcon style={{ width: "100%", height: "100%" }} />
           </div>
@@ -139,6 +141,8 @@ export default function LeftSidebar(){
               Playlist • {playlist.songs?.length || 0} songs
             </span>
           </div>
+          <RemoveCircleOutlineIcon className="text-neutral-500 fill-black opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out"
+            style={{ color: "rgba(0, 0, 0, 0.3)" }} />
         </li>
       </Link>
             ))

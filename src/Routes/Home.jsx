@@ -63,7 +63,6 @@ export default function Home() {
         <div className="flex justify-center items-start flex-grow w-[100%] h-[100%] overflow-auto border">
 
           <div className="middleCont w-[57%] h-[100%] flex flex-col rounded-xl bg-neutral-800 text-white p-4 shadow-xl shadow-blue-gray-900/5 z-5" style={{backgroundColor:"#1B0025"}}>
-            {/* <b>Home Page</b> */}
 
             {console.log(isSearched)}
             {isSearched ? (
@@ -75,19 +74,7 @@ export default function Home() {
                   <h2>Top 5 Recommended Albums</h2>
     
                   <div className="albumsGrid flex flex-wrap gap-4 justify-center">
-                      {/* {albums.map((album) => (
-                        
-                        <div key={album.id} className="card border rounded-md flex flex-col w-[25%]">
-                          <div className="ImgCont">
-                            <img src={album.images[0].url} alt={album.name} className="rounded-md" />
-                          </div>
-                          <div className="infoCont p-2">
-                            <p><strong>{album.name}</strong></p>
-                            <p>{album.artists.map(artist => artist.name).join(', ')}</p>
-                            <p>Total Tracks : {album.total_tracks}</p>
-                          </div>
-                        </div>
-                      ))} */}
+                    
                       {albums.map((album) => (
   <Link to={`/album/${album.id}`} key={album.id} className="card border rounded-md flex flex-col w-[25%]">
     <div className="ImgCont">
@@ -103,13 +90,6 @@ export default function Home() {
                     </div>
                 </div>
 
-                {/* <div className="recentlyPlayed">
-                  Recently Played Albums
-                </div>
-
-                <div className="bestOfArtists">
-                  Best of Artists
-                </div> */}
               </div>
             )}
            </div>
