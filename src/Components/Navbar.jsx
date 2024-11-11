@@ -80,7 +80,7 @@ export default function Navbar({ setTracks, audioRef, setIsPlaying }) {
   // };
 
   return (
-    <Disclosure as="nav" className="bg-[#120018] py-2 fixed w-[100vw]" >
+    <Disclosure as="nav" className="bg-[#120018] py-2 fixed w-[100vw] z-10" >
       <div className="" style={{ backgroundColor: "#1B0025" }}>
       <div className="px-4">
         <div className="relative flex p-2 h-14 items-center justify-between">

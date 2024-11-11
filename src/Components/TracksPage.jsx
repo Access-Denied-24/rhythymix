@@ -90,9 +90,9 @@ export default function TracksPage({ tracks, setIsSearched }) {
                     onClick={() => togglePlayPause(element.preview_url, element.id, element.name)} // Pass track URL and ID
                     >
 
-                    {activeTrackId === element.id && isPlaying ? <PauseCircleOutlineIcon className="cursor-pointer"/> : <PlayCircleOutlinedIcon className="cursor-pointer"/> }
+                    {activeTrackId === element.id && isPlaying ? <PauseCircleOutlineIcon className="cursor-pointer mr-5"/> : <PlayCircleOutlinedIcon className="cursor-pointer"/> }
                     </div>
-                    <QueueMusicIcon className="cursor-pointer" onClick={() => addToQueue(element)}/>
+                    <QueueMusicIcon className="cursor-pointer ml-5" onClick={() => addToQueue(element)}/>
 
                   {/* <audio preload="auto" controls></audio> */}
                 </div>
