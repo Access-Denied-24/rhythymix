@@ -13,10 +13,10 @@ export default function Album() {
 
       try {
         // Fetch album details by albumId
-        // const albumResponse = await fetch(`http://localhost:8000/api/v1/spotify/album/${albumId}`);
-        // const albumData = await albumResponse.json();
-        // console.log('Album Data:', albumData); // Log album data
-        // setAlbum(albumData);
+        const albumResponse = await fetch(`http://localhost:8000/api/v1/spotify/album/${albumId}`);
+        const albumData = await albumResponse.json();
+        console.log('Album Data:', albumData); // Log album data
+        setAlbum(albumData);
 
         // Fetch tracks for the album by albumId
         const tracksResponse = await fetch(`http://localhost:8000/api/v1/spotify/album/${albumId}/tracks`);
@@ -48,13 +48,6 @@ export default function Album() {
       {/* <h2>{album.name}</h2> */}
       {/* <p>By {tracks.artists.map(artist => artist.name).join(', ')}</p> */}
       <ul>
-        {/* {AlbTracks.tracks > 0 ? (
-          AlbTracks.tracks.map(track => (
-            <li key={track.id}>{track.name}</li>
-          ))
-        ) : (
-          <p>No tracks available</p>
-        )} */}
 
           {
           AlbTracks.map(track => (

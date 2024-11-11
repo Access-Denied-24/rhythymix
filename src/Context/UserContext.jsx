@@ -14,6 +14,7 @@ export const UserProvider = ({ children }) => {
   let [ displayName, setDisplayName ] = useState('');
   const [history, setHistory] = useState([]);
   const [likedSongs, setLikedSongs] = useState([]);
+  const [ playlistName, setPlaylistName ] = useState('');
 
 
 
@@ -39,7 +40,7 @@ export const UserProvider = ({ children }) => {
 
 
   return (
-    <UserContext.Provider value={{ user, setUser, displayName, setDisplayName, history, setHistory, likedSongs, setLikedSongs }}>
+    <UserContext.Provider value={{ user, setUser, displayName, setDisplayName, history, setHistory, likedSongs, setLikedSongs, playlistName, setPlaylistName }}>
       {children}
     </UserContext.Provider>
   );

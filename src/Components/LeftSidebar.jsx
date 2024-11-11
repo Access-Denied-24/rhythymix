@@ -7,9 +7,14 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useUser } from '../Context/UserContext';
 import { PlayerContext } from '../Context/PlayerContext';
+import CreatePlaylist from './CreatePlaylist';
 
 export default function LeftSidebar(){
   const [playlists, setPlaylists] = useState([]);
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
   const token = localStorage.getItem("token");
 
   if (!token) {
@@ -38,6 +43,19 @@ export default function LeftSidebar(){
   // const { isLiked }
   // const {  } = 
 
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
+
+
+  // const handleCreatePlaylist = () => {
+  //   setShowCreateForm(true);  // Show the Create Playlist form
+  // };
+
+  const handlePlaylistCreated = (newPlaylist) => {
+    setPlaylists([...playlists, newPlaylist]);  // Add the new playlist to the list
+    setShowCreateForm(false);  // Hide the form after playlist is created
+  };
+
+
   return (
     <>
   {/* <div className="relative flex flex-col bg-clip-border rounded-xl bg-neutral-800 text-white h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5"> */}
@@ -47,11 +65,16 @@ export default function LeftSidebar(){
         Your Playlists
       </h5>
     </div>
-    <ul>
-      {playlists.map((playlist) => (
-        <li key={playlist._id}>{playlist.name}</li>
-      ))}
-    </ul>
+   <button onClick={toggleModal} className="p-2 bg-blue-600 text-white rounded-lg">Create Playlist</button>
+      
+      {isModalOpen && (
+        <CreatePlaylist onClose={toggleModal} onPlaylistCreated={handlePlaylistCreated}  />
+      )}
+
+{console.log(playlists)}
+
+
+
     <nav className="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-white">
     <Link to='/likedsongs'>
       <div
@@ -85,6 +108,45 @@ export default function LeftSidebar(){
         </div>
       </div>
       </Link>
+
+      {/* <ul>
+      {Array.isArray(playlists) && playlists.length > 0 ? (
+        playlists.map((playlist) => (
+          <li key={playlist._id}>
+            {/* Check for name and show 'Loading...' if undefined 
+            {playlist?.name || 'Loading...'}
+          </li>
+            ))
+          ) : (
+            <li>No playlists available</li>
+          )}
+    </ul> */}
+
+<ul>
+  {Array.isArray(playlists) && playlists.length > 0 ? (
+    playlists.map((playlist) => (
+      <Link to={`/playlist/${playlist._id}`} key={playlist._id}>
+        <li className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-purple-900 hover:bg-opacity-80 focus:bg-purple-900 focus:bg-opacity-80 active:bg-purple-900 active:bg-opacity-80">
+          <div className="flex mr-4 w-[40px] h-[40px]">
+            <MusicNoteIcon style={{ width: "100%", height: "100%" }} />
+          </div>
+          <div className='flex flex-col'>
+            <span className='text-[18px]' style={{ textDecoration: "none" }}>
+              {playlist?.name || 'Loading...'}
+            </span>
+            <span style={{ textDecoration: "none" }}>
+              {/* You can add more details here like song count if available */}
+              Playlist • {playlist.songs?.length || 0} songs
+            </span>
+          </div>
+        </li>
+      </Link>
+            ))
+          ) : (
+            <li>No playlists available</li>
+          )}
+    </ul>
+
 
       <Link to="/playlist">
         <div

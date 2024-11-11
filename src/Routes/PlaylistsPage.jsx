@@ -6,8 +6,6 @@ import { useState, useEffect } from "react";
 import Controls from "../Components/Controls";
 import ToastNotif from "../Components/SuccessMsg";
 import TracksPage from "../Components/TracksPage";
-import { useSearched } from "../Context/SearchedContext";
-import CreatePlaylistForm from "../Components/CreatePlaylistForm";
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Link } from "react-router-dom";
