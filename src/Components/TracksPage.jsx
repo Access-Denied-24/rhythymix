@@ -307,7 +307,7 @@ export default function TracksPage({ tracks, setIsSearched }) {
 
   return (
     <>
-      <div className="Cont flex flex-wrap justify-center w-[100%] mx-auto overflow-auto max-h-[70vh] z-5">
+      <div className="Cont flex flex-wrap justify-center w-[100%] mx-auto overflow-auto max-h-[70vh]">
         {songList.map((element, index) => (
           <div key={index} className="m-4 flex justify-center">
             <div className="Card bg-neutral-900 border border-gray-200 shadow dark:bg-[#120018] p-2 rounded-xl dark:border-gray-700 relative w-[9rem] hover:scale-105 transform transition duration-300 ease-in-out">

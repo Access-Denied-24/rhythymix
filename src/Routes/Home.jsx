@@ -62,7 +62,7 @@ export default function Home() {
         <LeftSidebar />
         <div className="flex justify-center items-start flex-grow w-[100%] h-[100%] overflow-auto border">
 
-          <div className="middleCont w-[57%] h-[100%] flex flex-col rounded-xl bg-neutral-800 text-white p-4 shadow-xl shadow-blue-gray-900/5 z-5" style={{backgroundColor:"#1B0025"}}>
+          <div className="middleCont w-[57%] h-[100%] flex flex-col rounded-xl bg-neutral-800 text-white p-4 shadow-xl shadow-blue-gray-900/5 z-1" style={{backgroundColor:"#1B0025"}}>
 
             {console.log(isSearched)}
             {isSearched ? (
