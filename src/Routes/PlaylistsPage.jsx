@@ -12,6 +12,7 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { useUser } from "../Context/UserContext";
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import SharePlaylist from "../Components/sharePlaylistBTN";
 
 export default function PlaylistsPage() {
   const [playlist, setPlaylist] = useState(null);
@@ -131,7 +132,7 @@ export default function PlaylistsPage() {
                   >
                     {playlist.description}
                   </span>
-                </div>
+                </div><SharePlaylist playlistId={playlistId}/>
               </div>
               <div>
                 <div className="liked-songs-list px-3">
@@ -202,6 +203,7 @@ export default function PlaylistsPage() {
                 </div>
               </div>
             </div>
+            
           </div>
           <RightSidebar />
         </div>

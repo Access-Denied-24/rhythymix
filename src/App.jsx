@@ -20,6 +20,7 @@ import { PlayerContextProvider } from './Context/PlayerContext';
 import PlaylistsPage from './Routes/PlaylistsPage';
 import ResetPassword from './Components/ResetPass';
 import Album from './Routes/Album';
+import PlaylistDetails from './Components/playlistByLink';
 
 const router = createBrowserRouter([
   {
@@ -78,11 +79,11 @@ const router = createBrowserRouter([
     path: "/album/:albumId",
     element: <Album />
   }
-  //,
-  // {
-  //   path: "/playlist/:playlistId",
-  //   element: <PlaylistDetails/>
-  // }
+  ,
+  {
+    path: "/playlist/:playlistId/link",
+    element: <PlaylistDetails/>
+  }
 ]);
 
 function App() {
