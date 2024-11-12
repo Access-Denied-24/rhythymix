@@ -23,6 +23,7 @@ export default function ProfilePage(){
 
   // const [user, setUser] = useState(null);
   const {user, displayName, setDisplayName, setUser} = useUser();
+
   // let [ displayName, setDisplayName ] = useState('vortex' || '');
   const [ showModal, setShowModal ] = useState(false);
   const [ isHovering, setIsHovering ] = useState(false);
@@ -32,6 +33,8 @@ export default function ProfilePage(){
 
   const navigate = useNavigate();
   // console.log(displayName);
+
+  const token = localStorage.getItem('token');
 
   const handleModalClick = () => {
     setShowModal(true);
@@ -64,9 +67,10 @@ export default function ProfilePage(){
         //   console.error("Failed to upload image:", error);
         // }
         axios
-        .post("/profileImage", formData, {
+        .post("http://localhost:8000/api/v1/users/profileImage", formData, {
           headers: {
             "Content-Type": "multipart/form-data", // Optional if axios is used with FormData
+            Authorization: `Bearer ${token}`
           },
         })
         .then((response) => {
@@ -79,32 +83,30 @@ export default function ProfilePage(){
         });
       };
 
-      useEffect(() => {
-        // Fetch user profile data on component load
-        const fetchUserData = async () => {
-          try {
-            const response = await axios.get("/getUserProfile");
-            const profileImage = response.data.profileImage;
+      // useEffect(() => {
+      //   // Fetch user profile data on component load
+      //   const fetchUserData = async () => {
+      //     try {
+      //       const response = await axios.get("/getUserProfile");
+      //       const profileImage = response.data.profileImage;
 
-            console.log("Fetched user data:", response.data.profileImage); 
+      //       console.log("Fetched user data:", response.data.profileImage); 
             
-            if (profileImage) setImage(profileImage);
-            setUser(response.data);
-          } catch (error) {
-            console.error("Error fetching user data:", error);
-          }
-        };
+      //       if (profileImage) setImage(profileImage);
+      //       setUser(response.data);
+      //     } catch (error) {
+      //       console.error("Error fetching user data:", error);
+      //     }
+      //   };
     
-        fetchUserData();
-      }, [setUser]);
+      //   fetchUserData();
+      // }, [setUser]);
     
     
     if(isSearched){
       navigate('/');
     }
-
-
-    if (!user) navigate('/');
+    
     
     // if(!user) return navigate('/');
 
@@ -131,12 +133,12 @@ export default function ProfilePage(){
   
   return (
     <>
-    <div className="flex flex-col h-[90vh] border">
+    <div className="flex flex-col h-[90vh]">
       <Navbar />
       <div className="flex flex-grow">
         <LeftSidebar />
-        <div className="middlePart flex justify-center items-start w-[100%] h-[100%]">
-          <div className="w-[57%] border h-[100%] flex flex-col text-white shadow-xl shadow-blue-gray-900/5
+        <div className="middlePart flex justify-center  w-[100%] h-[77vh] pb-20 mt-[90px]">
+          <div className="w-[57%] h-[123%] flex flex-col text-white shadow-xl shadow-blue-gray-900/5
           bg-clip-border rounded-xl
           " style={{backgroundColor:"#1B0025"}}>
             {/* Profile Page */}
@@ -159,10 +161,10 @@ export default function ProfilePage(){
             {/* {isSearched ? (
               <TracksPage tracks={tracks || []} />
             ) : ( */}
-              <div className="banner flex h-[50%] w-full p-2 bg-clip-border rounded-t-xl" style={{backgroundColor:"#3e0652"}}>
+              <div className="banner flex h-[270px] w-full p-2 bg-clip-border rounded-t-xl" style={{backgroundColor:"#3e0652"}}>
 
                 {/* w-[15vw] h-[30vh] */}
-                <div className="PicleftSide relative w-[100px] h-[70%] flex flex-col justify-center self-end bg-neutral-800 transition-all" style={{borderRadius:"60%", minWidth:"25%"}}
+                <div className="PicleftSide relative w-[100px] h-[70%] z-1 flex flex-col justify-center self-end bg-neutral-800 transition-all" style={{borderRadius:"60%", minWidth:"25%"}}
                 onMouseEnter={() => setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
                 onClick={handleImageClick}
@@ -215,15 +217,15 @@ export default function ProfilePage(){
                       {/* <Link to="">Edit profile</Link> */}
                       <button onClick={handleModalClick}>Edit Profile</button>
                     </MenuItem>
-                      {showModal && (<ChangeName onClose={() => setShowModal(false)}
-                      onNameChange={setDisplayName}
-                      />)}
-
+    
                     <MenuItem className="block p-1 text-neutral-500 data-[focus]:bg-neutral-700">
                       <Link to="">Change Password</Link>
                     </MenuItem>
                   </MenuItems>
                 </Menu>
+                {showModal && (<ChangeName onClose={() => setShowModal(false)}
+                      onNameChange={setDisplayName}
+                      />)}
               </div>
 
             {/* ) */}
@@ -235,7 +237,7 @@ export default function ProfilePage(){
       </div>
     </div>
 
-    {/* <Controls /> */}
+    <Controls />
 
     </>
   );
