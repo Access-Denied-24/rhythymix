@@ -12,6 +12,12 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   let [ displayName, setDisplayName ] = useState('');
+  const [history, setHistory] = useState([]);
+  const [likedSongs, setLikedSongs] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
+  const token = localStorage.getItem('token');
+
+
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -32,10 +38,31 @@ export const UserProvider = ({ children }) => {
     fetchProfile();
   }, []);
 
+  console.log(playlists);
+
+  const addToPlaylist = (track, playlistId) => {
+    console.log('trackid : ', track.id);
+    axios.put(`http://localhost:8000/api/v1/playlists/${playlistId}/add-song`, {
+      songId: track.id,
+      playlistId,
+    },{
+      headers:{
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      // Handle success (e.g., update state or show a success message)
+      console.log('Track added to playlist');
+    })
+    .catch(error => {
+      console.error("Error adding to playlist", error);
+    });
+  };
+
 
 
   return (
-    <UserContext.Provider value={{ user, setUser, displayName, setDisplayName }}>
+    <UserContext.Provider value={{ user, setUser, displayName, setDisplayName, history, setHistory, likedSongs, setLikedSongs, playlists, setPlaylists, addToPlaylist }}>
       {children}
     </UserContext.Provider>
   );

@@ -6,15 +6,18 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSearched } from '../Context/SearchedContext';
+import { useUser } from '../Context/UserContext';
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
+// function classNames(...classes) {
+//   return classes.filter(Boolean).join(' ')
+// }
 
-export default function Navbar({ setTracks, audioRef, setIsPlaying }) {
+export default function Navbar() {
   const [isClicked, setIsClicked] = useState(false);
   const [InputValue, setInputValue] = useState('');
-  const { setIsSearched } = useSearched();
+  const { setIsSearched, tracks, setTracks } = useSearched();
+  const { user } = useUser();
+
 
   const inputVal = (event) => {
     setInputValue(event.target.value);
@@ -55,6 +58,7 @@ export default function Navbar({ setTracks, audioRef, setIsPlaying }) {
       });
 
       setIsSearched(true);
+      // navigate(`/profile?search=${InputValue}`);
     } catch (error) {
       console.error('Error fetching multi-search data:', error);
     }

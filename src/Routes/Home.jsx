@@ -7,14 +7,15 @@ import Controls from "../Components/Controls";
 import ToastNotif from "../Components/SuccessMsg";
 import TracksPage from "../Components/TracksPage";
 import { useSearched } from "../Context/SearchedContext";
-import CreatePlaylistForm from "../Components/CreatePlaylistForm";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   const { isSearched } = useSearched();
-  const [ tracks, setTracks ] = useState([]);
+  // const [ tracks, setTracks ] = useState([]);
   const [ isLoading, setIsLoading ] = useState(true);
   const [ albums, setAlbums ] = useState([]);
   const [playlists, setPlaylists] = useState([]);
+  const { tracks, setTracks } = useSearched();
 
   const addNewPlaylist = (playlist) => {
       setPlaylists((prevPlaylists) => [...prevPlaylists, playlist]);
@@ -59,42 +60,36 @@ export default function Home() {
       <Navbar setTracks={setTracks} />
       <div className="flex flex-grow">
         <LeftSidebar />
-        <div className="flex justify-center items-start flex-grow w-[100%] h-[100%] overflow-auto ">
-          <div className="middleCont w-[80%] lg:w-[57%] h-[100%] flex flex-col rounded-xl pt-24 pb-12 bg-neutral-800 text-white p-4 shadow-xl shadow-blue-gray-900/5 z-5" style={{backgroundColor:"#1B0025"}}>
-            {/* <b>Home Page</b> */}
+        <div className="flex justify-center items-start flex-grow w-[100%] h-[100%] overflow-auto border">
+
+          <div className="middleCont w-[57%] h-[100%] flex flex-col rounded-xl bg-neutral-800 text-white p-4 shadow-xl shadow-blue-gray-900/5 z-5" style={{backgroundColor:"#1B0025"}}>
 
             {console.log(isSearched)}
             {isSearched ? (
               <TracksPage tracks={tracks || []} />
             ) : (
-              <div className="homeContent w-full lg:max-h-[500px] text-center overflow-auto">
+              <div className="homeContent border w-full max-h-[500px] text-center overflow-auto">
 
                 <div className="recommended">
                   <h2>Top 5 Recommended Albums</h2>
     
                   <div className="albumsGrid flex flex-wrap gap-4 justify-center">
+                    
                       {albums.map((album) => (
-                        <div key={album.id} className="card border rounded-md flex flex-col lg:w-[25%] w-[100%]">
-                          <div className="ImgCont">
-                            <img src={album.images[0].url} alt={album.name} className="rounded-md" />
-                          </div>
-                          <div className="infoCont p-2">
-                            <p><strong>{album.name}</strong></p>
-                            <p>{album.artists.map(artist => artist.name).join(', ')}</p>
-                            <p>Total Tracks : {album.total_tracks}</p>
-                          </div>
-                        </div>
-                      ))}
+  <Link to={`/album/${album.id}`} key={album.id} className="card border rounded-md flex flex-col w-[25%]">
+    <div className="ImgCont">
+      <img src={album.images[0].url} alt={album.name} className="rounded-md" />
+    </div>
+    <div className="infoCont p-2">
+      <p><strong>{album.name}</strong></p>
+      <p>{album.artists.map(artist => artist.name).join(', ')}</p>
+      <p>Total Tracks : {album.total_tracks}</p>
+    </div>
+  </Link>
+))}
                     </div>
                 </div>
 
-                {/* <div className="recentlyPlayed">
-                  Recently Played Albums
-                </div>
-
-                <div className="bestOfArtists">
-                  Best of Artists
-                </div> */}
               </div>
             )}
            </div>
