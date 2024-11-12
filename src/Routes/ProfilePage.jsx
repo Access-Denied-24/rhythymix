@@ -64,7 +64,7 @@ export default function ProfilePage(){
         //   console.error("Failed to upload image:", error);
         // }
         axios
-        .post("/profileImage", formData, {
+        .post("http://localhost:8000/api/v1/users/profileImage", formData, {
           headers: {
             "Content-Type": "multipart/form-data", // Optional if axios is used with FormData
           },
