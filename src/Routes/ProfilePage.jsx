@@ -7,22 +7,19 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Link, useNavigate } from "react-router-dom";
 import Controls from "../Components/Controls";
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import axios from 'axios';
-import ChangeName from "../Components/ChangeName";
-import Settings from "./Settings";
-import Home from "./Home";
-import { Navigate } from "react-router-dom";
 import { useUser } from "../Context/UserContext";
 import { useSearched } from '../Context/SearchedContext';
-import TracksPage from "../Components/TracksPage";
 import { ToastContainer, toast } from "react-toastify";
+import Modal from "../Components/Modal";
+import PasswordModal from "../Components/PasswordModal";
 
 
 export default function ProfilePage(){
 
   // const [user, setUser] = useState(null);
-  const {user, displayName, setDisplayName, setUser} = useUser();
+  const {user, displayName, setDisplayName, setUser, newName, setNewName} = useUser();
 
   // let [ displayName, setDisplayName ] = useState('vortex' || '');
   const [ showModal, setShowModal ] = useState(false);
@@ -30,11 +27,26 @@ export default function ProfilePage(){
   const [ image, setImage ] = useState('');
   const inputRef = useRef(null);
   const { isSearched, tracks, setTracks } = useSearched();
+  // const [ newName, setNewName ] = useState('');
 
   const navigate = useNavigate();
   // console.log(displayName);
 
   const token = localStorage.getItem('token');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+
+
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
 
   const handleModalClick = () => {
     setShowModal(true);
@@ -53,19 +65,7 @@ export default function ProfilePage(){
       const formData = new FormData();
       formData.append("profileImage", file);
 
-        // try {
-        //   const response = await axios.post("/profileImage", formData, {
-        //     headers: {
-        //       "Content-Type": "multipart/form-data",
-        //     },
-        //   });
-
-        //   // Update user profile image URL
-        //   const imageUrl = response.data.secure_url;
-        //   setUser(prevUser => ({ ...prevUser, profileImage: imageUrl }));
-        // } catch (error) {
-        //   console.error("Failed to upload image:", error);
-        // }
+  
         axios
         .post("http://localhost:8000/api/v1/users/profileImage", formData, {
           headers: {
@@ -83,29 +83,67 @@ export default function ProfilePage(){
         });
       };
 
-      // useEffect(() => {
-      //   // Fetch user profile data on component load
-      //   const fetchUserData = async () => {
-      //     try {
-      //       const response = await axios.get("/getUserProfile");
-      //       const profileImage = response.data.profileImage;
 
-      //       console.log("Fetched user data:", response.data.profileImage); 
-            
-      //       if (profileImage) setImage(profileImage);
-      //       setUser(response.data);
-      //     } catch (error) {
-      //       console.error("Error fetching user data:", error);
-      //     }
-      //   };
-    
-      //   fetchUserData();
-      // }, [setUser]);
-    
-    
     if(isSearched){
       navigate('/');
     }
+
+
+    const changeUsername = async (newName) => {
+      console.log('new entered name : ', newName)
+      // if (!user) {
+      //   console.error("User data not available");
+      //   return;
+      // }
+    
+      try {
+        const response = await axios.put(
+          'http://localhost:8000/api/v1/users/update',
+          { username: newName },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+        console.log(response);
+        console.log("Username updated successfully:", response.data);
+        setUser(response.data); // Update user state with the new username
+        setDisplayName(newName)
+        // toast.success("Username updated successfully!");
+      } catch (error) {
+        // Check if the error is an AxiosError and log the detailed response
+        if (axios.isAxiosError(error)) {
+          console.error("Axios error details:", error.response?.data || error.message);
+          // toast.error("Failed to update username.");
+        } else {
+          console.error("Unexpected error:", error);
+          // toast.error("Unexpected error occurred.");
+        }
+      }
+    };
+
+    const handleChangePassword = async () => {
+      try {
+        const response = await axios.put(
+          'http://localhost:8000/api/v1/users/update',
+          { password: currentPassword, newPassword },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        // toast.success("Password updated successfully!");
+        setShowPasswordModal(false);
+        setCurrentPassword('');
+        setNewPassword('');
+      } catch (error) {
+        console.error("Password update failed:", error.response?.data || error.message);
+        // toast.error("Failed to update password. Please check the current password.");
+      }
+    };
+    
     
     
     // if(!user) return navigate('/');
@@ -213,19 +251,36 @@ export default function ProfilePage(){
                   </div>
                   <MenuItems transition className="
                   absolute right-[22%] z-10  w-[190px] origin-top-right rounded-md bg-neutral-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in">
-                    <MenuItem className="block p-1 text-neutral-500 data-[focus]:bg-neutral-700">
+                    <MenuItem className="block p-1 text-neutral-500 data-[focus]:bg-neutral-700 ">
                       {/* <Link to="">Edit profile</Link> */}
-                      <button onClick={handleModalClick}>Edit Profile</button>
+                      <button onClick={handleOpenModal}>Edit Profile</button>
                     </MenuItem>
     
-                    <MenuItem className="block p-1 text-neutral-500 data-[focus]:bg-neutral-700">
-                      <Link to="">Change Password</Link>
+                    <MenuItem className="block p-1 text-neutral-500 data-[focus]:bg-neutral-700 w-full">
+                      <>
+                      {/* <Link to="" >Change Password</Link> */}
+                      <button onClick={() => setShowPasswordModal(true)}className="text-neutral-500 data-[focus]:bg-neutral-700" >Change Password</button>
+                        {showPasswordModal && (
+                          <PasswordModal
+                          currentPassword={currentPassword}
+                          newPassword={newPassword}
+                          setCurrentPassword={setCurrentPassword}
+                          setNewPassword={setNewPassword}
+                          onSave={handleChangePassword}
+                          onClose={() => setShowPasswordModal(false)}
+                          />
+                          )}
+                        </>
                     </MenuItem>
                   </MenuItems>
                 </Menu>
-                {showModal && (<ChangeName onClose={() => setShowModal(false)}
-                      onNameChange={setDisplayName}
-                      />)}
+                {/* 
+                {showModal && (<ChangeName onClose={() => setShowModal(false)}  onNameChange={changeUsername} />)} */}
+                     
+                {modalOpen && <Modal onClose={handleCloseModal} changeUsername={changeUsername} />}
+
+                
+
               </div>
 
             {/* ) */}
@@ -244,162 +299,3 @@ export default function ProfilePage(){
 }
 
 
- // console.log(useUser)
-
-
-
-  // useEffect(() => {
-  //   const fetchProfile = async () => {
-  //     const token = localStorage.getItem('token');
-  //     try {
-  //       const { data } = await axios.get('http://localhost:8000/api/v1/users/profile', {
-  //         headers: { Authorization: `Bearer ${token}` }
-  //       });
-  //       setUser(data);
-  //       setDisplayName(data.username);
-  //     } catch (err) {
-  //       console.error("Error fetching profile data:", err);
-  //     }
-  //   };
-
-  //   fetchProfile();
-  // }, []);
-
-  // setUserEmail = user.email;
-
-
-
-
-
-
-    
-            //new code 
-
-// import React, { useEffect, useRef, useState } from 'react';
-// import axios from 'axios';
-// import { ToastContainer, toast } from "react-toastify";
-// import { useUser } from "../Context/UserContext";
-// import Navbar from "../Components/Navbar";
-// import LeftSidebar from "../Components/LeftSidebar";
-// import RightSidebar from "../Components/RightSidebar";
-// import Controls from "../Components/Controls";
-// import ChangeName from "../Components/ChangeName";
-// import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-// import EditIcon from '@mui/icons-material/Edit';
-// import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
-// import { Link, useNavigate } from "react-router-dom";
-// import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-
-// export default function ProfilePage() {
-//   const { user, displayName, setDisplayName, setUser } = useUser();
-//   const [showModal, setShowModal] = useState(false);
-//   const [isHovering, setIsHovering] = useState(false);
-//   const [image, setImage] = useState(user?.profileImage || ''); // Use existing image if available
-//   const inputRef = useRef(null);
-//   const token = localStorage.getItem('token');
-//   const navigate = useNavigate();
-
-//   const handleModalClick = () => setShowModal(true);
-
-//   const handleImageClick = () => inputRef.current.click();
-
-//   const handleImageChange = async (event) => {
-//     const file = event.target.files[0];
-//     const formData = new FormData();
-//     formData.append("profileImage", file);
-
-//     try {
-//       const response = await axios.post("http://localhost:8000/api/v1/users/profileImage", formData, {
-//         headers: {
-//           "Content-Type": "multipart/form-data",
-//           Authorization: `Bearer ${token}`
-//         },
-//       });
-//       const imageUrl = response.data.profileImage;
-//       setImage(imageUrl);
-//       setUser((prevUser) => ({ ...prevUser, profileImage: imageUrl }));
-//     } catch (error) {
-//       console.error("Error uploading image:", error.response || error.message);
-//       toast.error("Failed to upload image. Please try again.");
-//     }
-//   };
-
-//   const showToast = () => {
-//     toast.success('Notification!', {
-//       position: "top-right",
-//       autoClose: 5000,
-//       theme: "dark",
-//     });
-//   };
-
-//   return (
-//     <>
-//       <div className="flex flex-col h-[90vh]">
-//         <Navbar />
-//         <div className="flex flex-grow">
-//           <LeftSidebar />
-//           <div className="middlePart flex justify-center w-[100%] h-[77vh] pb-20 mt-[90px]">
-//             <div className="w-[57%] h-[123%] flex flex-col text-white shadow-xl rounded-xl bg-clip-border" style={{ backgroundColor: "#1B0025" }}>
-//               <ToastContainer position="top-right" autoClose={5000} theme="dark" />
-
-//               <div className="banner flex h-[270px] w-full p-2 bg-clip-border rounded-t-xl" style={{ backgroundColor: "#3e0652" }}>
-//                 <div className="PicleftSide relative w-[100px] h-[70%] z-1 flex flex-col justify-center self-end bg-neutral-800 transition-all"
-//                   style={{ borderRadius: "60%", minWidth: "25%" }}
-//                   onMouseEnter={() => setIsHovering(true)}
-//                   onMouseLeave={() => setIsHovering(false)}
-//                   onClick={handleImageClick}>
-                  
-//                   {image ? (
-//                     <img src={image} alt="Profile" className="w-[100%] h-[100%] self-center bg-cover rounded-[60%]" />
-//                   ) : (
-//                     <PersonOutlineOutlinedIcon className="my-8" style={{ width: "60%", height: "60%", fill: "grey" }} />
-//                   )}
-
-//                   <div className="absolute flex flex-col items-center w-full h-full justify-end gap-2 p-4 border transition-all duration-300 ease-in-out opacity-100 cursor-pointer"
-//                     style={{
-//                       borderRadius: "60%",
-//                       backgroundColor: "rgba(0,0,0,0.2)",
-//                       opacity: isHovering ? 1 : 0,
-//                       visibility: isHovering ? 'visible' : 'hidden',
-//                       transform: isHovering ? 'scale(1)' : 'scale(0.95)'
-//                     }}>
-//                     {isHovering && (
-//                       <>
-//                         <EditIcon className="transition-all duration-300 ease-in-out" style={{ width: "50%", height: "60%", fill: "white" }} />
-//                         <span className="cursor-default">Upload Photo</span>
-//                       </>
-//                     )}
-//                   </div>
-//                   <input type="file" ref={inputRef} onChange={handleImageChange} className="hidden" />
-//                 </div>
-//                 <div className="rightSide flex w-[75%] h-[65%] self-end gap-3 p-4 flex-col">
-//                   <span className="text-5xl font-bold">{displayName}</span>
-//                   <div className="playlists_flw">
-//                     <span className="cursor-text">2 Playlists</span>
-//                   </div>
-//                 </div>
-
-//                 <Menu as="div">
-//                   <MenuButton>
-//                     <MoreHorizIcon />
-//                   </MenuButton>
-//                   <MenuItems className="absolute right-[22%] z-10 w-[190px] origin-top-right rounded-md bg-neutral-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5">
-//                     <MenuItem className="block p-1 text-neutral-500">
-//                       <button onClick={handleModalClick}>Edit Profile</button>
-//                     </MenuItem>
-//                     <MenuItem className="block p-1 text-neutral-500">
-//                       <Link to="">Change Password</Link>
-//                     </MenuItem>
-//                   </MenuItems>
-//                 </Menu>
-//                 {showModal && <ChangeName onClose={() => setShowModal(false)} onNameChange={setDisplayName} />}
-//               </div>
-//             </div>
-//           </div>
-//           <RightSidebar />
-//         </div>
-//       </div>
-//       <Controls />
-//     </>
-//   );
-// }

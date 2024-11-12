@@ -122,6 +122,9 @@ export default function SongHistory({ newName }) {
                       <div
                         key={index}
                         className="song-item h-14 rounded-lg hover:bg-[#6f32978b] cursor-pointer p-2 flex w-100 align-bottom my-2"
+                        onClick={() =>
+                          togglePlayPause(song.preview_url,song.id,song.name,song.artists)
+                        }
                         >
                         <div className="w-8 text-center ml-10 mr-5 pt-2">
                           {index + 1}

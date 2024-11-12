@@ -15,6 +15,9 @@ export const UserProvider = ({ children }) => {
   const [history, setHistory] = useState([]);
   const [likedSongs, setLikedSongs] = useState([]);
   const [playlists, setPlaylists] = useState([]);
+  const [ newName, setNewName ] = useState('');
+
+
   const token = localStorage.getItem('token');
 
 
@@ -62,7 +65,7 @@ export const UserProvider = ({ children }) => {
 
 
   return (
-    <UserContext.Provider value={{ user, setUser, displayName, setDisplayName, history, setHistory, likedSongs, setLikedSongs, playlists, setPlaylists, addToPlaylist }}>
+    <UserContext.Provider value={{ user, setUser, displayName, setDisplayName, history, setHistory, likedSongs, setLikedSongs, playlists, setPlaylists, addToPlaylist, newName, setNewName }}>
       {children}
     </UserContext.Provider>
   );

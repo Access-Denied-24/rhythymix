@@ -2,23 +2,23 @@ import LeftSidebar from "../Components/LeftSidebar";
 import Navbar from "../Components/Navbar";
 import RightSidebar from "../Components/RightSidebar";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import EditIcon from "@mui/icons-material/Edit";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Controls from "../Components/Controls";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
-import ChangeName from "../Components/ChangeName";
-
 import { useUser } from "../Context/UserContext";
-// import {  }
+import { PlayerContext } from "../Context/PlayerContext";
+import { useSearched } from "../Context/SearchedContext";
 
 export default function LikedSongs({ newName }) {
   const { user, displayName, setDisplayName, likedSongs, setLikedSongs } =
     useUser();
+    const { togglePlayPause } = useContext(PlayerContext);
+    const { isSearched } = useSearched();
   // const [likedSongs, setLikedSongs] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   const formatDuration = (durationMs) => {
     const minutes = Math.floor(durationMs / 60000);
@@ -54,6 +54,10 @@ export default function LikedSongs({ newName }) {
     fetchLikedSongs();
   }, []);
 
+  // if(isSearched){
+  //   navigate('/');
+  // }
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -64,11 +68,10 @@ export default function LikedSongs({ newName }) {
         <Navbar />
         <div className="flex flex-grow">
           <LeftSidebar />
-          <div className="middlePart flex justify-center items-start w-[100%] h-[100%] pb-20">
+          <div className="middlePart flex justify-center  w-[100%] h-[77vh] pb-20 mt-[90px]">
             <div
-              className=" w-[100%] lg:w-[57%] h-[100%] min-w-[57%] mim-h-[100%] flex flex-col text-white shadow-xl shadow-blue-gray-900/5
-          bg-clip-border rounded-xl"
-              style={{ backgroundColor: "#1B0025" }}
+              className=" w-[57%] h-[77vh] flex flex-col text-white shadow-xl shadow-blue-gray-900/5
+              bg-clip-border rounded-xl" style={{backgroundColor:"#1B0025"}}
             >
               <div
                 className="banner flex  h-[40%] lg:h-[50%] w-full p-2 bg-clip-border rounded-t-xl"
@@ -118,7 +121,8 @@ export default function LikedSongs({ newName }) {
                     likedSongs.map((song, index) => (
                       <div
                         key={index}
-                        className="song-item h-14 rounded-lg hover:bg-[#6f32978b] cursor-pointer p-2 flex w-100 h-10 align-bottom my-2"
+                        className="song-item h-14 rounded-lg hover:bg-[#6f32978b] cursor-pointer p-2 flex w-100 align-bottom my-2"
+                        onClick={() => togglePlayPause(song.preview_url,song.id, song.name, song.artists)}
                       >
                         <div className="w-8 text-center ml-10 mr-5 pt-2">
                           {index + 1}

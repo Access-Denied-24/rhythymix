@@ -15,6 +15,7 @@ export const PlayerContextProvider = ({ children }) => {
   const audioRef = useRef(new Audio());
   const [activeTrackId, setActiveTrackId] = useState(null);
   const [ isLiked, setIsLiked ] = useState(false);
+  const [ currentTrackFullDetails, setCurrentTrackFullDetails ] = useState([]);
 
 
   const token = localStorage.getItem('token')
@@ -59,6 +60,18 @@ export const PlayerContextProvider = ({ children }) => {
   const pauseTrack = () => {
     audioRef.current.pause();
     setIsPlaying(false);
+  }
+
+  const addCurrentDetails = (trackURL, trackId, trackName, trackArtists, trackPop, albumImg, releaseDate, totalTracks, albumName) => {
+    console.log('track full details : ', trackURL, trackId, trackName, trackPop, albumImg, releaseDate, totalTracks);
+
+    if (activeTrackId !== trackId) {
+     
+      setCurrentTrackFullDetails({ id: trackId, name: trackName, preview_url: trackURL, artists: trackArtists, pop: trackPop, trackimg: albumImg, releaseDate: releaseDate, totaltracks: totalTracks, albumName: albumName });
+      
+      setActiveTrackId(trackId);
+    }
+
   }
 
   const togglePlayPause = (trackURL, trackId, trackName, trackArtists) => {
@@ -127,6 +140,21 @@ export const PlayerContextProvider = ({ children }) => {
     }
   }, []);
 
+  useEffect(() => {
+    const audio = audioRef.current;
+  
+    const handleMetadataLoad = () => {
+      setDuration(audio.duration);
+    };
+  
+    audio.addEventListener('loadedmetadata', handleMetadataLoad);
+  
+    // Cleanup listener on unmount
+    return () => {
+      audio.removeEventListener('loadedmetadata', handleMetadataLoad);
+    };
+  }, []);
+
   // shuffle tracks
   const toggleShuffle = () => {
     setIsShuffled(!isShuffled);
@@ -138,13 +166,28 @@ export const PlayerContextProvider = ({ children }) => {
   }
 
   // loop tracks
+  // const toggleLooping = () => {
+  //   setIsLooping(!isLooping);
+  //   console.log('Looping :', isLooping);
+  //   // if(isLooping) setCurrentTrack(currentTrack);
+  //   setCurrentTrack(currentTrack);
+  //   playTrack(currentTrack);
+  // }
   const toggleLooping = () => {
-    setIsLooping(!isLooping);
-    console.log('Looping :', isLooping);
-    // if(isLooping) setCurrentTrack(currentTrack);
-    setCurrentTrack(currentTrack);
-    playTrack(currentTrack);
-  }
+    setIsLooping(prevState => {
+      const newState = !prevState;
+      console.log('Looping:', newState);
+      
+      // Set the current track to the looped track if looping is enabled
+      setCurrentTrack(currentTrack);
+      
+      // Play the track
+      // playTrack(currentTrack);
+  
+      return newState;
+    });
+  };
+  
 
 
   
@@ -205,6 +248,8 @@ export const PlayerContextProvider = ({ children }) => {
       console.error("No valid track to add to queue:", trackToAdd);
       return; // Exit if there's no valid track to add
     }
+
+    console.log('queue track : ', track);
   
     setQueue((prevQueue) => {
       if (prevQueue.some((t) => t.id === trackId)) {
@@ -253,7 +298,7 @@ export const PlayerContextProvider = ({ children }) => {
       isShuffled, nextTrack, previousTrack, 
       setIsLooping, setIsPlaying, activeTrackId,
       setDuration, nextTrack, previousTrack, addToQueue, queue,
-      isLiked, setIsLiked
+      isLiked, setIsLiked, currentTrackFullDetails, setCurrentTrackFullDetails, addCurrentDetails
 // next track, previous track
      }}>
       {children}

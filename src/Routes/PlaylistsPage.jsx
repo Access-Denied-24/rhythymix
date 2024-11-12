@@ -1,26 +1,27 @@
 import Navbar from "../Components/Navbar";
 import LeftSidebar from "../Components/LeftSidebar";
 import RightSidebar from "../Components/RightSidebar";
-import Preloader from "../Components/Preloader";
 import { useState, useEffect, useContext } from "react";
 import Controls from "../Components/Controls";
-import ToastNotif from "../Components/SuccessMsg";
-import TracksPage from "../Components/TracksPage";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { Link, useParams } from "react-router-dom";
+
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useUser } from "../Context/UserContext";
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import { PlayerContext } from "../Context/PlayerContext";
 import SharePlaylist from "../Components/sharePlaylistBTN";
+import { useSearched } from "../Context/SearchedContext";
+
 
 export default function PlaylistsPage() {
   const [playlist, setPlaylist] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { user } = useUser();
+  const { isSearched } = useSearched();
+  const { togglePlayPause, addCurrentDetails, currentTrackFullDetails } = useContext(PlayerContext);
 
-  const { playlistId } = useParams(); // Replace with dynamic playlist ID
+  const { playlistId } = useParams(); // to replace with dynamic playlist ID in url
   // console.log(playlistId);
 
   const token = localStorage.getItem("token");
@@ -93,6 +94,10 @@ export default function PlaylistsPage() {
     return <div>{error}</div>;
   }
 
+  if(isSearched){
+    navigate('/');
+  }
+
   return (
     <>
       <div className="flex flex-col h-[100vh]">
@@ -107,7 +112,7 @@ export default function PlaylistsPage() {
               style={{ backgroundColor: "#1B0025" }}
             >
               <div
-                className="banner flex h-[40%] lg:h-[270px] w-full p-2 bg-clip-border rounded-t-xl"
+                className="banner flex h-[50%] lg:h-[270px] w-full p-2 bg-clip-border rounded-t-xl "
                 style={{ backgroundColor: "#3e0652" }}
               >
                 <div
@@ -132,7 +137,8 @@ export default function PlaylistsPage() {
                   >
                     {playlist.description}
                   </span>
-                </div><SharePlaylist playlistId={playlistId}/>
+                </div>
+                <SharePlaylist playlistId={playlistId}/>
               </div>
               <div>
                 <div className="liked-songs-list px-3">
@@ -151,9 +157,13 @@ export default function PlaylistsPage() {
                     playlist.songDetails &&
                     playlist.songDetails.length > 0 ? (
                       playlist.songDetails.map((song, index) => (
+                        console.log('song : ', song),
                         <div
                           key={index}
                           className="group song-item h-14 rounded-lg hover:bg-[#6f32978b] cursor-pointer p-2 flex w-full align-bottom my-2"
+                          onClick={() => {togglePlayPause(song.preview_url, song.id, song.name, song.artists);
+                          addCurrentDetails(song.preview_url, song.id, song.name, song.artists,song.popularity,song.album.images[0].url,song.album.release_date,song.album.total_tracks, song.album.name);
+                          }}
                         >
                           <div className="w-8 text-center ml-10 mr-5 pt-2">
                             {index + 1}
@@ -197,10 +207,12 @@ export default function PlaylistsPage() {
                       ))
                     ) 
                     : (
-                      <p>No Played songs yet</p>
+                      <p className="text-center p-4">No songs added yet!</p>
                     )}
                   </div>
                 </div>
+                {/* <SharePlaylist /> */}
+                
               </div>
             </div>
             

@@ -186,6 +186,7 @@ const CreatePlaylist = ({ onClose, onPlaylistCreated }) => {
         const token = localStorage.getItem('token');
         if (!token) {
             console.log("No token found in localStorage");
+            alert('Login to create playlist');
             return;
         }
 

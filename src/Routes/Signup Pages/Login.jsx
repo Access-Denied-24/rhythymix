@@ -71,7 +71,7 @@ export default function Login(){
             <span>Don't have an account? Register</span>
            
           </Link>
-          <GoogleLogin/>
+          <GoogleLogin className="text-center" />
 
       </form>
     </div>

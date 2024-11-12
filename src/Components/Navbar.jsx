@@ -172,8 +172,13 @@ export default function Navbar() {
                 </MenuItems>
               </Menu>
             ) : (
+              <div className=' flex'>
               <div className='font-medium rounded-md flex justify-center w-[70px] h-[40px] hover:bg-purple-900 transition-all'>
                 <Link to="/login" className='w-full h-full text-center self-center content-center'>Login</Link>
+              </div>
+              <div className='font-medium rounded-md flex justify-center w-[70px] h-[40px] hover:bg-purple-900 transition-all'>
+                <Link to="/signup" className='w-full h-full text-center self-center content-center'>Signup</Link>
+              </div>
               </div>
             )}
           </div>
