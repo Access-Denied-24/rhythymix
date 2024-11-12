@@ -12,6 +12,7 @@ import {
   loginUser, 
   registerUser, 
   resetPassword, 
+  selectInterests, 
   unfollowArtist, 
   unlikeSong, 
   updateUser, 
@@ -25,6 +26,8 @@ const router = express.Router();
 
 // Register route
 router.post("/register", registerUser);
+// select interest
+router.put('/select-interests',auth, selectInterests);
 // Login route
 router.post("/login", loginUser);
 // Update user routes

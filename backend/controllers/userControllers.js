@@ -9,14 +9,14 @@ import  uploadOnCloudinary  from "../utils/cloudinary.js";
 
 // Register new user
 export const registerUser = async (req, res) => {
-    const { username, email, password, interests } = req.body;
+    const { username, email, password} = req.body;
     console.log(req.body);
 
     try {
         let user = await User.findOne({ email });
         if (user) return res.status(400).json({ msg: "User already exists" });
         
-        user = new User({ username, email, password, interests });
+        user = new User({ username, email, password});
         user.password = await bcrypt.hash(password, 10);
         await user.save();
         
@@ -39,6 +39,29 @@ export const registerUser = async (req, res) => {
   }
 };
 
+// select interest
+export const selectInterests = async (req, res) => {
+  try {
+    const userId = req.user.id; 
+    const { interests } = req.body; 
+
+    if (!Array.isArray(interests) || interests.length === 0) {
+      return res.status(400).json({ message: 'Please select at least one interest.' });
+    }
+
+    
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { interests },
+      { new: true } 
+    );
+
+    res.status(200).json({ message: 'Interests saved successfully', interests: user.interests });
+  } catch (error) {
+    console.error('Error setting interests:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
 // Login user
 export const loginUser = async (req, res) => {
     const { email, password } = req.body;
