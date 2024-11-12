@@ -79,7 +79,7 @@ export const removeSongFromPlaylist = async (req, res) => {
       return res.status(404).json({ error: 'Playlist not found' });
     }
 
-    if (playlist.user.toString() !== req.user._id.toString() && !playlist.isPublic) {
+    if (playlist.user.toString() !== req.user.id.toString() && !playlist.isPublic) {
       return res.status(403).json({ error: 'Unauthorized to modify this playlist' });
     }
 
