@@ -19,7 +19,7 @@ export default function PlaylistsPage() {
   const [error, setError] = useState(null);
   const { user } = useUser();
 
-  const playlistId = useParams(); // Replace with dynamic playlist ID
+  const { playlistId } = useParams(); // Replace with dynamic playlist ID
   // console.log(playlistId);
 
   const token = localStorage.getItem("token");
@@ -30,15 +30,41 @@ export default function PlaylistsPage() {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
+  // http://localhost:8000/api/v1/playlists/:playlistId/remove-song
+
+  const handleRemoveSong = async(songId) => {
+    try{
+      console.log("Attempting to remove song:", songId, "from playlist:", playlistId);
+
+      const response = await axios.put(`http://localhost:8000/api/v1/playlists/${playlistId}/remove-song`, {songId}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+
+      console.log("Response from backend:", response.data);
+
+      setPlaylist((prevPlaylist) => ({
+        ...prevPlaylist,
+        songDetails: prevPlaylist.songDetails.filter(
+          (song) => song.id !== songId
+        ),
+      }))
+    } catch(err){
+      console.log('Error : ', err);
+    }
+
+
+  }
+
   useEffect(() => {
     // Fetch playlist details on component mount
     const fetchPlaylist = async () => {
       try {
-        // const token = localStorage.getItem('authToken');
         console.log(playlistId);
 
         const response = await axios.get(
-          `http://localhost:8000/api/v1/playlists/${playlistId.playlistId}`,
+          `http://localhost:8000/api/v1/playlists/${playlistId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -91,7 +117,7 @@ export default function PlaylistsPage() {
                 </div>
                 <div className="rightSide flex w-[75%] h-[80%] self-end gap-3 p-4 flex-col ">
                  
-                  <span>Playlist • {user.username}</span>
+                  <span className="cursor-text" style={{ textDecoration: "none" }}>Playlist • {user.username}</span>
                   <span
                     className="text-5xl font-bold"
                     style={{ textDecoration: "none" }}
@@ -100,7 +126,7 @@ export default function PlaylistsPage() {
                   </span>
 
                   <span
-                    className="text-5xl font-bold"
+                    className="text-xl font-bold"
                     style={{ textDecoration: "none" }}
                   >
                     {playlist.description}
@@ -108,12 +134,12 @@ export default function PlaylistsPage() {
                 </div>
               </div>
               <div>
-                <div className="liked-songs-list px-5 border">
+                <div className="liked-songs-list px-3">
                   <div className="song-item flex w-100 h-10 align-bottom mt-4 -mb-4">
                     <div className="w-8 text-center ml-12 mr-4">#</div>
                     <div className="inline w-56 mx-2 text-xs">Title</div>
                     <div className="w-52 mx-3 text-xs">Album</div>
-                    <span>Duration</span>
+                    <span className="cursor-text" style={{textDecoration:"none"}} >Duration</span>
                   </div>
                  
 
@@ -126,7 +152,7 @@ export default function PlaylistsPage() {
                       playlist.songDetails.map((song, index) => (
                         <div
                           key={index}
-                          className="group border song-item h-14 rounded-lg hover:bg-[#6f32978b] cursor-pointer p-2 flex w-full align-bottom my-2 "
+                          className="group song-item h-14 rounded-lg hover:bg-[#6f32978b] cursor-pointer p-2 flex w-full align-bottom my-2"
                         >
                           <div className="w-8 text-center ml-10 mr-5 pt-2">
                             {index + 1}
@@ -162,10 +188,14 @@ export default function PlaylistsPage() {
                               : "N/A"}
                           </p>
 
-                          <RemoveCircleOutlineIcon className="text-neutral-500 fill-black opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out items-end" style={{ color: "rgba(0, 0, 0, 0.3)" }} />
+                          <RemoveCircleOutlineIcon className="text-neutral-500 fill-black opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out items-end" style={{ color: "rgba(0, 0, 0, 0.3)" }} 
+                          onClick={() => handleRemoveSong(song.id)}
+                          />
                         </div>
+                        
                       ))
-                    ) : (
+                    ) 
+                    : (
                       <p>No Played songs yet</p>
                     )}
                   </div>
@@ -181,36 +211,3 @@ export default function PlaylistsPage() {
     </>
   );
 }
-
-{
-  /* <div className="border h-[50%]" >
-            {playlist ? (
-              <div>
-                <h2>{playlist.name}</h2>
-                <p>{playlist.description}</p>
-                <ul>
-                  {console.log(playlist)}
-                  {playlist.songDetails && playlist.songDetails.map((song, index) => (
-                    <li key={index}>{song.name}</li>
-                    
-                  ))}
-                </ul>
-              </div> 
-            */
-}
-
-// {playlist ? (
-//   <div >
-
-//     <ul>
-//       {console.log(playlist)}
-//       {playlist.songDetails && playlist.songDetails.map((song, index) => (
-//         <li key={index}>{song.name}</li>
-
-//       ))}
-//     </ul>
-//   </div>
-//   )
-//    : (
-//     <p>No Played songs yet</p>
-//     )}

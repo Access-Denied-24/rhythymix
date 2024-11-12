@@ -203,7 +203,7 @@ const CreatePlaylist = ({ onClose, onPlaylistCreated }) => {
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
-            console.log(response.data);  
+            // console.log(response.data);  
 
             if (response.status === 201) {
                 onPlaylistCreated(prevPlaylists => [...prevPlaylists, response.data.playlist]);  
