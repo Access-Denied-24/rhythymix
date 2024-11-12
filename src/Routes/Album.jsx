@@ -1,67 +1,6 @@
-// import { useParams } from 'react-router-dom';
-// import { useState, useEffect } from 'react';
-
-// export default function Album() {
-//   const { albumId } = useParams(); // Get albumId from the URL
-//   const [album, setAlbum] = useState(null);
-//   const [AlbTracks, setAlbTracks] = useState([]);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const fetchAlbumDetails = async () => {
-//       console.log('Fetching album details for albumId:', albumId);
-
-//       try {
-//         // Fetch album details by albumId
-//         const albumResponse = await fetch(`http://localhost:8000/api/v1/spotify/album/${albumId}`);
-//         const albumData = await albumResponse.json();
-//         console.log('Album Data:', albumData); // Log album data
-//         setAlbum(albumData);
-
-//         // Fetch tracks for the album by albumId
-//         const tracksResponse = await fetch(`http://localhost:8000/api/v1/spotify/album/${albumId}/tracks`);
-//         const tracksData = await tracksResponse.json();
-//         console.log('Tracks Data:', tracksData); // Log tracks data
-//         setAlbTracks(tracksData || []); // Set the tracks data
-
-//         setLoading(false);
-//       } catch (error) {
-//         console.error('Error fetching album or tracks:', error);
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchAlbumDetails();
-//   }, [albumId]);
-
-//   console.log('albtr : ', AlbTracks);
-
-//   // console.log('album length :', AlbTracks.tracks.length);
-//   // const albumTrs = tracks;
-
-//   if (loading) return <div>Loading...</div>;
-
-//   // if (!album) return <div>Album not found</div>;
-
-//   return (
-//     <div>
-//       {/* <h2>{album.name}</h2> */}
-//       {/* <p>By {tracks.artists.map(artist => artist.name).join(', ')}</p> */}
-//       <ul>
-
-//           {
-//           AlbTracks.map(track => (
-//             <li key={track.id}>{track.name}</li>
-//           ))    
-//           }
-//       </ul>
-//     </div>
-//   );
-// }
-
 import { useParams } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
-import { FaPlay } from 'react-icons/fa'; // You can use any play icon library like react-icons
+import { FaPlay } from 'react-icons/fa'; 
 import Controls from '../Components/Controls';
 import { PlayerContext } from '../Context/PlayerContext';
 import PlayCircleOutlinedIcon from '@mui/icons-material/PlayCircleOutlined';
@@ -69,7 +8,7 @@ import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
 
 
 export default function Album() {
-  const { albumId } = useParams(); // Get albumId from the URL
+  const { albumId } = useParams(); // to get albumId from the URL
   const [album, setAlbum] = useState(null);
   const [AlbTracks, setAlbTracks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -89,17 +28,11 @@ export default function Album() {
       console.log('Fetching album details for albumId:', albumId);
 
       try {
-        // Fetch album details by albumId
-        // const albumResponse = await fetch(`http://localhost:8000/api/v1/spotify/album/${albumId}`);
-        // const albumData = await albumResponse.json();
-        // console.log('Album Data:', albumData); // Log album data
-        // setAlbum(albumData);
-
-        // Fetch tracks for the album by albumId
+       
         const tracksResponse = await fetch(`http://localhost:8000/api/v1/spotify/album/${albumId}/tracks`);
         const tracksData = await tracksResponse.json();
-        console.log('Tracks Data:', tracksData); // Log tracks data
-        setAlbTracks(tracksData || []); // Set the tracks data
+        console.log('Tracks Data:', tracksData); 
+        setAlbTracks(tracksData || []); 
 
         setLoading(false);
       } catch (error) {
@@ -120,7 +53,8 @@ export default function Album() {
       {/* Album Header */}
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold">{album?.name}</h2>
-        <p className="text-xl text-gray-500">By {album?.artists?.map(artist => artist.name).join(', ')}</p>
+        {/* <p className="text-xl text-white">By {album?.artists?.map(artist => artist.name).join(', ')}</p> */}
+        <p className="text-xl text-gray-400">Tracks</p>
       </div>
 
       {/* Tracks List */}
@@ -142,13 +76,17 @@ export default function Album() {
                     >
 
                     {/* {activeTrackId === track.id && isPlaying ? <PauseCircleOutlineIcon className="cursor-pointer mr-5 text-black fill-black outline-black"/> : <PlayCircleOutlinedIcon className="cursor-pointer outline-black text-black fill-black"/> } */}
-                    {activeTrackId === track.id && isPlaying ? 'pause' : 'play' }
+                    {activeTrackId === track.id && isPlaying ? 
+                      <PauseCircleOutlineIcon className="text-neutral-900 bg-neutral-800 hover:text-gray-600 transition-transform duration-200 transform hover:scale-110 rounded-full p-2"
+                      fontSize="large" />
+                    : <PlayCircleOutlinedIcon className="text-neutral-900 bg-neutral-800 hover:text-gray-600 transition-transform duration-200 transform hover:scale-110 rounded-full p-2"
+                    fontSize="large" /> 
+                    }
                     </div>
               </div>
               <p className="text-sm text-gray-500">{track.artists?.map(artist => artist.name).join(', ')}</p>
             </div>
-            {/* Hover Effect: Add background color on hover */}
-            {/* <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-all duration-200"></div> */}
+            
           </div>
         ))}
       </div>

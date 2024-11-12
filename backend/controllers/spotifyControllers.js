@@ -155,7 +155,7 @@ import {
     try {
         const { query } = req.query;
 
-        // Perform parallel requests to fetch data for artists, albums, songs, and playlists
+        
         const [artistData, albumData, songData, playlistData] = await Promise.all([
             getArtistDetailsByName(query),
             searchAlbumByName(query),
@@ -163,7 +163,7 @@ import {
             searchPlaylistByName(query),
         ]);
 
-        // Return the response with full details for each category
+       
         res.json({
             artists: artistData ? [artistData] : [],  // Wrap artistData in an array if it exists
             albums: albumData?.albums?.items || [],

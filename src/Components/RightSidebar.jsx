@@ -26,27 +26,7 @@ export default function RightSidebar() {
         </div>
         
         <nav className="flex flex-col gap-4 p-2">
-          {/* <div
-            role="button"
-            tabIndex={0}
-            className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-purple-700 focus:bg-purple-700 active:bg-purple-800"
-          >
-            <div className="mr-4">
-              <AccountCircleIcon />
-            </div>
-            <span className="text-lg">Current Track</span>
-          </div> */}
-
-          {/* <div
-            role="button"
-            tabIndex={0}
-            className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-purple-700 focus:bg-purple-700 active:bg-purple-800"
-          >
           
-            <span className="text-lg">Song Details</span>
-          </div> */}
-
-          {/* Song details section */}
           {console.log(currentTrackFullDetails)}
           {
             currentTrackFullDetails ? (
@@ -86,14 +66,7 @@ export default function RightSidebar() {
           }
 
          
-          {/* <div
-            role="button"
-            tabIndex={0}
-            className="flex flex-col items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-purple-700 focus:bg-purple-700 active:bg-purple-800"
-          >
-            <span className="text-lg text-center w-full" style={{textDecoration:"none"}}>Next in Queue</span>
-
-          </div> */}
+      
             <QueueList />
         </nav>
       </div>

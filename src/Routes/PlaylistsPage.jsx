@@ -74,18 +74,19 @@ export default function PlaylistsPage() {
           }
         );
         console.log("response : ", response);
-        setPlaylist(response.data); // Save playlist data to state
+        setPlaylist(response.data); 
       } catch (err) {
         setError("Failed to fetch playlist");
         console.error(err);
       } finally {
-        setLoading(false); // Stop loading state
+        setLoading(false); 
       }
     };
 
     fetchPlaylist();
-  }, [playlistId]); // Re-run if playlistId changes
+  }, [playlistId]); 
 
+  
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -94,9 +95,9 @@ export default function PlaylistsPage() {
     return <div>{error}</div>;
   }
 
-  if(isSearched){
-    navigate('/');
-  }
+  // if(isSearched){
+  //   navigate('/');
+  // }
 
   return (
     <>

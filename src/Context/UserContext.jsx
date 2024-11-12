@@ -16,6 +16,7 @@ export const UserProvider = ({ children }) => {
   const [likedSongs, setLikedSongs] = useState([]);
   const [playlists, setPlaylists] = useState([]);
   const [ newName, setNewName ] = useState('');
+  const [isFollowing, setIsFollowing] = useState(false);
 
 
   const token = localStorage.getItem('token');

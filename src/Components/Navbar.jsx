@@ -8,9 +8,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSearched } from '../Context/SearchedContext';
 import { useUser } from '../Context/UserContext';
 
-// function classNames(...classes) {
-//   return classes.filter(Boolean).join(' ')
-// }
 
 export default function Navbar() {
   const [isClicked, setIsClicked] = useState(false);
@@ -33,18 +30,17 @@ export default function Navbar() {
 
   // Prevent multiple API calls on state change by using useEffect
   useEffect(() => {
-    // Debounce search function (e.g., after typing stops for 1 second)
     const timeoutId = setTimeout(() => {
       if (InputValue.trim() !== "") {
         getTracks();
       }
     }, 1000);
 
-    return () => clearTimeout(timeoutId); // Cleanup the previous timeout
+    return () => clearTimeout(timeoutId); 
   }, [InputValue]);
 
   const getTracks = async () => {
-    if (InputValue.trim() === "") return;  // Prevent search if input is empty
+    if (InputValue.trim() === "") return; 
 
     try {
       const response = await fetch(`http://localhost:8000/api/v1/spotify/multi-search?query=${InputValue}`);
@@ -76,10 +72,10 @@ export default function Navbar() {
   // const handlePlayPause = () => {
   //   if (audioRef.current.paused) {
   //     audioRef.current.play();
-  //     setIsPlaying(true);  // Only set playing state to true when play is pressed
+  //     setIsPlaying(true); 
   //   } else {
   //     audioRef.current.pause();
-  //     setIsPlaying(false); // Set playing state to false when paused
+  //     setIsPlaying(false); 
   //   }
   // };
 
@@ -91,11 +87,14 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center justify-between">
             <div className="flex flex-shrink-0 items-center">
               <Link to="/">
-                <img
-                  alt=""
-                  src="../public/websiteLogo1.jpg"
-                  className="h-10 w-auto bg-transparent cursor-pointer"
-                />
+                <div className='flex items-center justify-between w-[13vw]'>
+                  <img
+                    alt=""
+                    src="../public/websiteLogo1.jpg"
+                    className="h-10 w-auto bg-transparent cursor-pointer"
+                  />
+                  <span className='text-[20px] text-purple-300' style={{textDecoration:"none"}}>RHYTHYMIX</span>
+                </div>
               </Link>
             </div>
           </div>

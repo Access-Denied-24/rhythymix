@@ -1,4 +1,3 @@
-
 import { useContext, useState, useEffect } from "react";
 import { PlayerContext } from "../Context/PlayerContext";
 import QueueList from "./QueueList";
@@ -7,6 +6,7 @@ import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import QueueMusicIcon from '@mui/icons-material/QueueMusic';
 import { useUser } from "../Context/UserContext";
+import ArtistCard from "./artistCard";
 
 export default function TracksPage({ tracks, setIsSearched }) {
   const {
@@ -31,6 +31,9 @@ export default function TracksPage({ tracks, setIsSearched }) {
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
 
+  const songArtists = tracks.artists[0].artists.items[0];
+  console.log('song art : ', songArtists);
+
   const songList = tracks.songs || [];
   console.log(songList);
 
@@ -39,11 +42,11 @@ export default function TracksPage({ tracks, setIsSearched }) {
 
     if (audioElement) {
       audioElement.onloadedmetadata = () => {
-        setDuration(audioElement.duration); // Set the duration in context
+        setDuration(audioElement.duration); // to set the duration in context
       };
 
       audioElement.ontimeupdate = () => {
-        // Optional: If you need to update the current time or handle other time-based features
+       
       };
     }
 
@@ -57,7 +60,7 @@ export default function TracksPage({ tracks, setIsSearched }) {
 
   const handleAddToPlaylist = (track) => {
     setSelectedTrack(track);
-    setShowPlaylistModal(true); // Open modal to select playlist
+    setShowPlaylistModal(true); 
   };
 
   const handlePlaylistSelect = (playlistId) => {
@@ -68,15 +71,16 @@ export default function TracksPage({ tracks, setIsSearched }) {
   const handleAddToSelectedPlaylist = () => {
     console.log(selectedPlaylist, selectedTrack);
     if (selectedPlaylist && selectedTrack) {
-      // Assuming addToPlaylist is a function that adds the track to the selected playlist
       addToPlaylist(selectedTrack, selectedPlaylist);
-      setShowPlaylistModal(false); // Close modal after adding
+      setShowPlaylistModal(false); // Closes modal after adding
     }
   };
 
   return (
     <>
-      <div className="Cont flex flex-wrap justify-center w-[100%] mx-auto mt-[70px] overflow-auto max-h-[76vh] ">
+      <div className="Cont flex flex-wrap justify-center w-[100%] mx-auto overflow-auto max-h-[76vh] ">
+        {console.log('song : ',songList[0].artists)}
+        <ArtistCard artist={songArtists} />
         {songList.map((element, index) => (
           <div key={index} className="m-4 flex justify-center">
             <div className="Card bg-neutral-900 border border-gray-200 shadow dark:bg-[#120018] p-2 rounded-xl dark:border-gray-700 relative w-[9rem] hover:scale-105 transform transition duration-300 ease-in-out">
@@ -111,10 +115,9 @@ export default function TracksPage({ tracks, setIsSearched }) {
                       )}
                     </div>
 
-                    {/* Add to Playlist Icon */}
                     <div
                       className="text-black bg-green-500 p-2 rounded-full cursor-pointer transform transition duration-300 ease-in-out hover:scale-110 hover:bg-green-700"
-                      onClick={() => handleAddToPlaylist(element)} // Open playlist selection modal
+                      onClick={() => handleAddToPlaylist(element)}
                     >
                       <PlaylistAddIcon className="text-white" />
                     </div>
@@ -125,7 +128,6 @@ export default function TracksPage({ tracks, setIsSearched }) {
           </div>
         ))}
 
-        {/* Playlist Selection Modal */}
         {showPlaylistModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
             <div className="bg-white p-4 rounded-lg w-[30vw] h-[90vh] flex flex-col text-center ">

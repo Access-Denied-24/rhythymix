@@ -1,33 +1,31 @@
-import React from 'react';
+import FollowButton from './FollowButton';
 
 const ArtistCard = ({ artist }) => {
+  console.log('artists :', artist);
+
   return (
-    <div className="max-w-sm bg-white rounded-lg shadow-md overflow-hidden m-4 transition-transform transform hover:scale-105">
-      {/* Artist Image */}
+    <div className="bg-neutral-900 border border-gray-200 shadow dark:bg-[#120018] p-2 rounded-xl dark:border-gray-700 relative w-[12rem] hover:scale-105 transform transition duration-300 ease-in-out h-[80%] overflow-auto mt-[20px] text-center">
       <img
         className="w-full h-48 object-cover"
-        src={artist.images && artist.images[0]?.url}
+        src={artist.images[0].url}
         alt={artist.name}
       />
 
-      {/* Artist Info */}
+
       <div className="p-5">
-        {/* Artist Name */}
-        <h3 className="text-xl font-bold text-gray-800 truncate">{artist.name}</h3>
+        <h3 className="text-xl font-semibold text-white" style={{textDecoration:"none"}}>{artist.name}</h3>
 
-        {/* Followers */}
-        <p className="text-gray-600 mt-1">
-          <span className="font-semibold">Followers:</span> {artist.followers.total.toLocaleString()}
+        <FollowButton artistId={artist.id} />
+        <p className="text-gray-200 mt-1">
+          <span className="font-semibold"  style={{textDecoration:"none"}}>Followers:</span> {artist.followers.total.toLocaleString()}
         </p>
 
-        {/* Popularity */}
-        <p className="text-gray-600 mt-1">
-          <span className="font-semibold">Popularity:</span> {artist.popularity}%
+        <p className="text-gray-200 mt-1">
+          <span className="font-semibold"  style={{textDecoration:"none"}}>Popularity:</span> {artist.popularity}%
         </p>
 
-        {/* Genres */}
         <div className="mt-2">
-          <p className="text-gray-600 font-semibold">Genres:</p>
+          <p className="text-gray-200 font-semibold"  style={{textDecoration:"none"}}>Genres:</p>
           <div className="flex flex-wrap gap-2 mt-1">
             {artist.genres.slice(0, 3).map((genre, index) => (
               <span

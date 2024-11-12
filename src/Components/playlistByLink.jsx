@@ -18,7 +18,6 @@ const PlaylistDetails = () => {
         `http://localhost:8000/api/v1/playlists/${playlistId}/link`,
        
       );
-      // Log the response data to check
       setPlaylist(response.data);
       // setLoading(false);
     } catch (error) {
@@ -46,18 +45,7 @@ const PlaylistDetails = () => {
       {playlist ? (
         <PlaylistsPage />
 
-        // <div>
-        //   <h1>{playlist.name}</h1>
-        //   <ul>
-        //     {playlist.songDetails.map((song, index) => (
-        //       <li key={index}>
-        //         <p>Title: {song.title}</p>
-        //         <p>Album: {song.album}</p>
-        //         <p>Duration: {song.durationMs ? formatDuration(song.durationMs) : 'N/A'}</p>
-        //       </li>
-        //     ))}
-        //   </ul>
-        // </div>
+        
       ) : (
         <p>Loading playlist...</p>
       )}

@@ -16,7 +16,7 @@ export default function SongHistory({ newName }) {
   if (!user) navigate("/login");
   const [loading, setLoading] = useState(true);
   //   const [history, setHistory] = useState([]);
-  const { togglePlayPause } = useContext(PlayerContext);
+  const { togglePlayPause, addCurrentDetails } = useContext(PlayerContext);
 
   const formatDuration = (durationMs) => {
     const minutes = Math.floor(durationMs / 60000);
@@ -24,7 +24,6 @@ export default function SongHistory({ newName }) {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
-  // Fetch history songs when component mounts
   useEffect(() => {
     const fetchSongHistory = async () => {
       try {
@@ -41,7 +40,7 @@ export default function SongHistory({ newName }) {
           }
         );
 
-        console.log(response.data.SongHistory); // Log the response data to check
+        console.log(response.data.SongHistory); 
         setHistory(response.data.songHistory);
         setLoading(false);
       } catch (error) {
@@ -111,7 +110,6 @@ export default function SongHistory({ newName }) {
                     <div className="w-8 text-center ml-12 mr-4">#</div>
                     <div className="inline w-56 mx-2 text-xs">Title</div>
                     <div className="w-52 mx-3 text-xs">Album</div>
-                    {/* Song duration */}
                     <span>Duration</span>
                   </div>
 
@@ -122,8 +120,10 @@ export default function SongHistory({ newName }) {
                       <div
                         key={index}
                         className="song-item h-14 rounded-lg hover:bg-[#6f32978b] cursor-pointer p-2 flex w-100 align-bottom my-2"
-                        onClick={() =>
-                          togglePlayPause(song.preview_url,song.id,song.name,song.artists)
+                        onClick={() =>{
+                          togglePlayPause(song.preview_url,song.id,song.name,song.artists);
+                          addCurrentDetails(song.preview_url, song.id, song.name, song.artists,song.popularity,song.album.images[0].url,song.album.release_date,song.album.total_tracks, song.album.name);
+                        }
                         }
                         >
                         <div className="w-8 text-center ml-10 mr-5 pt-2">
@@ -150,7 +150,6 @@ export default function SongHistory({ newName }) {
                         <div className="w-56 text-sm">
                           {song.album?.name || "Unknown Album"}
                         </div>
-                        {/* Song duration */}
                         <p>
                           {song.duration_ms
                             ? formatDuration(song.duration_ms)

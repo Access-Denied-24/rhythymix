@@ -1,51 +1,3 @@
-// import { useState } from 'react';
-// import styles from '../Components/login.module.css';
-// import { useLocation } from 'react-router-dom';
-// import { resetPassword } from '../../backend/controllers/userControllers';
-
-// export default function ResetPass() {
-//   const [ newPassword, setNewPassword ] = useState('');
-//   const [ message, setMessage ] = useState('');
-//   const query = new URLSearchParams(useLocation().search);
-//   const token = query.get('token');
-
-//   const handleSubmit = async(e) => {
-//     e.preventDefault();
-//     setMessage('');
-
-//     try{
-//       const response = await resetPassword(token, newPassword);
-//       setMessage(response);
-//     } catch(error){
-//       setMessage(error);
-//     }
-//   };
-
-
-//   return (
-//     <div className={styles.loginPage}>
-//       <h1>RESET Password PAGE</h1>
-
-//       <div>
-//         <form onSubmit={handleSubmit} className={styles.container}>
-//           <input type="email" placeholder='Enter Email ID' onChange={(e) => setEmail(e.target.value)} required />
-          
-//           <button type='submit'>Request Reset Link</button>
-//         </form>
-
-//         {message && <p className={styles.message}>{message}</p>}
-
-//         <Link to="/login" style={{color: 'white', textDecoration: 'none'}} >
-//             <span>Back to Login</span>
-//           </Link>
-
-
-//       </div>
-//     </div>
-//   )
-// }
-
-// ResetPassword.js
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -75,31 +27,50 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="reset-password-container">
-      <h2>Reset Password</h2>
-      {message && <p className="success-message">{message}</p>}
-      {error && <p className="error-message">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>New Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Confirm Password</label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Reset Password</button>
-      </form>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
+      <h1 className="text-2xl font-bold mb-6">RESET PASSWORD</h1>
+
+      <div className="bg-gray-800 p-8 rounded-lg w-full max-w-md text-center">
+        {message && <p className="text-green-500 mb-4">{message}</p>}
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-left mb-1">New Password</label>
+            <input
+              type="password"
+              placeholder="Enter New Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+          <div>
+            <label className="block text-left mb-1">Confirm Password</label>
+            <input
+              type="password"
+              placeholder="Confirm New Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full py-2 bg-green-600 hover:bg-indigo-700 text-white font-semibold rounded-md transition duration-300"
+          >
+            Reset Password
+          </button>
+        </form>
+
+        <p className="mt-6">
+          <a href="/login" className="text-blue-400 hover:text-blue-500 transition duration-300">
+            Back to Login
+          </a>
+        </p>
+      </div>
     </div>
   );
 };

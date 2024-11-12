@@ -18,7 +18,7 @@ const GoogleLogin = () => {
 
   async function handleGoogleResponse(response) {
     
-    const googleToken = response.credential; // Assuming response contains the ID token in credential
+    const googleToken = response.credential; 
   
     try {
       const res = await axios.post('http://localhost:8000/api/v1/users/google', {
@@ -30,7 +30,7 @@ const GoogleLogin = () => {
       console.log('Token saved to localStorage:', localStorage.getItem('token'));
       console.log('User data:', res.data);
       if(res.data) navigate('/');
-      // Use the token or any user data returned by the server here
+      
     } catch (error) {
       console.error('Error authenticating user with Google:', error);
     }

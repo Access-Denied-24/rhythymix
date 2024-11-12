@@ -31,17 +31,14 @@ export default function Login(){
       navigate('/');
     } catch (error) {
       if (error.response) {
-        // Server responded with a status other than 200 range
         console.log('Response data:', error.response.data);
         console.log('Response status:', error.response.status);
         console.log('Response headers:', error.response.headers);
         alert(error.response.data.message || 'Login failed: ' + error.response.data.msg);
       } else if (error.request) {
-        // Request was made but no response received
         console.log('Request:', error.request);
         alert('No response from server');
       } else {
-        // Something happened in setting up the request
         console.log('Error:', error.message);
         alert('Login error: ' + error.message);
         

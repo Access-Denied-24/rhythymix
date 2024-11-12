@@ -7,295 +7,220 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Link, useNavigate } from "react-router-dom";
 import Controls from "../Components/Controls";
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import axios from 'axios';
 import { useUser } from "../Context/UserContext";
 import { useSearched } from '../Context/SearchedContext';
 import { ToastContainer, toast } from "react-toastify";
-import Modal from "../Components/Modal";
-import PasswordModal from "../Components/PasswordModal";
+import { Navigate } from "react-router-dom";
+import { useEffect } from "react";
 
-
-export default function ProfilePage(){
-
-  // const [user, setUser] = useState(null);
-  const {user, displayName, setDisplayName, setUser, newName, setNewName} = useUser();
-
-  // let [ displayName, setDisplayName ] = useState('vortex' || '');
-  const [ showModal, setShowModal ] = useState(false);
-  const [ isHovering, setIsHovering ] = useState(false);
-  const [ image, setImage ] = useState('');
-  const inputRef = useRef(null);
-  const { isSearched, tracks, setTracks } = useSearched();
-  // const [ newName, setNewName ] = useState('');
-
+export default function ProfilePage() {
+  const { user, displayName, setDisplayName, setUser, newName, setNewName } = useUser();
+  const [showModal, setShowModal] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+  const [image, setImage] = useState('');
+  const [followedArtists, setFollowedArtists] = useState([]);
+  const { isSearched } = useSearched();
   const navigate = useNavigate();
-  // console.log(displayName);
-
+  
   const token = localStorage.getItem('token');
-  const [modalOpen, setModalOpen] = useState(false);
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
 
-
-  const handleOpenModal = () => {
-    setModalOpen(true);
+  const changeUsername = async (newName) => {
+    console.log('new entered name : ', newName)
+    // if (!user) {
+    //   console.error("User data not available");
+    //   return;
+    // }
+  
+    try {
+      const response = await axios.put(
+        'http://localhost:8000/api/v1/users/update',
+        { username: newName },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      console.log(response);
+      console.log("Username updated successfully:", response.data);
+      setUser(response.data); // Update user state with the new username
+      setDisplayName(newName)
+      // toast.success("Username updated successfully!");
+    } catch (error) {
+      // Check if the error is an AxiosError and log the detailed response
+      if (axios.isAxiosError(error)) {
+        console.error("Axios error details:", error.response?.data || error.message);
+        // toast.error("Failed to update username.");
+      } else {
+        console.error("Unexpected error:", error);
+        // toast.error("Unexpected error occurred.");
+      }
+    }
+  };
+  const handleChangePassword = async () => {
+    try {
+      const response = await axios.put(
+        'http://localhost:8000/api/v1/users/update',
+        { password: currentPassword, newPassword },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // toast.success("Password updated successfully!");
+      setShowPasswordModal(false);
+      setCurrentPassword('');
+      setNewPassword('');
+    } catch (error) {
+      console.error("Password update failed:", error.response?.data || error.message);
+      // toast.error("Failed to update password. Please check the current password.");
+    }
   };
 
-  const handleCloseModal = () => {
-    setModalOpen(false);
+  const getFollowedArtists = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/v1/users/followed-artist', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log('Followed Artists:', response.data.followedArtists);
+      setFollowedArtists(response.data.followedArtists); // Update the state with the followed artists
+    } catch (err) {
+      console.error('Error fetching followed artists:', err);
+    }
   };
 
+  const handleModalClick = () => setShowModal(true);
 
-  const handleModalClick = () => {
-    setShowModal(true);
-    // console.log(displayName);
+//   const handleImageClick = () => inputRef.current.click();
+
+//   const handleImageChange = async (event) => {
+//     const file = event.target.files[0];
+//     const formData = new FormData();
+//     formData.append("profileImage", file);
+
+  useEffect(() => {
+    if (token) {
+      getFollowedArtists(); // Fetch followed artists on component mount
+    }
+  }, [token]);
+
+  console.log('searched : ', isSearched);
+  if(isSearched){
+    navigate('/');
   }
 
-  const handleImageClick = () => {
-    inputRef.current.click();
-  };
-
-
-    const handleImageChange = async(event) => {
-      const file = event.target.files[0];
-      // setImage(file);
-
-      const formData = new FormData();
-      formData.append("profileImage", file);
-
-  
-        axios
-        .post("http://localhost:8000/api/v1/users/profileImage", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data", // Optional if axios is used with FormData
-            Authorization: `Bearer ${token}`
-          },
-        })
-        .then((response) => {
-          // Update the image URL state after successful upload
-          setImage(response.data.imageUrl); // Assuming backend sends the URL in `imageUrl`
-        })
-        .catch((error) => {
-          console.error("Error uploading image:", error.response || error.message); // Log the error
-          alert("Failed to upload image. Please try again.");
-        });
-      };
-
-
-    if(isSearched){
-      navigate('/');
-    }
-
-
-    const changeUsername = async (newName) => {
-      console.log('new entered name : ', newName)
-      // if (!user) {
-      //   console.error("User data not available");
-      //   return;
-      // }
-    
-      try {
-        const response = await axios.put(
-          'http://localhost:8000/api/v1/users/update',
-          { username: newName },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          }
-        );
-        console.log(response);
-        console.log("Username updated successfully:", response.data);
-        setUser(response.data); // Update user state with the new username
-        setDisplayName(newName)
-        // toast.success("Username updated successfully!");
-      } catch (error) {
-        // Check if the error is an AxiosError and log the detailed response
-        if (axios.isAxiosError(error)) {
-          console.error("Axios error details:", error.response?.data || error.message);
-          // toast.error("Failed to update username.");
-        } else {
-          console.error("Unexpected error:", error);
-          // toast.error("Unexpected error occurred.");
-        }
-      }
-    };
-
-    const handleChangePassword = async () => {
-      try {
-        const response = await axios.put(
-          'http://localhost:8000/api/v1/users/update',
-          { password: currentPassword, newPassword },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        // toast.success("Password updated successfully!");
-        setShowPasswordModal(false);
-        setCurrentPassword('');
-        setNewPassword('');
-      } catch (error) {
-        console.error("Password update failed:", error.response?.data || error.message);
-        // toast.error("Failed to update password. Please check the current password.");
-      }
-    };
-    
-    
-    
-    // if(!user) return navigate('/');
-
-    // let displayName = user.username;
-
-    const showToast = () => {
-      toast.success('🦄 Notification!', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: "Bounce",
-        className: 'bg-gray-800 text-white font-semibold p-4 rounded-lg shadow-lg', 
-        bodyClassName: "text-sm",
-        progressClassName: 'bg-blue-500',
-      });
-    };
-
-    
-  
   return (
     <>
-    <div className="flex flex-col h-[90vh]">
-      <Navbar />
-      <div className="flex flex-grow">
-        <LeftSidebar />
-        <div className="middlePart flex justify-center  w-[100%] h-[77vh] pb-20 mt-[90px]">
-          <div className="w-[57%] h-[123%] flex flex-col text-white shadow-xl shadow-blue-gray-900/5
-          bg-clip-border rounded-xl
-          " style={{backgroundColor:"#1B0025"}}>
+      <div className="flex flex-col h-[90vh]">
+        <Navbar />
+        <div className="middlePart flex justify-center w-[100%] h-[77vh] pb-20 mt-[90px] overflow-auto">
+          <LeftSidebar />
+          <div className="w-[57%] h-[123%] flex flex-col text-white shadow-xl shadow-blue-gray-900/5 bg-clip-border rounded-xl" style={{ backgroundColor: "#1B0025" }}>
             {/* Profile Page */}
 
-            <ToastContainer
-              className="fixed top-4 right-4 z-50"
-              position="top-right"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="dark"
-              transition="Bounce" />
+            <ToastContainer className="fixed top-4 right-4 z-50" position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" transition="Bounce" />
 
-            
-            {/* {isSearched ? (
-              <TracksPage tracks={tracks || []} />
-            ) : ( */}
-              <div className="banner flex h-[270px] w-full p-2 bg-clip-border rounded-t-xl" style={{backgroundColor:"#3e0652"}}>
-
-                {/* w-[15vw] h-[30vh] */}
-                <div className="PicleftSide relative w-[100px] h-[70%] z-1 flex flex-col justify-center self-end bg-neutral-800 transition-all" style={{borderRadius:"60%", minWidth:"25%"}}
-                onMouseEnter={() => setIsHovering(true)}
-                onMouseLeave={() => setIsHovering(false)}
-                onClick={handleImageClick}
-                >
-                  {image ? 
-                    <img src={URL.createObjectURL(image)} alt="" className="w-[100%] h-[100%] self-center bg-cover rounded-[60%]" />
-                    :
-                    <PersonOutlineOutlinedIcon className={`my-8 justify-center self-center
-                    `} style={{width:"60%", height:"60%",fill:"grey"}} />
-                    
-                  }
-                  <div className="absolute flex flex-col items-center w-full h-full justify-end gap-2 p-4 border transition-all duration-300 ease-in-out opacity-100 cursor-pointer" style={{borderRadius:"60%", backgroundColor:"rgba(0,0,0,0.2)",
-                    opacity: isHovering ? 1 : 0,
-                    visibility: isHovering ? 'visible' : 'hidden',
-                    transform: isHovering ? 'scale(1)' : 'scale(0.95)'
-                    }}>
-                  {isHovering &&
-                    <>
-                    <EditIcon className={`transition-all duration-300 ease-in-out ${isHovering ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`} style={{width:"50%", height:"60%", fill:"white"}}  />
-                    <span className="cursor-default" style={{textDecoration:"none"}}>Upload Photo</span>
-                    </>
-                    
-                  } 
-                  </div>
-                  
-                  <input type="file" ref={inputRef} onChange={handleImageChange} className="hidden" />
-
-                </div>
-                <div className="rightSide flex w-[75%] h-[65%] self-end gap-3 p-4 flex-col">
-                  {/* <span className="no-underline text-white cursor-default" style={{textDecoration:"none"}}>{user.email}</span> */}
-                  {/* <span className="text-5xl font-bold" style={{textDecoration:"none"}}>{user.username}</span> */}
-                  <span className="text-5xl font-bold" style={{textDecoration:"none"}}>{displayName}</span>
-                  {/* {console.log('displayname : ',displayName)} */}
-                  <div className="playlists_flw">
-                    <span className="cursor-text" style={{textDecoration:"none"}}>2 Playlists</span>
-                    {/* <span>3 Followers</span> */}
-                  </div>
-                </div>
-
-                <button></button>
-                <Menu as="div" >
-                  <div>
-                    <MenuButton>
-                      <MoreHorizIcon />
-                    </MenuButton>
-                  </div>
-                  <MenuItems transition className="
-                  absolute right-[22%] z-10  w-[190px] origin-top-right rounded-md bg-neutral-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in">
-                    <MenuItem className="block p-1 text-neutral-500 data-[focus]:bg-neutral-700 ">
-                      {/* <Link to="">Edit profile</Link> */}
-                      <button onClick={handleOpenModal}>Edit Profile</button>
-                    </MenuItem>
-    
-                    <MenuItem className="block p-1 text-neutral-500 data-[focus]:bg-neutral-700 w-full">
-                      <>
-                      {/* <Link to="" >Change Password</Link> */}
-                      <button onClick={() => setShowPasswordModal(true)}className="text-neutral-500 data-[focus]:bg-neutral-700" >Change Password</button>
-                        {showPasswordModal && (
-                          <PasswordModal
-                          currentPassword={currentPassword}
-                          newPassword={newPassword}
-                          setCurrentPassword={setCurrentPassword}
-                          setNewPassword={setNewPassword}
-                          onSave={handleChangePassword}
-                          onClose={() => setShowPasswordModal(false)}
-                          />
-                          )}
-                        </>
-                    </MenuItem>
-                  </MenuItems>
-                </Menu>
-                {/* 
-                {showModal && (<ChangeName onClose={() => setShowModal(false)}  onNameChange={changeUsername} />)} */}
-                     
-                {modalOpen && <Modal onClose={handleCloseModal} changeUsername={changeUsername} />}
-
-                
-
+            <div className="banner flex h-[270px] w-full p-2 bg-clip-border rounded-t-xl" style={{ backgroundColor: "#3e0652" }}>
+              {/* Profile Banner */}
+              <div className="PicleftSide relative w-[100px] h-[70%] z-1 flex flex-col justify-center self-end bg-neutral-800 transition-all" style={{ borderRadius: "60%", minWidth: "25%" }} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} onClick={() => {}}>
+                {image ? (
+                  <img src={URL.createObjectURL(image)} alt="" className="w-[100%] h-[100%] self-center bg-cover rounded-[60%]" />
+                ) : (
+                  <PersonOutlineOutlinedIcon className="my-8 justify-center self-center" style={{ width: "60%", height: "60%", fill: "grey" }} />
+                )}
               </div>
 
-            {/* ) */}
-            {/* } */}
+              <div className="rightSide flex w-[75%] h-[65%] self-end gap-3 p-4 flex-col">
+                <span className="text-5xl font-bold cursor-text" style={{textDecoration:"none"}}>{displayName}</span>
+                {/* <div className="playlists_flw">
+                  <span className="cursor-text">2 Playlists</span>
+                </div> */}
+              </div>
+            </div>
+              
+            {/* <Menu as="div">
+                   <MenuButton>
+                     <MoreHorizIcon />
+                   </MenuButton>
+                   <MenuItems className="absolute right-[22%] z-10 w-[190px] origin-top-right rounded-md bg-neutral-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5">
+                     {/* <MenuItem className="block p-1 text-neutral-500">
+                       <button onClick={handleModalClick}>Edit Profile</button>
+                     </MenuItem> */}
+                     {/* <MenuItem className="block p-1 text-neutral-500">
+                       <Link to="">Change Password</Link>
+                     </MenuItem> 
+                   </MenuItems>
+                 </Menu> */}
+                 {/* {showModal && <ChangeName onClose={() => setShowModal(false)} onNameChange={setDisplayName} />} */}
+                 
+
+            {/* Followed Artists Section */}
+            <div className="Artists h-[50%]">
+              <h1 className="text-center p-4">Followed Artists</h1>
+              {/* <div>
+                <button onClick={getFollowedArtists}>Get Followed Artists</button>
+              </div> */}
+              <div className="followed-artists-list h-[70%]">
+                {console.log('follow : ', followedArtists)}
+                
+{Array.isArray(followedArtists) && followedArtists.length > 0 ? (
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {followedArtists.map((item) => (
+      <div
+        key={item.artist?.id}
+        className="bg-neutral-900 border-gray-200 shadow dark:bg-[#120018] p-2 rounded-xl dark:border-gray-700 relative w-[12rem] hover:scale-105 transform transition duration-300 ease-in-out"
+      >
+        {/* Artist Image */}
+        {item.artist?.images?.length > 0 && (
+          <img
+            src={item.artist?.images[0]?.url}
+            alt={item.artist?.name}
+            className="w-full h-40 object-cover"
+          />
+        )}
+
+        <div className="p-4">
+          {/* Artist Name */}
+          <h3 className="text-xl font-semibold text-gray-800">{item.artist?.name}</h3>
+
+          {/* Artist Genres */}
+          <p className="text-sm text-gray-500 mt-2">Genres: {item.artist?.genres?.join(', ')}</p>
+
+          {/* Followers Count */}
+          <p className="text-sm text-gray-500 mt-2">Followers: {item.artist?.followers?.total}</p>
+
+          {/* Spotify Link */}
+          <a
+            href={item.artist?.external_urls?.spotify}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:text-blue-800 mt-4 block"
+          >
+            View on Spotify
+          </a>
+        </div>
+      </div>
+    ))}
+  </div>
+) : (
+  <p className="text-center text-lg text-gray-500 mt-4">No followed artists found.</p>
+)}
+
+
+              </div>
+            </div>
 
           </div>
+          <RightSidebar />
         </div>
-        <RightSidebar />
       </div>
-    </div>
 
-    <Controls />
-
+      <Controls />
     </>
   );
 }
-
-

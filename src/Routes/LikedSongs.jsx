@@ -13,7 +13,7 @@ import { useSearched } from "../Context/SearchedContext";
 export default function LikedSongs({ newName }) {
   const { user, displayName, setDisplayName, likedSongs, setLikedSongs } =
     useUser();
-    const { togglePlayPause } = useContext(PlayerContext);
+    const { togglePlayPause, addCurrentDetails } = useContext(PlayerContext);
     const { isSearched } = useSearched();
   // const [likedSongs, setLikedSongs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -74,7 +74,7 @@ export default function LikedSongs({ newName }) {
               bg-clip-border rounded-xl" style={{backgroundColor:"#1B0025"}}
             >
               <div
-                className="banner flex  h-[40%] lg:h-[50%] w-full p-2 bg-clip-border rounded-t-xl"
+                className="banner flex h-[270px] w-full p-4 bg-clip-border rounded-t-xl"
                 style={{ backgroundColor: "#3e0652" }}
               >
                 <div
@@ -90,7 +90,7 @@ export default function LikedSongs({ newName }) {
                 <div className="rightSide flex w-[75%] h-[65%] self-end gap-3 p-4 flex-col">
                   {/* <span className="no-underline text-white cursor-default" style={{textDecoration:"none"}}>{user.email}</span> */}
                   <div className="playlists_flw">
-                    <span>Playlist</span>
+                    <span>Playlist • {user.username}</span>
                   </div>
                   <span
                     className="text-xl lg:text-5xl font-bold"
@@ -98,31 +98,33 @@ export default function LikedSongs({ newName }) {
                   >
                     Liked Songs
                   </span>
-                  <div className="playlists_flw">
-                    <span
-                      className="cursor-text"
-                      style={{ textDecoration: "none" }}
-                    >
-                      {user.username}
-                    </span>
-                  </div>
+                  <span>
+                    
+                  </span>
+                 
                 </div>
               </div>
               <div>
-                <div className="liked-songs-list px-5">
-                  <div className="song-item flex w-100 h-10 align-bottom mt-4 -mb-4">
+                <div className="liked-songs-list px-5  h-[80%]">
+                  <div className="song-item flex w-100 h-10 align-bottom mt-4 -mb-4 ">
                     <div className="w-8 text-center ml-12 mr-4">#</div>
                     <div className="inline w-56 mx-2 text-xs">Title</div>
                     <div className="w-52 mx-3 text-xs">Album</div>
                     {/* Song duration */}
                     <span>Duration</span>
                   </div>
+
+                  <div className="overflow-auto h-[85%]">
+
                   {likedSongs.length > 0 ? (
                     likedSongs.map((song, index) => (
                       <div
-                        key={index}
-                        className="song-item h-14 rounded-lg hover:bg-[#6f32978b] cursor-pointer p-2 flex w-100 align-bottom my-2"
-                        onClick={() => togglePlayPause(song.preview_url,song.id, song.name, song.artists)}
+                      key={index}
+                      className="song-item h-14 rounded-lg hover:bg-[#6f32978b] cursor-pointer p-2 flex w-100 align-bottom my-2"
+                      onClick={() => {
+                        togglePlayPause(song.preview_url,song.id, song.name, song.artists)
+                        addCurrentDetails(song.preview_url, song.id, song.name, song.artists,song.popularity,song.album.images[0].url,song.album.release_date,song.album.total_tracks, song.album.name);
+                      }}
                       >
                         <div className="w-8 text-center ml-10 mr-5 pt-2">
                           {index + 1}
@@ -132,7 +134,7 @@ export default function LikedSongs({ newName }) {
                           width="40"
                           height="40"
                           className="inline w-10 rounded"
-                        />
+                          />
                         <div className="inline w-48 mx-2">
                           <div className="font-semibold text-md">
                             {song.name}
@@ -140,8 +142,8 @@ export default function LikedSongs({ newName }) {
                           <div className="font-thin text-xs">
                             {song.artists && song.artists.length > 0
                               ? song.artists
-                                  .map((artist) => artist.name)
-                                  .join(", ") // Join artists' names with a comma
+                              .map((artist) => artist.name)
+                              .join(", ") // Join artists' names with a comma
                               : "Unknown Artist"}
                           </div>
                         </div>
@@ -156,10 +158,11 @@ export default function LikedSongs({ newName }) {
                         </p>
                       </div>
                     ))
-                  ) : (
-                    <p>No liked songs yet</p>
-                  )}
+                    ) : (
+                      <p>No liked songs yet</p>
+                      )}
                 </div>
+                      </div>
               </div>
             </div>
           </div>

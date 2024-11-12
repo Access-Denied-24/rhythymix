@@ -14,7 +14,7 @@ import axios from 'axios';
 export default function Controls() {
 
   const token = localStorage.getItem('token')
-// https://yank.g3v.co.uk/track/0afhq8XCExXpqazXczTSve
+
   const {
     currentTrack, setCurrentTrack,
       isLooping, toggleLooping, toggleShuffle,
@@ -64,7 +64,7 @@ export default function Controls() {
       })
       .then(response => {
         if (response.data.likedSongs && response.data.likedSongs.length > 0) {
-          setLikedTrackId(response.data.likedSongs[0].id);  // Assuming you want the first liked song ID
+          setLikedTrackId(response.data.likedSongs[0].id);  
         }
       })
       .catch(error => {
@@ -73,7 +73,7 @@ export default function Controls() {
     }
   }, [token]);
 
-  // Handle like/unlike functionality
+  // to handle like/unlike functionality
   const handleLike = (songId) => {
     if (!token) {
       console.log("User not authenticated");
@@ -84,7 +84,6 @@ export default function Controls() {
     console.log('likedTrackId:', likedTrackId);
     console.log('Song ID:', songId);
 
-    // Check if the current track is already liked
     if (likedTrackId !== songId) {
       // Like the song
       axios.post('http://localhost:8000/api/v1/users/like-song', { songId }, {
@@ -94,7 +93,7 @@ export default function Controls() {
       })
       .then(response => {
         console.log('Song liked:', response.data);
-        setLikedTrackId(songId);  // Update state with the newly liked song ID
+        setLikedTrackId(songId);  
       })
       .catch(error => {
         console.log('Error liking the song:', error);

@@ -68,19 +68,16 @@ router.post('/google', async (req, res) => {
     const { token } = req.body;
   
     try {
-      // Verify Google token
       const ticket = await client.verifyIdToken({
         idToken: token,
         audience: process.env.GOOGLE_CLIENT_ID,
       });
       const payload = ticket.getPayload();
       const { sub: googleId, name, email } = payload; 
-      // Check if user exists; if not, create a new user
       let user = await User.findOne({ googleId: payload.sub });
       if (!user) {
         user = await User.findOne({ email: payload.email });
         if (user) {
-            // Update the user to include googleId
             user.googleId = payload.sub;
         } else {
             user = new User({
@@ -93,7 +90,6 @@ router.post('/google', async (req, res) => {
         await user.save();
       }
   
-      // Generate a JWT token for the user
       const jwtPayload = { user: { id: user.id } };
       const jwtToken = jwt.sign(jwtPayload, process.env.JWT_SECRET, { expiresIn: '1d' });
       res.json({ token: jwtToken,

@@ -12,18 +12,6 @@ export default function QueueList() {
   }
 
   return (
-    // <div className="queue-list ">
-    //   <ul>
-    //     {queue.map((track) => (
-    //       <li key={track.id} className="p-2">
-    //         {track.name} - {track.artist}
-    //         {track && track.artists && track.artists.length > 0
-    //           ? track.artists.map(artist => artist.name).join(', ') // to join the artist names
-    //           : 'No artists available'}
-    //       </li>
-    //     ))}
-    //   </ul>
-    // </div>
     <div className="queue-list bg-gradient-to-r from-purple-900 to-indigo-800 rounded-xl shadow-lg p-4">
   <h2 className="text-white text-xl font-semibold mb-4 text-center">Queue</h2>
   <ul className="space-y-2">

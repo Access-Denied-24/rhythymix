@@ -265,7 +265,7 @@ export const PlayerContextProvider = ({ children }) => {
     });
   };
 
-  // Automatically go to the next track when the current track ends
+  // to go to the next track when the current track ends
   useEffect(() => {
     const audio = audioRef.current;
 
